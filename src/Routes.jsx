@@ -6,11 +6,11 @@ import Home from "./pages/home/Index";
 import Login from "./pages/login/Index";
 import Register from "./pages/register/Index";
 
-export default function Routes() {
+export default function Routes({ isAuthenticated, userRole }) {
   return (
     <Switch>
       {/* Routes that need main navbar */}
-      <Route path="/" element={<WithNavBar />}>
+      <Route path="/" element={<LayoutWithNavBar />}>
         <Route path="/" element={<Home />} />
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
@@ -19,7 +19,7 @@ export default function Routes() {
   );
 }
 
-function WithNavBar({ children }) {
+function LayoutWithNavBar({ children }) {
   return (
     <>
       <Navbar />
