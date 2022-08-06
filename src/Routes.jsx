@@ -1,29 +1,38 @@
 import React from "react";
-import { Switch, Route } from "react-router-dom";
+import {
+  Route,
+  Routes as Switch,
+  Outlet,
+  BrowserRouter,
+} from "react-router-dom";
 
 import Navbar from "./components/navBar/Index";
+import { appRoutes } from "./constants/routes";
+
 import Home from "./pages/home/Index";
 import Login from "./pages/login/Index";
 import Register from "./pages/register/Index";
 
 export default function Routes({ isAuthenticated, userRole }) {
   return (
-    <Switch>
-      {/* Routes that need main navbar */}
-      <Route path="/" element={<LayoutWithNavBar />}>
-        <Route path="/" element={<Home />} />
-        <Route path="login" element={<Login />} />
-        <Route path="register" element={<Register />} />
-      </Route>
-    </Switch>
+    <BrowserRouter>
+      <Switch>
+        {/* Routes that need main navbar */}
+        <Route path={appRoutes.home} element={<LayoutWithNavBar />}>
+          <Route path={appRoutes.home} element={<Home />} />
+          <Route path={appRoutes.login} element={<Login />} />
+          <Route path={appRoutes.register} element={<Register />} />
+        </Route>
+      </Switch>
+    </BrowserRouter>
   );
 }
 
-function LayoutWithNavBar({ children }) {
+function LayoutWithNavBar() {
   return (
     <>
       <Navbar />
-      {children}
+      <Outlet />
     </>
   );
 }
