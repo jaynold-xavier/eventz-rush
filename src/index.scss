@@ -1,14 +1,24 @@
 @import "~antd/dist/antd.css";
 
+:root {
+  background: purple;
+  font-size: 16px;
+}
+
 body {
   margin: 0;
   font-family: "Open Sans", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
     "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  background: url("./assets/images/main-back-1.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: white;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+  font-family: "Open Sans" source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
