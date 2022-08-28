@@ -1,0 +1,49 @@
+.main-nav-bar {
+  background-color: transparent;
+  border: none;
+  justify-content: flex-end;
+
+  > li {
+    &::after {
+      border-bottom: none !important;
+    }
+
+    &:first-child {
+      margin-right: auto;
+      padding: 0 !important;
+    }
+  }
+}
+
+.home-layout {
+  .landing-section {
+    background: url("~/src/assets/images/main-back.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: bottom;
+    min-height: calc(100vh - 3rem - 45px);
+    height: 100%;
+
+    .welcome-section {
+      margin-top: 10rem;
+      text-align: center;
+
+      .welcome-heading {
+        font-family: "Andada Pro";
+        font-size: 2rem;
+        font-weight: 700;
+      }
+
+      .welcome-tagline {
+        font-family: "Open Sans";
+      }
+    }
+  }
+
+  .info-services-section {
+    background: url("~/src/assets/images/info-back.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 100vh;
+  }
+}

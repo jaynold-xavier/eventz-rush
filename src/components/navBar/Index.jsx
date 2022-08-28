@@ -1,42 +1,36 @@
 import React from "react";
-import { Menu } from "antd";
-import { Link, NavLink } from "react-router-dom";
+import { Image, Menu } from "antd";
+import { NavLink } from "react-router-dom";
+
+import logo from "../../assets/images/logo.png";
+
 import { appRoutes } from "../../constants/routes";
 
 export default function Navbar() {
   return (
-    <Menu className="main-nav-bar" mode="horizontal" direction="rtr">
+    <Menu className="main-nav-bar container" mode="horizontal" direction="rtr">
       <Menu.Item>
-        <Link to={appRoutes.home}>EVENTZ RUSH</Link>
+        <NavLink to={appRoutes.home}>
+          <Image src={logo} width={100} preview={false} />
+        </NavLink>
       </Menu.Item>
 
-      <Menu.SubMenu title="Vendors">
-        <Menu.Item>
-          <NavLink to={appRoutes.vendors}>Vendors</NavLink>
-        </Menu.Item>
-        <Menu.Item>
-          <NavLink to={appRoutes.vendors}>Vendors</NavLink>
-        </Menu.Item>
-        <Menu.Item>
-          <NavLink to={appRoutes.vendors}>Vendors</NavLink>
-        </Menu.Item>
-        <Menu.Item>
-          <NavLink to={appRoutes.vendors}>Vendors</NavLink>
-        </Menu.Item>
-        <Menu.Item>
-          <NavLink to={appRoutes.vendors}>Vendors</NavLink>
-        </Menu.Item>
-      </Menu.SubMenu>
-
+      <Menu.Item>
+        <NavLink to={appRoutes.vendors}>VENDORS</NavLink>
+      </Menu.Item>
       <Menu.Item>
         <NavLink to={appRoutes.faq}>FAQ</NavLink>
       </Menu.Item>
-      <Menu.Item to={appRoutes.contactUs}>
-        <NavLink to={appRoutes.contactUs}>Contact Us</NavLink>
+      <Menu.Item>
+        <NavLink to={appRoutes.contactUs}>CONTACT</NavLink>
       </Menu.Item>
 
-      <Menu.Item>Login</Menu.Item>
-      <Menu.Item>Register</Menu.Item>
+      <Menu.Item>
+        <NavLink to={appRoutes.login}>LOGIN</NavLink>
+      </Menu.Item>
+      <Menu.Item>
+        <NavLink to={appRoutes.register}>REGISTER</NavLink>
+      </Menu.Item>
     </Menu>
   );
 }

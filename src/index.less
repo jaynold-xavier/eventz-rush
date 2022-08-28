@@ -1,0 +1,37 @@
+@import "~antd/dist/antd.less";
+
+:root {
+  font-size: 16px;
+  --container-width: 80rem;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: "Open Sans", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+    "Droid Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  background: url("./assets/images/main-back (2).png");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+code {
+  font-family: "Open Sans" source-code-pro, Menlo, Monaco, Consolas,
+    "Courier New", monospace;
+}
+
+// antd overrides
+.ant-layout {
+  background: transparent;
+}
+
+@import "./assets/styles/fonts.less";
+@import "./assets/styles/common.less";
+@import "./assets/styles/app.less";
