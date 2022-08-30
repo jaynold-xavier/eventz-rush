@@ -1,3 +1,5 @@
+@import "./common.less";
+
 .main-nav-bar {
   background-color: transparent;
   border: none;
@@ -17,12 +19,9 @@
 
 .home-layout {
   .landing-section {
-    background: url("~/src/assets/images/map.png");
-    background-repeat: no-repeat;
-    background-size: 100%;
-    background-position: bottom;
+    // .applyBackground("~/src/assets/images/back-1.jpg");
+    // background-size: 100%;
     min-height: calc(100vh - 3rem - 45px);
-    height: 100%;
 
     .welcome-section {
       margin-top: 10rem;
@@ -41,9 +40,7 @@
   }
 
   .info-services-section {
-    background: url("~/src/assets/images/info-back.svg");
-    background-repeat: no-repeat;
-    background-size: cover;
+    .applyBackground("~/src/assets/images/info-back.svg");
     min-height: 100vh;
   }
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, Menu } from "antd";
+import { Button, Image, Menu } from "antd";
 import { NavLink } from "react-router-dom";
 
 import logo from "../../assets/images/logo.svg";
@@ -11,7 +11,7 @@ export default function Navbar() {
     <Menu className="main-nav-bar container" mode="horizontal" direction="rtr">
       <Menu.Item>
         <NavLink to={appRoutes.home}>
-          <Image src={logo} width={100} preview={false} />
+          <Image src={logo} width={120} preview={false} />
         </NavLink>
       </Menu.Item>
 
@@ -26,11 +26,13 @@ export default function Navbar() {
       </Menu.Item>
 
       <Menu.Item>
-        <NavLink to={appRoutes.login}>LOGIN</NavLink>
+        <Button type="ghost">
+          <NavLink to={appRoutes.login}>LOGIN</NavLink>
+        </Button>
       </Menu.Item>
-      <Menu.Item>
+      {/* <Menu.Item>
         <NavLink to={appRoutes.register}>REGISTER</NavLink>
-      </Menu.Item>
+      </Menu.Item> */}
     </Menu>
   );
 }
