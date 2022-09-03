@@ -11,7 +11,7 @@ export default function Navbar() {
     <Menu className="main-nav-bar container" mode="horizontal" direction="rtr">
       <Menu.Item>
         <NavLink to={appRoutes.home}>
-          <Image src={logo} width={120} preview={false} />
+          <Image src={logo} width={150} preview={false} />
         </NavLink>
       </Menu.Item>
 

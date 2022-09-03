@@ -3,16 +3,17 @@ const _ = require("lodash");
 
 // purple complements: #d7ad0d, #c92b28, #30b5c7, #8e1baa
 const themeData = {
-  primaryColor: "rgba(254, 247, 255, 1)",
-  linkColor: "#a0ede7",
+  primaryColor: "#9930E7",
+  linkColor: "#00c4b4",
   // infoColor: "#00c4b4",
   // processingColor: "#00c4b4",
   // successColor: "#00c4b4",
   warningColor: "#faad14",
   errorColor: "#f73131",
   fontSizeBase: "16px",
-  headingColor: "#672bd5",
-  textColor: "rgba(254, 247, 255, 1)",
+  headingColor: "#391256",
+  // textColor: "#F2E3FD",
+  textColor: "#FFF",
   textColorSecondary: "#672bd5",
   // disabledColor: "rgba(254, 247, 255, 0.25)",
   borderRadiusBase: "4px",
