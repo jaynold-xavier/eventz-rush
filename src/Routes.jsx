@@ -5,6 +5,8 @@ import {
   Outlet,
   BrowserRouter,
 } from "react-router-dom";
+import { UpCircleFilled } from "@ant-design/icons";
+import { BackTop } from "antd";
 
 import Navbar from "./components/navBar/Index";
 import { appRoutes } from "./constants/routes";
@@ -31,6 +33,10 @@ export default function Routes({ isAuthenticated, userRole }) {
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Switch>
+
+      <BackTop>
+        <UpCircleFilled style={{ color: "#00c4b4" }} />
+      </BackTop>
     </BrowserRouter>
   );
 }

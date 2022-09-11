@@ -1,8 +1,18 @@
 @import "~antd/dist/antd.less";
 
+@small-screen: ~"only screen and (max-width: 350px)";
+@mobile-screen: ~"only screen and (min-width: 350px) and (max-width: 768px)";
+@tablet-screen: ~"only screen and (min-width: 768px) and (max-width: 1024px)";
+@laptop-screen: ~"only screen and (min-width: 1024px) and (max-width: 1600px)";
+@tv-screen: ~"only screen and (min-width: 1600px)";
+
 :root {
   font-size: 16px;
   --container-width: 80rem;
+
+  @media @small-screen, @mobile-screen {
+    font-size: 10px;
+  }
 }
 
 html,
@@ -17,9 +27,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  background: url("./assets/images/back-1.jpg");
+  background: url("../images/back-2.jpg");
   background-repeat: no-repeat;
-  background-size: cover;
 }
 
 code {
@@ -32,5 +41,6 @@ code {
   background: transparent;
 }
 
-@import "./assets/styles/fonts.less";
-@import "./assets/styles/app.less";
+@import "./fonts.less";
+@import "./common.less";
+@import "./app.less";

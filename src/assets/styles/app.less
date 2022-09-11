@@ -1,4 +1,7 @@
-@import "./common.less";
+.ant-back-top {
+  font-size: 3rem;
+  color: #00c4b4;
+}
 
 .main-nav-bar {
   background-color: transparent;
@@ -21,20 +24,30 @@
   .landing-section {
     // .applyBackground("~/src/assets/images/back-1.jpg");
     // background-size: 100%;
-    min-height: calc(100vh - 3rem - 45px);
+    // height: 100%;
+    min-height: calc(100vh - 4rem - 45px);
 
     .welcome-section {
-      margin-top: 10rem;
       text-align: center;
 
       .welcome-heading {
-        font-family: "Andada Pro";
+        font-family: "lato";
         font-size: 2rem;
-        font-weight: 700;
+        font-weight: bold;
+        line-height: 2.5rem;
       }
 
       .welcome-tagline {
-        font-family: "Open Sans";
+        font-size: 1.1rem;
+        font-weight: normal;
+      }
+
+      .register-btn {
+        height: 3.5rem;
+        font-size: 1.3rem;
+        line-height: 1rem;
+        width: 15rem;
+        margin-top: 20px;
       }
     }
   }
@@ -43,5 +56,10 @@
     .applyBackground("~/src/assets/images/info-back.svg");
     background-position: bottom;
     min-height: 100vh;
+
+    .title {
+      text-align: center;
+      letter-spacing: 0.2em;
+    }
   }
 }

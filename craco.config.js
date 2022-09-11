@@ -1,13 +1,13 @@
 const CracoLessPlugin = require("craco-less");
 const _ = require("lodash");
 
-// purple complements: #d7ad0d, #c92b28, #30b5c7, #8e1baa
+// #672bd5 complements: #d7ad0d, #c92b28, #30b5c7, #8e1baa
 const themeData = {
-  primaryColor: "#9930E7",
-  linkColor: "#00c4b4",
-  // infoColor: "#00c4b4",
-  // processingColor: "#00c4b4",
-  // successColor: "#00c4b4",
+  primaryColor: "#00bdd7",
+  linkColor: "#00bdd7",
+  // infoColor: "#00bdd7",
+  // processingColor: "#00bdd7",
+  // successColor: "#00bdd7",
   warningColor: "#faad14",
   errorColor: "#f73131",
   fontSizeBase: "16px",

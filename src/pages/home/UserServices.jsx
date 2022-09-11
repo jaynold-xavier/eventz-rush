@@ -11,7 +11,9 @@ export default function UserServices() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
       >
-        <div>User Services</div>
+        <br />
+
+        <h3 className="title">Our Services</h3>
       </motion.div>
     </Content>
   );

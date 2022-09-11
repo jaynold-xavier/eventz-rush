@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import reportWebVitals from "./reportWebVitals";
 
-import "./index.less";
+import "./assets/styles/index.less";
 
 import Routes from "./Routes";
 
