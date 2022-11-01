@@ -15,7 +15,6 @@ export default function LandingSection() {
         animate={{ opacity: 1, y: 0 }}
       >
         <Lottie
-          width="80%"
           speed={0.8}
           options={{
             loop: true,
@@ -35,7 +34,7 @@ export default function LandingSection() {
           THE BEST PLACE TO MEET YOUR EVENT NEEDS
         </div>
         <div className="welcome-tagline">
-          Find Vendors. Manage Events. Settle Payments. Repeat.
+          Find Vendors • Manage Events • Settle Payments • Repeat
         </div>
 
         <Button
@@ -47,7 +46,6 @@ export default function LandingSection() {
           Register Now
         </Button>
 
-        <br />
         <br />
         <br />
       </motion.div>
