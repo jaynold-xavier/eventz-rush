@@ -8,7 +8,7 @@ import { Button } from "antd";
 
 export default function LandingSection() {
   return (
-    <Content className="landing-section">
+    <Content className="landing-section center">
       <motion.div
         className="welcome-section container"
         initial={{ opacity: 0, y: 50 }}
@@ -22,6 +22,7 @@ export default function LandingSection() {
             animationData,
             rendererSettings: {
               preserveAspectRatio: "xMidYMid slice",
+              progressiveLoad: true,
             },
           }}
           isClickToPauseDisabled
