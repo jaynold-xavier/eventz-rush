@@ -1,10 +1,20 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { ConfigProvider } from "antd";
+
 import reportWebVitals from "./reportWebVitals";
 
 import "./assets/styles/index.less";
 
+import themeData from "./assets/js/theme";
 import Routes from "./Routes";
+
+// set app antd theme
+ConfigProvider.config({
+  theme: {
+    ...themeData,
+  },
+});
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

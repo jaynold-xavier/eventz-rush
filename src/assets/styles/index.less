@@ -1,5 +1,10 @@
-@import "~antd/dist/antd.less";
+@import "antd/dist/antd.variable.less";
 
+// user types theme constants
+@host-theme: #eb5951;
+@vendor-theme: #d7ad0d;
+
+// mobile screen sizes constants
 @small-screen: ~"only screen and (max-width: 350px)";
 @mobile-screen: ~"only screen and (min-width: 350px) and (max-width: 768px)";
 @tablet-screen: ~"only screen and (min-width: 768px) and (max-width: 1024px)";
@@ -8,7 +13,7 @@
 
 :root {
   font-size: 16px;
-  --container-width: 85rem;
+  --container-width: 90rem;
 
   @media @small-screen, @mobile-screen {
     font-size: 10px;
@@ -27,7 +32,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  background: url("../images/back-2.jpg");
+  background: url("../images/back-3.jpg");
   background-repeat: no-repeat;
 }
 

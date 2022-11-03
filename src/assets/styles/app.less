@@ -12,7 +12,7 @@
 
   > li {
     text-transform: uppercase;
-    
+
     &::after {
       border-bottom: none !important;
     }
@@ -26,45 +26,51 @@
 
 .home-layout {
   .landing-section {
-    // .applyBackground("~/src/assets/images/back-1.jpg");
-    // background-size: 100%;
     height: 100%;
     min-height: calc(100vh - 100px);
 
-    .welcome-section {
-      text-align: center;
+    > .container {
+      flex-direction: row-reverse;
 
-      div[aria-label="animation"] {
-        width: 85% !important;
+      @media @small-screen, @mobile-screen, @tablet-screen, @laptop-screen {
+        flex-direction: column;
 
-        @media @small-screen, @mobile-screen {
-          width: 100% !important;
+        .landing-message {
+          text-align: center;
         }
       }
+    }
 
-      .welcome-heading {
-        font-family: "Lato";
-        font-size: 2rem;
-        font-weight: bold;
-        line-height: 2.5rem;
-      }
+    div[aria-label="animation"] {
+      width: 85% !important;
 
-      .welcome-tagline {
-        font-family: "Nunito Sans";
-        font-size: 1.1rem;
-        font-weight: normal;
-        letter-spacing: 2px;
-        opacity: 0.8;
-        color: yellow;
+      @media @small-screen, @mobile-screen {
+        width: 100% !important;
       }
+    }
 
-      .register-btn {
-        height: 3.5rem;
-        font-size: 1.3rem;
-        line-height: 1rem;
-        width: 15rem;
-        margin-top: 20px;
-      }
+    .welcome-heading {
+      font-family: "Lato";
+      font-size: 2rem;
+      font-weight: bold;
+      line-height: 2.5rem;
+    }
+
+    .welcome-tagline {
+      font-family: "Nunito Sans";
+      font-size: 1.1rem;
+      font-weight: normal;
+      letter-spacing: 2px;
+      color: #e2d9ff;
+      margin-top: 0.2rem;
+    }
+
+    .register-btn {
+      height: 3.5rem;
+      font-size: 1.3rem;
+      line-height: 1rem;
+      width: 15rem;
+      margin-top: 2rem;
     }
   }
 
@@ -77,5 +83,11 @@
       text-align: center;
       letter-spacing: 0.2em;
     }
+  }
+
+  .landing-footer {
+    background-color: #c7d3d4ff;
+    height: 5rem;
+    width: 100%;
   }
 }

@@ -1,16 +1,16 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Lottie from "react-lottie";
+import { Button } from "antd";
 import { Content } from "antd/lib/layout/layout";
 
-import animationData from "../../assets/lotties/landing/data.json";
-import { Button } from "antd";
+import animationData from "../../../assets/lotties/landing/data.json";
 
 export default function LandingSection() {
   return (
     <Content className="landing-section center">
       <motion.div
-        className="welcome-section container"
+        className="center container"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
       >
@@ -31,21 +31,23 @@ export default function LandingSection() {
         <br />
         <br />
 
-        <div className="welcome-heading">
-          THE BEST PLACE TO MEET YOUR EVENT NEEDS
-        </div>
-        <div className="welcome-tagline">
-          Find Vendors • Manage Events • Settle Payments • Repeat
-        </div>
+        <div className="landing-message">
+          <div className="welcome-heading">
+            THE BEST PLACE TO MEET YOUR EVENT NEEDS
+          </div>
+          <div className="welcome-tagline">
+            Find Vendors • Manage Events • Settle Payments • Repeat
+          </div>
 
-        <Button
-          className="register-btn"
-          type="primary"
-          size="large"
-          shape="round"
-        >
-          Register Now
-        </Button>
+          <Button
+            className="register-btn"
+            type="primary"
+            size="large"
+            // shape="round"
+          >
+            Register Now
+          </Button>
+        </div>
 
         <br />
         <br />

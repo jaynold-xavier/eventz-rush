@@ -2,10 +2,43 @@ import { UserOutlined } from "@ant-design/icons";
 import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { Button, Image, Menu } from "antd";
+import { startCase } from "lodash";
 
 import logo from "../../assets/images/logo.svg";
 
 import { appRoutes } from "../../constants/routes";
+
+const items = [
+  {
+    key: "item-1",
+    label: (
+      <NavLink to={appRoutes.home}>
+        <Image src={logo} width="9rem" preview={false} />
+      </NavLink>
+    ),
+  },
+  ...["vendors", "faq", "contact"].map((route) => {
+    return {
+      key: appRoutes[route],
+      label: <NavLink to={appRoutes[route]}>{startCase(route)}</NavLink>,
+    };
+  }),
+  {
+    key: appRoutes.login,
+    label: (
+      <NavLink to={appRoutes.login}>
+        <Button type="ghost" icon={<UserOutlined />}>
+          Login
+        </Button>
+      </NavLink>
+    ),
+  },
+  // {
+  //   label: "sub menu",
+  //   key: "submenu",
+  //   children: [{ label: "item 3", key: "submenu-item-1" }],
+  // },
+];
 
 export default function Navbar() {
   const location = useLocation();
@@ -16,34 +49,7 @@ export default function Navbar() {
       mode="horizontal"
       direction="rtr"
       selectedKeys={[location.pathname]}
-    >
-      <Menu.Item key={appRoutes.home}>
-        <NavLink to={appRoutes.home}>
-          <Image src={logo} width="9rem" preview={false} />
-        </NavLink>
-      </Menu.Item>
-
-      <Menu.Item key={appRoutes.vendors}>
-        <NavLink to={appRoutes.vendors}>Vendors</NavLink>
-      </Menu.Item>
-      <Menu.Item key={appRoutes.faq}>
-        <NavLink to={appRoutes.faq}>FAQ</NavLink>
-      </Menu.Item>
-      <Menu.Item key={appRoutes.contactUs}>
-        <NavLink to={appRoutes.contactUs}>Contact</NavLink>
-      </Menu.Item>
-
-      <Menu.Item key={appRoutes.login}>
-        <NavLink to={appRoutes.login}>
-          <Button type="ghost" icon={<UserOutlined />}>
-            Login
-          </Button>
-        </NavLink>
-      </Menu.Item>
-
-      {/* <Menu.Item key={appRoutes.register}>
-        <NavLink to={appRoutes.register}>REGISTER</NavLink>
-      </Menu.Item> */}
-    </Menu>
+      items={items}
+    />
   );
 }
