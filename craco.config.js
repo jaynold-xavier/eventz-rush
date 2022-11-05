@@ -1,6 +1,6 @@
 const CracoLessPlugin = require("craco-less");
 const _ = require("lodash");
-const { default: themeData } = require("./src/assets/js/theme");
+const themeData = require("./src/assets/js/theme");
 
 module.exports = {
   plugins: [

@@ -1,6 +1,6 @@
 // #672bd5 complements: #d7ad0d, #c92b28, #30b5c7, #8e1baa
-// hosts theme: #eb5951, #ff735d
-// vendors theme: #d7ad0d, #ffba00
+// host theme: #d7ad0d, #ffba00
+// vendor theme: #eb5951, #ff735d
 // footer section: #c7d3d4ff
 
 const themeData = {
@@ -22,4 +22,4 @@ const themeData = {
   boxShadowBase: "0 2px 8px rgba(254, 247, 255, 0.15)",
 };
 
-export default themeData;
+module.exports = themeData;

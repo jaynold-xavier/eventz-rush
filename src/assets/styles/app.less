@@ -3,6 +3,16 @@
   color: #00c4b4;
 }
 
+.main-nav-bar-affix-container {
+  .ant-affix {
+    background-image: linear-gradient(181deg, #3a2493, #672bd587);
+
+    .app-logo {
+      width: 9rem !important;
+    }
+  }
+}
+
 .main-nav-bar {
   background-color: transparent;
   border: none;
@@ -27,12 +37,13 @@
 .home-layout {
   .landing-section {
     height: 100%;
-    min-height: calc(100vh - 100px);
+    min-height: calc(100vh - 100px - 84px - 20px);
+    // 100px - navbar, 84px - shape divider, 20px extra space
 
     > .container {
       flex-direction: row-reverse;
 
-      @media @small-screen, @mobile-screen, @tablet-screen, @laptop-screen {
+      @media @small-screen, @mobile-screen, @tablet-screen {
         flex-direction: column;
 
         .landing-message {
@@ -74,10 +85,33 @@
     }
   }
 
+  .shape-divider {
+    // position: absolute;
+    // bottom: 0;
+    // left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+
+    svg {
+      position: relative;
+      display: block;
+      width: calc(100% + 1.3px);
+      height: 84px;
+    }
+
+    .shape-fill {
+      fill: #ffffff;
+    }
+  }
+
   .info-services-section {
-    .applyBackground("~/src/assets/images/info-back.svg");
-    background-position: bottom;
     min-height: 100vh;
+    background-color: #ffffff;
+
+    @media @small-screen, @mobile-screen, @tablet-screen {
+      background-size: 150% 100%;
+    }
 
     .title {
       text-align: center;
