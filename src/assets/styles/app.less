@@ -1,57 +1,80 @@
-.ant-back-top {
-  font-size: 3rem;
-  color: #00c4b4;
-}
+@navbar-height: 100px;
 
 .main-nav-bar-affix-container {
   .ant-affix {
-    background-image: linear-gradient(181deg, #3a2493, #672bd587);
+    // background-color: #5f00b5;
+    background: linear-gradient(180deg, #fff, #edeeff);
+    box-shadow: 0 8px 20px 0 rgb(0 0 0 / 10%);
+    height: @navbar-height - 20px !important;
 
-    .app-logo {
-      width: 9rem !important;
+    .main-nav-bar {
+      height: @navbar-height - 20px;
+
+      a:not(:hover) {
+        color: #5f00b5;
+      }
+
+      .ant-image {
+        width: 7rem !important;
+      }
     }
   }
-}
 
-.main-nav-bar {
-  background-color: transparent;
-  border: none;
-  justify-content: flex-end;
-  align-items: center;
-  height: 100px;
+  .main-nav-bar {
+    background-color: transparent;
+    border: none;
+    justify-content: flex-end;
+    align-items: center;
+    height: @navbar-height;
 
-  > li {
-    text-transform: uppercase;
+    > li {
+      text-transform: uppercase;
+      font-weight: bold;
 
-    &::after {
-      border-bottom: none !important;
-    }
+      &::after {
+        border-bottom: none !important;
+      }
 
-    &:first-child {
-      margin-right: auto;
-      // padding: 0 !important;
+      //logo
+      &:first-child {
+        margin-right: auto;
+        padding: 0 !important;
+      }
+
+      // login/register button
+      button {
+        padding: 18px 20px;
+        line-height: 0;
+      }
     }
   }
 }
 
 .home-layout {
-  .landing-section {
+  @media @small-screen, @mobile-screen, @tablet-screen {
+    margin-top: 4rem;
+  }
+
+  .landing-intro {
     height: 100%;
-    min-height: calc(100vh - 100px - 84px - 20px);
-    // 100px - navbar, 84px - shape divider, 20px extra space
+    min-height: calc(
+      100vh - @navbar-height - 84px - 20px
+    ); // 84px - shape divider, 20px extra space
 
     > .container {
       flex-direction: row-reverse;
 
       @media @small-screen, @mobile-screen, @tablet-screen {
-        flex-direction: column;
+        gap: 3rem;
 
         .landing-message {
+          max-width: 80%;
           text-align: center;
         }
       }
     }
 
+    // animated map scene
     div[aria-label="animation"] {
       width: 85% !important;
 
@@ -60,35 +83,35 @@
       }
     }
 
-    .welcome-heading {
-      font-family: "Lato";
-      font-size: 2rem;
-      font-weight: bold;
-      line-height: 2.5rem;
-    }
+    .landing-message {
+      max-width: 55%;
 
-    .welcome-tagline {
-      font-family: "Nunito Sans";
-      font-size: 1.1rem;
-      font-weight: normal;
-      letter-spacing: 2px;
-      color: #e2d9ff;
-      margin-top: 0.2rem;
-    }
+      .welcome-heading {
+        font-family: "Lato";
+        font-size: 2rem;
+        font-weight: bold;
+        line-height: 2.5rem;
+        text-transform: uppercase;
+      }
 
-    .register-btn {
-      height: 3.5rem;
-      font-size: 1.3rem;
-      line-height: 1rem;
-      width: 15rem;
-      margin-top: 2rem;
+      .welcome-tagline {
+        font-family: "Nunito Sans";
+        font-size: 1.1rem;
+        font-weight: normal;
+        letter-spacing: 2px;
+        color: #e2d9ff;
+      }
+
+      .register-btn {
+        height: 3.5rem;
+        font-size: 1.3rem;
+        line-height: 1rem;
+        width: 15rem;
+      }
     }
   }
 
   .shape-divider {
-    // position: absolute;
-    // bottom: 0;
-    // left: 0;
     width: 100%;
     overflow: hidden;
     line-height: 0;
@@ -101,27 +124,73 @@
     }
 
     .shape-fill {
-      fill: #ffffff;
+      fill: #fefcff;
     }
   }
 
-  .info-services-section {
-    min-height: 100vh;
-    background-color: #ffffff;
+  .landing-content {
+    background-color: #fefcff;
 
     @media @small-screen, @mobile-screen, @tablet-screen {
       background-size: 150% 100%;
     }
 
-    .title {
-      text-align: center;
-      letter-spacing: 0.2em;
+    .catch-content {
+      // font-family: "Patrick Hand";
+      flex-direction: column;
+      min-height: 20rem;
+      z-index: 1;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.2;
+        z-index: -1;
+        background-size: 30rem;
+        background-image: url("../images/shapes/shape-1.svg");
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+    }
+
+    section {
+      width: 50%;
+
+      @media @small-screen, @mobile-screen, @tablet-screen {
+        text-align: center;
+        width: 100%;
+      }
     }
   }
 
   .landing-footer {
-    background-color: #c7d3d4ff;
-    height: 5rem;
-    width: 100%;
+    // background: linear-gradient(180deg, #fff, #e2dfec 81%, #e1dfec);
+    background: #e1dfec;
+    padding: 5px 0;
+
+    section {
+      &:first-child {
+        min-height: 4rem;
+
+        .ant-image {
+          position: absolute;
+          z-index: 0;
+          opacity: 0.4;
+          height: 4rem;
+        }
+
+        h4 {
+          z-index: 1;
+        }
+      }
+
+      &:last-child {
+        justify-content: space-between;
+      }
+    }
   }
 }

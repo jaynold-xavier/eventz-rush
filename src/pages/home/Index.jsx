@@ -26,6 +26,10 @@ export default function Home() {
       </div>
 
       <Services />
+
+      <br />
+      <br />
+
       <Footer />
     </Layout>
   );

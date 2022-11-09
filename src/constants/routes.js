@@ -1,7 +1,7 @@
 export const appRoutes = {
   home: "/",
   faq: "/faq",
-  contact: "/contact",
+  contactUs: "/contact",
   policy: "/policy",
   login: "/login",
   register: "/register",

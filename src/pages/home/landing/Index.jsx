@@ -8,7 +8,7 @@ import animationData from "../../../assets/lotties/landing/data.json";
 
 export default function LandingSection() {
   return (
-    <Content className="landing-section center">
+    <Content className="landing-intro center">
       <motion.div
         className="center container"
         initial={{ opacity: 0, y: 50 }}
@@ -28,16 +28,19 @@ export default function LandingSection() {
           isClickToPauseDisabled
         />
 
-        <br />
-        <br />
-
         <div className="landing-message">
           <div className="welcome-heading">
-            THE BEST PLACE TO MEET YOUR EVENT NEEDS
+            Find your vendor <span className="highlight-color">Dream Team</span>{" "}
+            for your event needs
           </div>
+          <br />
+
           <div className="welcome-tagline">
-            Find Vendors • Manage Events • Settle Payments • Repeat
+            Build your professional profile as an event vendor or simply reach
+            out to registered vendors to speedily organize events of any kind.
           </div>
+          <br />
+          <br />
 
           <Button
             className="register-btn"
@@ -48,9 +51,6 @@ export default function LandingSection() {
             Register Now
           </Button>
         </div>
-
-        <br />
-        <br />
       </motion.div>
     </Content>
   );

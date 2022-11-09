@@ -4,21 +4,21 @@
 // footer section: #c7d3d4ff
 
 const themeData = {
-  primaryColor: "#00bdd7",
-  linkColor: "#00bdd7",
+  primaryColor: "#24b1c6",
+  linkColor: "#8e1baa",
   // infoColor: "#00bdd7",
   // processingColor: "#00bdd7",
-  // successColor: "#00bdd7",
+  successColor: "#3fb951",
   warningColor: "#faad14",
-  errorColor: "#f73131",
+  errorColor: "#ed4337",
   fontSizeBase: "16px",
-  headingColor: "#391256",
+  headingColor: "#001141",
   // textColor: "#F2E3FD",
-  textColor: "#FFF",
-  textColorSecondary: "#672bd5",
+  textColor: "#f4f2ff",
+  textColorSecondary: "#383144cc",
   // disabledColor: "rgba(254, 247, 255, 0.25)",
   borderRadiusBase: "4px",
-  borderColorBase: "#d9d9d9",
+  borderColorBase: "#491d8b",
   boxShadowBase: "0 2px 8px rgba(254, 247, 255, 0.15)",
 };
 

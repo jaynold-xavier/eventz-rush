@@ -26,7 +26,7 @@ export default function Routes({ isAuthenticated, userRole }) {
         {/* Routes that need main navbar */}
         <Route path={appRoutes.home} element={<LayoutWithNavBar />}>
           <Route path={appRoutes.home} element={<Home />} />
-          <Route path={appRoutes.contact} element={<Contact />} />
+          <Route path={appRoutes.contactUs} element={<Contact />} />
           <Route path={appRoutes.faq} element={<FAQ />} />
           <Route path={appRoutes.login} element={<Login />} />
           <Route path={appRoutes.register} element={<Register />} />
