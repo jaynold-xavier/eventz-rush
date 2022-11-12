@@ -46,11 +46,12 @@ export default function Services() {
         />
 
         <section>
-          <h1>Why Eventz Rush?</h1>
+          <h1>Register as a Host or a Vendor</h1>
           <h3>
-            Both hosts and vendors have a place at Eventz Rush - monetize and
-            publicize your vendor services or create events all the way from
-            defining basic info to payment for your vendor's services.
+            Whether your a host or vendor, you can benefit from role specific
+            services to allow you to carry out your task as part of an event.
+            For instance, accept/reject offers to provide services to events as
+            a vendor or review vendors as hosts.
           </h3>
         </section>
       </motion.div>
@@ -65,11 +66,10 @@ export default function Services() {
         transition={{ duration: 0.3 }}
       >
         <section>
-          <h1>Why Eventz Rush?</h1>
+          <h1>Facebook for Event Vendors</h1>
           <h3>
-            Both hosts and vendors have a place at Eventz Rush - monetize and
-            publicize your vendor services or create events all the way from
-            defining basic info to payment for your vendor's services.
+            Build your reputation in your profession as an event vendor- gain
+            influence through profile building and custom content creation.
           </h3>
         </section>
 
@@ -98,11 +98,10 @@ export default function Services() {
         />
 
         <section>
-          <h1>Why Eventz Rush?</h1>
+          <h1>Write Reviews</h1>
           <h3>
-            Both hosts and vendors have a place at Eventz Rush - monetize and
-            publicize your vendor services or create events all the way from
-            defining basic info to payment for your vendor's services.
+            Elaborate and describe the performance of vendors in events. This
+            adds to their reputation and assists them in getting more offers.
           </h3>
         </section>
       </motion.div>

@@ -28,15 +28,13 @@ export default function Routes({ isAuthenticated, userRole }) {
           <Route path={appRoutes.home} element={<Home />} />
           <Route path={appRoutes.contactUs} element={<Contact />} />
           <Route path={appRoutes.faq} element={<FAQ />} />
-          <Route path={appRoutes.login} element={<Login />} />
-          <Route path={appRoutes.register} element={<Register />} />
           {/* <Route path={appRoutes.vendors} element={<FAQ />} /> */}
         </Route>
         <Route path="*" element={<PageNotFound />} />
       </Switch>
 
       <BackTop>
-        <UpCircleFilled style={{ color: "#00c4b4" }} />
+        <UpCircleFilled />
       </BackTop>
     </BrowserRouter>
   );

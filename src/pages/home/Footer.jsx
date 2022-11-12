@@ -12,20 +12,6 @@ export default function LandingFooter() {
   return (
     <Footer prefixCls="landing-footer">
       <section className="center container">
-        <Image
-          className="app-logo"
-          alt="owner-logo"
-          src={JBLogo}
-          width="6rem"
-          preview={false}
-        />
-        
-        <h4>&#169; 2023 All Rights Reserved Designed By Jaden Rice</h4>
-      </section>
-
-      <Divider className="mt-2 mb-2" />
-
-      <section className="center container">
         <Link to={appRoutes.home}>
           <Image
             alt="app-logo"
@@ -35,6 +21,8 @@ export default function LandingFooter() {
             preview={false}
           />
         </Link>
+
+        <h4>&#169; 2023 All Rights Reserved Designed By Jaden Rice</h4>
 
         <Space>
           <Link to={appRoutes.home}>Privacy</Link>
