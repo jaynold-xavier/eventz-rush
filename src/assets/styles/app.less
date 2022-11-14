@@ -131,14 +131,10 @@
   .landing-content {
     background-color: #fefcff;
 
-    @media @small-screen, @mobile-screen, @tablet-screen {
-      background-size: 150% 100%;
-    }
-
     .catch-content {
       // font-family: "Patrick Hand";
       flex-direction: column;
-      min-height: 20rem;
+      height: 30rem;
       z-index: 1;
 
       &::before {
@@ -150,7 +146,7 @@
         height: 100%;
         opacity: 0.2;
         z-index: -1;
-        background-size: 30rem;
+        background-size: 40rem;
         background-image: url("../images/shapes/shape-1.svg");
         background-repeat: no-repeat;
         background-position: center;
@@ -158,11 +154,37 @@
     }
 
     section {
-      width: 50%;
+      position: absolute;
+      width: 70%;
+      z-index: 5;
 
       @media @small-screen, @mobile-screen, @tablet-screen {
+        position: relative;
+        bottom: auto;
         text-align: center;
         width: 100%;
+      }
+    }
+
+    .container:not(.catch-content) {
+      &:nth-child(odd) {
+        justify-content: flex-start;
+        text-align: right;
+
+        section {
+          right: 0;
+          bottom: 30%;
+        }
+      }
+
+      &:nth-child(even) {
+        justify-content: flex-end;
+        text-align: left;
+
+        section {
+          left: 0;
+          bottom: 30%;
+        }
       }
     }
   }

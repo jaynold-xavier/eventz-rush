@@ -3,14 +3,13 @@ import { motion } from "framer-motion";
 import { Content } from "antd/lib/layout/layout";
 import { Image } from "antd";
 
-import Service1 from "../../../assets/images/landing/service (1).svg";
-import Service2 from "../../../assets/images/landing/service (2).svg";
-import Service3 from "../../../assets/images/landing/service (3).svg";
+import LoginImg from "../../../assets/images/landing/login.svg";
+import ProfileImg from "../../../assets/images/landing/profile.svg";
+import ReviewImg from "../../../assets/images/landing/review.svg";
 
 export default function Services() {
   return (
     <Content className="landing-content">
-      <br />
       <br />
       <br />
       <br />
@@ -33,21 +32,21 @@ export default function Services() {
       <br />
 
       <motion.div
-        className="container center justify-content-between"
+        className="container center"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
       >
         <Image
           className="app-logo"
-          src={Service1}
-          width="25rem"
+          src={LoginImg}
+          width="30rem"
           preview={false}
         />
 
         <section>
           <h1>Register as a Host or a Vendor</h1>
-          <h3>
+          <h3 className="card">
             Whether your a host or vendor, you can benefit from role specific
             services to allow you to carry out your task as part of an event.
             For instance, accept/reject offers to provide services to events as
@@ -60,14 +59,14 @@ export default function Services() {
       <br />
 
       <motion.div
-        className="container center justify-content-between"
+        className="container center"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
       >
         <section>
           <h1>Facebook for Event Vendors</h1>
-          <h3>
+          <h3 className="card">
             Build your reputation in your profession as an event vendor- gain
             influence through profile building and custom content creation.
           </h3>
@@ -75,8 +74,8 @@ export default function Services() {
 
         <Image
           className="app-logo"
-          src={Service2}
-          width="25rem"
+          src={ProfileImg}
+          width="40rem"
           preview={false}
         />
       </motion.div>
@@ -85,21 +84,21 @@ export default function Services() {
       <br />
 
       <motion.div
-        className="container center justify-content-between"
+        className="container center"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
       >
         <Image
           className="app-logo"
-          src={Service3}
-          width="25rem"
+          src={ReviewImg}
+          width="40rem"
           preview={false}
         />
 
         <section>
           <h1>Write Reviews</h1>
-          <h3>
+          <h3 className="card">
             Elaborate and describe the performance of vendors in events. This
             adds to their reputation and assists them in getting more offers.
           </h3>

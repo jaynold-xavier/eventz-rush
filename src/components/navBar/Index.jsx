@@ -43,7 +43,7 @@ export default function Navbar() {
   const location = useLocation();
 
   return (
-    <Affix className="main-nav-bar-affix-container" offsetTop={0}>
+    <Affix className="main-nav-bar-affix-container">
       <Menu
         className="main-nav-bar container"
         mode="horizontal"

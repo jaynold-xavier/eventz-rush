@@ -1,9 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Footer } from "antd/lib/layout/layout";
-import { Space, Image, Divider } from "antd";
+import { Space, Image } from "antd";
 
-import JBLogo from "../../assets/images/logos/jblogo.svg";
 import logo from "../../assets/images/logos/logo.svg";
 
 import { appRoutes } from "../../constants/routes";
@@ -22,7 +21,7 @@ export default function LandingFooter() {
           />
         </Link>
 
-        <h4>&#169; 2023 All Rights Reserved Designed By Jaden Rice</h4>
+        <h4>&#169; 2023 All Rights Reserved Designed By JXB</h4>
 
         <Space>
           <Link to={appRoutes.home}>Privacy</Link>
