@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Footer } from "antd/lib/layout/layout";
 import { Space, Image } from "antd";
 
-import logo from "../../assets/images/logos/logo.svg";
+import logo from "../../assets/images/logos/app.svg";
 
 import { appRoutes } from "../../constants/routes";
 

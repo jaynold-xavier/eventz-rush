@@ -3,7 +3,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import { Affix, Button, Image, Menu } from "antd";
 import { startCase } from "lodash";
 
-import logo from "../../assets/images/logos/logo.svg";
+import logo from "../../assets/images/logos/app.svg";
 
 import { appRoutes } from "../../constants/routes";
 
