@@ -2,8 +2,8 @@
 
 .main-nav-bar-affix-container {
   .ant-affix {
-    // background-color: #5f00b5;
-    background: linear-gradient(180deg, #fff, #edeeff);
+    background-color: #efecff;
+    // background: linear-gradient(180deg, #fff, #ccceff);
     box-shadow: 0 8px 20px 0 rgb(0 0 0 / 10%);
     height: @navbar-height - 20px !important;
 
@@ -43,8 +43,8 @@
 
       // login/register button
       button {
-        padding: 18px 20px;
-        line-height: 0;
+        height: auto;
+        padding: 5px 16px;
       }
     }
   }
@@ -133,7 +133,6 @@
     background-color: #fefcff;
 
     .catch-content {
-      // font-family: "Patrick Hand";
       flex-direction: column;
       height: 30rem;
       z-index: 1;
@@ -145,51 +144,66 @@
         left: 0;
         width: 100%;
         height: 100%;
+        z-index: -1;
         opacity: 0.2;
         background-size: 40rem;
         background-image: url("../images/shapes/shape-1.svg");
         background-repeat: no-repeat;
         background-position: center;
       }
+
+      p {
+        font-size: 1.5rem;
+      }
     }
 
-    article {
+    .blob-img {
       position: absolute;
-      width: 70%;
-      z-index: 5;
+      opacity: 0.2;
+
+      &:nth-of-type(1) {
+        right: 0;
+        top: 35%;
+      }
+
+      &:nth-of-type(2) {
+        left: 0;
+        bottom: 15%;
+      }
+
+      &:nth-of-type(3) {
+        right: 0;
+        bottom: -2%;
+      }
 
       @media @small-screen, @mobile-screen, @tablet-screen {
-        position: relative;
-        bottom: auto;
-        text-align: center;
-        width: 100%;
-      }
-    }
-
-    div.blob-img {
-      &:first-of-type {
-        position: absolute;
-        left: -5%;
-        top: 40%;
-        opacity: 0.3;
-      }
-
-      &:last-of-type {
-        position: absolute;
-        right: 0;
-        bottom: 10%;
-        opacity: 0.3;
+        display: none;
       }
     }
 
     .service-content {
+      display: flex;
+      align-items: center;
+      gap: 5rem;
+
+      @media @small-screen, @mobile-screen, @tablet-screen {
+        gap: 1rem;
+      }
+
       &:nth-of-type(odd) {
         justify-content: flex-start;
         text-align: right;
 
-        article {
-          right: 0;
-          bottom: 30%;
+        @media @small-screen, @mobile-screen, @tablet-screen {
+          flex-direction: column !important;
+
+          > article {
+            text-align: center;
+
+            > .service-title {
+              flex-direction: row-reverse !important;
+            }
+          }
         }
       }
 
@@ -197,9 +211,30 @@
         justify-content: flex-end;
         text-align: left;
 
-        article {
-          left: 0;
-          bottom: 30%;
+        @media @small-screen, @mobile-screen, @tablet-screen {
+          flex-direction: column-reverse !important;
+
+          > article {
+            text-align: center;
+          }
+        }
+      }
+
+      > .ant-image {
+        width: 100% !important;
+        z-index: 2;
+
+        @media @small-screen, @mobile-screen, @tablet-screen {
+          width: 50% !important;
+        }
+      }
+
+      > article {
+        width: 100%;
+
+        p {
+          font-family: initial;
+          font-size: 1.8rem;
         }
       }
     }
@@ -221,34 +256,72 @@
   }
 }
 
+.login-layout {
+  display: flex;
+
+  .login-content {
+    background-color: #fff;
+    width: 100%;
+    height: 100vh;
+
+    > .container {
+      width: 50%;
+      height: 80%;
+    }
+  }
+
+  .login-image {
+    // background-color: #552eff;
+    background: linear-gradient(140deg, #9b25e5, #721ee6, #4801f3);
+    width: 100%;
+    height: 100vh;
+  }
+}
+
 .page-error-layout {
-  position: relative;
-  background: linear-gradient(180deg, #ffffff, #e2d9ff, #f5d6ff);
-  height: 100vh;
-  padding: 0 1rem;
-  overflow: hidden;
+  background: linear-gradient(180deg, #ffffff, #fcfbff, lighten(#5500df, 50%));
+  min-height: 100vh;
+  height: 100%;
 
-  .error-code {
-    font-size: 6rem;
-    line-height: 6rem;
-    color: #3e00a1;
+  @media @small-screen, @mobile-screen, @tablet-screen {
+    > .container {
+      flex-direction: column-reverse !important;
+      gap: 3rem;
+    }
+
+    .error-content {
+      text-align: center;
+    }
+
+    .error-image {
+      .ant-image {
+        width: 30rem !important;
+      }
+    }
   }
 
-  .ant-divider {
-    background-color: #3e00a1;
-    min-width: 15rem;
-    width: 15rem;
-    height: 2px;
-  }
+  .error-content {
+    width: 100%;
 
-  .error-message {
-    font-size: 1.5rem;
-    width: 35rem;
-    font-family: monospace;
+    .error-code {
+      font-family: cursive;
+      font-size: 7.5rem;
+      color: var(--error-color);
+    }
+
+    .error-subtitle {
+      font-size: 2.5rem;
+      margin-top: -1rem;
+    }
+
+    // .error-message {
+    //   font-size: 1rem;
+    // }
   }
 
   .error-image {
-    position: relative;
+    width: 100%;
+    text-align: center;
 
     img[alt="blob-shape"] {
       .container-absolute();

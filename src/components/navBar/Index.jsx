@@ -1,9 +1,11 @@
+import { UserOutlined } from "@ant-design/icons";
+
 import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { Affix, Button, Image, Menu } from "antd";
 import { startCase } from "lodash";
 
-import logo from "../../assets/images/logos/app.svg";
+import AppLogo from "../../assets/images/logos/app.svg";
 
 import { appRoutes } from "../../constants/routes";
 
@@ -12,7 +14,13 @@ const items = [
     key: "item-1",
     label: (
       <NavLink to={appRoutes.home}>
-        <Image className="app-logo" src={logo} width="11rem" preview={false} />
+        <Image
+          className="app-logo"
+          src={AppLogo}
+          width="11rem"
+          preview={false}
+          alt="app-logo"
+        />
       </NavLink>
     ),
   },
@@ -26,8 +34,8 @@ const items = [
     key: appRoutes.login,
     label: (
       <NavLink to={appRoutes.login}>
-        <Button type="primary" shape="round">
-          Login / Register
+        <Button type="primary" shape="round" icon={<UserOutlined />}>
+          Login
         </Button>
       </NavLink>
     ),

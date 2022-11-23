@@ -1,11 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Footer } from "antd/lib/layout/layout";
-import { Space, Image } from "antd";
+import { Space, Image, Layout } from "antd";
 
 import logo from "../../assets/images/logos/app.svg";
 
 import { appRoutes } from "../../constants/routes";
+
+const { Footer } = Layout;
 
 export default function LandingFooter() {
   return (
@@ -16,7 +17,7 @@ export default function LandingFooter() {
             alt="app-logo"
             className="app-logo"
             src={logo}
-            width="6rem"
+            width="8rem"
             preview={false}
           />
         </Link>

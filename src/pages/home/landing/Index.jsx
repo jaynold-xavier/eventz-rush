@@ -1,10 +1,11 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Lottie from "react-lottie";
-import { Button } from "antd";
-import { Content } from "antd/lib/layout/layout";
+import { Button, Layout } from "antd";
 
 import animationData from "../../../assets/lotties/landing/data.json";
+
+const { Content } = Layout;
 
 export default function LandingSection() {
   return (

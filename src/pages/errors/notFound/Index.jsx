@@ -11,35 +11,39 @@ const { Content } = Layout;
 
 export default function PageNotFound() {
   return (
-    <Layout prefixCls="page-error-layout center">
+    <Layout
+      prefixCls="page-error-layout center"
+      style={{ "--error-color": "#5500df" }}
+    >
       <div className="container center">
-        <Content>
-          <h1 className="error-code mb-0">404 Error</h1>
-          <h2 className="error-subtitle mb-0"> Page not found</h2>
+        <Content prefixCls="error-content">
+          <h1 className="error-code mb-0">404</h1>
+          <h2 className="error-subtitle"> Page not found</h2>
 
-          <Divider />
+          {/* <Divider /> */}
 
           <h3 className="error-message">
-            Sorry, the page your looking for could not be found
+            The page you are looking for might have been removed had its name
+            changed or is temporarily unavailable.
           </h3>
 
           <br />
 
-          <Button type="primary" size="large">
-            <Link to={appRoutes.home}>Back Home</Link>
+          <Button type="primary" size="large" shape="round">
+            <Link to={appRoutes.home}>Go Back</Link>
           </Button>
         </Content>
 
-        <section className="error-image">
+        <Content prefixCls="error-image">
           <Image
             alt="error-404"
             src={Error404Image}
-            width="100%"
+            width="35rem"
             preview={false}
           />
 
-          <img alt="blob-shape" src={BlobShape} width="100%" />
-        </section>
+          {/* <img alt="blob-shape" src={BlobShape} width="100%" /> */}
+        </Content>
       </div>
     </Layout>
   );

@@ -1,14 +1,13 @@
 {
   "name": "eventz-rush",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "author": "Jaynold",
   "dependencies": {
-    "@craco/craco": "^6.4.5",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
-    "antd": "^4.21.6",
+    "antd": "^4.24.3",
     "cra-template": "1.2.0",
     "craco-less": "^2.0.0",
     "framer-motion": "^7.0.0",
@@ -44,5 +43,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@craco/craco": "^7.0.0"
   }
 }

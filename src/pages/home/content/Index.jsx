@@ -1,15 +1,19 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Content } from "antd/lib/layout/layout";
-import { Image } from "antd";
+import { Image, Space, Layout } from "antd";
 
 import LoginImg from "../../../assets/images/landing/login.svg";
+import LoginIcon from "../../../assets/images/landing/login-icon.svg";
 import ProfileImg from "../../../assets/images/landing/profile.svg";
+import ProfileIcon from "../../../assets/images/landing/profile-icon.svg";
 import ReviewImg from "../../../assets/images/landing/review.svg";
+import ReviewIcon from "../../../assets/images/landing/review-icon.svg";
 
-import BlobImg1 from "../../../assets/images/shapes/shape-5.svg";
-import BlobImg2 from "../../../assets/images/shapes/shape-4.svg";
-// import BlobImg3 from "../../../assets/images/shapes/shape-5.svg";
+import BlobImg1 from "../../../assets/images/shapes/shape-2.svg";
+import BlobImg2 from "../../../assets/images/shapes/shape-3.svg";
+import BlobImg3 from "../../../assets/images/shapes/shape-4.svg";
+
+const { Content } = Layout;
 
 export default function Services() {
   return (
@@ -25,18 +29,18 @@ export default function Services() {
         transition={{ duration: 0.3 }}
       >
         <h1>Why Eventz Rush?</h1>
-        <h3 className="text-center">
+        <p className="text-center">
           Both hosts and vendors have a place at Eventz Rush - monetize and
           publicize your vendor services or create events all the way from
           defining basic info to payment for your vendor's services.
-        </h3>
+        </p>
       </motion.section>
 
       <br />
       <br />
 
       <motion.section
-        className="service-content container center"
+        className="service-content container"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
@@ -44,19 +48,29 @@ export default function Services() {
         <Image
           className="login-img"
           src={LoginImg}
-          width="30rem"
+          width="100%"
           preview={false}
           alt="login-img"
         />
 
         <article>
-          <h1>Register as a Host or a Vendor</h1>
-          <h3 className="card">
+          <Space className="service-title mb-3" size={15} align="start">
+            <Image
+              src={LoginIcon}
+              width="2.5rem"
+              preview={false}
+              alt="login-icon"
+            />
+
+            <h1 className="mb-0">Register as a Host or a Vendor</h1>
+          </Space>
+
+          <p>
             Whether your a host or vendor, you can benefit from role specific
             services to allow you to carry out your task as part of an event.
             For instance, accept/reject offers to provide services to events as
             a vendor or review vendors as hosts.
-          </h3>
+          </p>
         </article>
       </motion.section>
 
@@ -70,25 +84,36 @@ export default function Services() {
         preview={false}
       />
       <br />
+      <br />
 
       <motion.section
-        className="service-content container center"
+        className="service-content container"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
       >
         <article>
-          <h1>Facebook for Event Vendors</h1>
-          <h3 className="card">
+          <Space className="service-title mb-3" size={15} align="start">
+            <h1 className="mb-0">Facebook for Event Vendors</h1>
+
+            <Image
+              src={ProfileIcon}
+              width="2.5rem"
+              preview={false}
+              alt="profile-icon"
+            />
+          </Space>
+
+          <p>
             Build your reputation in your profession as an event vendor- gain
             influence through profile building and custom content creation.
-          </h3>
+          </p>
         </article>
 
         <Image
           className="profile-img"
           src={ProfileImg}
-          width="40rem"
+          width="100%"
           preview={false}
           alt="profile-img"
         />
@@ -104,9 +129,10 @@ export default function Services() {
         alt="blob-1"
       />
       <br />
+      <br />
 
       <motion.section
-        className="service-content container center"
+        className="service-content container"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
@@ -114,19 +140,40 @@ export default function Services() {
         <Image
           className="review-img"
           src={ReviewImg}
-          width="40rem"
+          width="100%"
           preview={false}
           alt="review-img"
         />
 
         <article>
-          <h1>Write Reviews</h1>
-          <h3 className="card">
+          <Space className="service-title mb-3" size={15} align="start">
+            <Image
+              src={ReviewIcon}
+              width="2.5rem"
+              preview={false}
+              alt="profile-icon"
+            />
+
+            <h1 className="mb-0">Write Reviews</h1>
+          </Space>
+
+          <p>
             Elaborate and describe the performance of vendors in events. This
             adds to their reputation and assists them in getting more offers.
-          </h3>
+          </p>
         </article>
       </motion.section>
+
+      <br />
+      <Image
+        className="blob-3"
+        rootClassName="blob-img"
+        src={BlobImg3}
+        width="30rem"
+        preview={false}
+        alt="blob-3"
+      />
+      <br />
     </Content>
   );
 }
