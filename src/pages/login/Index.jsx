@@ -1,7 +1,12 @@
-import { GoogleOutlined } from "@ant-design/icons";
+import {
+  GoogleOutlined,
+  FacebookOutlined,
+  UserOutlined,
+  LockOutlined,
+} from "@ant-design/icons";
 import React from "react";
 import { Link } from "react-router-dom";
-import { Button, Image, Layout } from "antd";
+import { Button, Divider, Form, Image, Input, Layout, Space } from "antd";
 
 import AppLogo from "../../assets/images/logos/app.svg";
 import LoginImg from "../../assets/images/register.svg";
@@ -32,21 +37,50 @@ export default function Login() {
 
           <br />
 
-          <Button
-            shape="round"
-            icon={
-              <img
-                className="mr-2"
-                src="https://img.icons8.com/color/48/null/google-logo.png"
-                width={20}
-                alt="google-icon"
+          <Form className="login-form" layout="vertical">
+            <Form.Item name="email">
+              <Input
+                placeholder="Email"
+                prefix={
+                  <UserOutlined
+                    className="font-20"
+                    style={{ color: "purple" }}
+                  />
+                }
               />
-            }
-            size="large"
-            block
-          >
-            Sign In with Google
-          </Button>
+            </Form.Item>
+
+            <Form.Item name="password">
+              <Input.Password
+                placeholder="Password"
+                prefix={<LockOutlined style={{ color: "purple" }} />}
+              />
+            </Form.Item>
+          </Form>
+
+          <Divider orientation="center" dashed>
+            Or
+          </Divider>
+
+          <Space className="w-100" direction="vertical">
+            <Button
+              className="google-button"
+              size="large"
+              icon={<GoogleOutlined />}
+              block
+            >
+              Sign in with Google
+            </Button>
+
+            <Button
+              className="facebook-button"
+              size="large"
+              icon={<FacebookOutlined />}
+              block
+            >
+              Sign in with Facebook
+            </Button>
+          </Space>
         </div>
       </Content>
 

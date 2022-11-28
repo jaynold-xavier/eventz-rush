@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Image, Space, Layout } from "antd";
 
 import LoginImg from "../../../assets/images/landing/login.svg";
-import LoginIcon from "../../../assets/images/landing/login-icon.svg";
+import LoginIcon from "../../../assets/images/landing/login-icon.png";
 import ProfileImg from "../../../assets/images/landing/profile.svg";
 import ProfileIcon from "../../../assets/images/landing/profile-icon.svg";
 import ReviewImg from "../../../assets/images/landing/review.svg";
@@ -57,7 +57,7 @@ export default function Services() {
           <Space className="service-title mb-3" size={15} align="start">
             <Image
               src={LoginIcon}
-              width="2.5rem"
+              width="3.5rem"
               preview={false}
               alt="login-icon"
             />

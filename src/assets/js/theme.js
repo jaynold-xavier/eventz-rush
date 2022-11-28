@@ -14,11 +14,12 @@ const themeData = {
   fontSizeBase: "16px",
   headingColor: "#001141",
   // textColor: "#F2E3FD",
-  textColor: "#f4f2ff",
+  // textColor: "#f4f2ff",
+  textColor: "#383144cc",
   textColorSecondary: "#383144cc",
   // disabledColor: "rgba(254, 247, 255, 0.25)",
   borderRadiusBase: "4px",
-  borderColorBase: "#491d8b",
+  borderColorBase: "#dcdcdc",
   boxShadowBase: "0 2px 8px rgba(254, 247, 255, 0.15)",
 };
 
