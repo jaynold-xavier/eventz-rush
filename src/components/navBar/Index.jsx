@@ -17,7 +17,7 @@ const items = [
         <Image
           className="app-logo"
           src={AppLogo}
-          width="11rem"
+          width="10rem"
           preview={false}
           alt="app-logo"
         />

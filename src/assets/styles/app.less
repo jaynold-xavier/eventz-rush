@@ -71,9 +71,9 @@
         width: 7rem !important;
       }
 
-      button {
-        .glowy-button(#fff);
-      }
+      // button {
+      //   .glowy-button(#f8f3ff);
+      // }
     }
   }
 
@@ -106,7 +106,7 @@
       button {
         height: auto;
         padding: 5px 16px;
-        .glowy-button(var(--ant-primary-6));
+        // .glowy-button(var(--ant-primary-6));
       }
     }
   }
@@ -323,28 +323,54 @@
 .login-layout {
   display: flex;
 
+  @form-width: 600px;
+  @background: linear-gradient(44deg, #3a68eb, #601ffe, #9164ff);
+
   .login-content {
     background-color: #fff;
-    width: 100%;
+    width: 50%;
     height: 100vh;
 
     > .container {
-      width: 50%;
-      height: 80%;
+      max-width: @form-width;
+      width: 100%;
+
+      .login-form {
+        .ant-input-affix-wrapper {
+          border-radius: 20px;
+
+          .ant-input-prefix {
+            margin-right: 0.7rem;
+          }
+        }
+
+        .ant-input-password-icon {
+          font-size: 24px;
+        }
+
+        .save-btn {
+          width: calc(@form-width / 2);
+          .multi-gradient-button(@background);
+          &:hover {
+            box-shadow: 0px 1px 15px 0 #4d31c4bf;
+          }
+        }
+      }
     }
   }
 
   .login-image {
     // background-color: #552eff;
     // background: linear-gradient(140deg, #4801f3, #7f4aff, #4801f3);
+    position: relative;
     @color: #4801f3;
-    background: linear-gradient(
-      315deg,
-      lighten(@color, 12%),
-      lighten(@color, 8%),
-      lighten(@color, 15%)
-    );
-    width: 100%;
+    background: @background;
+    width: 50%;
     height: 100vh;
+    overflow: hidden;
+
+    @media @small-screen, @mobile-screen {
+      display: none;
+    }
   }
 }

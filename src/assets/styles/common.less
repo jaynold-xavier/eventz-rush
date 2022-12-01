@@ -2,7 +2,7 @@
   position: relative;
   padding: 0 1rem;
   margin: auto;
-  width: var(--container-width);
+  width: @container-width;
   min-width: 50%;
   max-width: 100%;
 }
@@ -12,15 +12,9 @@
   margin-left: auto;
   margin-right: auto;
   text-align: center;
-  width: var(--container-width);
+  width: @container-width;
   left: 0;
   right: 0;
-}
-
-.card {
-  padding: 1rem;
-  background: fade(lighten(plum, 20%), 50%);
-  border: 2px solid plum;
 }
 
 // .applyBackground(@src) {
@@ -44,38 +38,61 @@
   color: @highlight-color;
 }
 
+.save-btn {
+  height: 3rem;
+}
+
 .glowy-button(@color) {
   box-shadow: 2px -1px 17px 9px @color !important;
 }
 
-.gradient-button(@color) {
+.single-gradient-button(@color) {
   background: linear-gradient(
-    270deg,
-    lighten(@color, 10%),
+    45deg,
     lighten(@color, 5%),
-    lighten(@color, 8%)
+    lighten(@color, 10%),
+    lighten(@color, 15%)
   );
 
   border: 1px solid #dcdcdc !important;
-}
-
-.social-media-button(@color, @hoverColor) {
-  height: 3rem;
-  text-align: left;
-  color: white !important;
-  .gradient-button(@color);
 
   &:hover {
-    .gradient-button(@hoverColor);
+    @hoverColor: lighten(@color, 3%);
+    background: linear-gradient(
+      45deg,
+      lighten(@hoverColor, 5%),
+      lighten(@hoverColor, 10%),
+      lighten(@hoverColor, 15%)
+    );
   }
 }
 
+.multi-gradient-button(@gradient) {
+  background: @gradient;
+  border: 1px solid #dcdcdc !important;
+  background-size: 300% 100%;
+
+  &:hover {
+    background-position: 100% 0;
+    moz-transition: all 0.4s ease-in-out;
+    -o-transition: all 0.4s ease-in-out;
+    -webkit-transition: all 0.4s ease-in-out;
+    transition: all 0.4s ease-in-out;
+  }
+}
+
+.social-media-button(@color) {
+  height: 3rem;
+  text-align: left;
+  .single-gradient-button(@color);
+}
+
 .google-button {
-  .social-media-button(#db3236, #dd2528);
+  .social-media-button(#db3236);
 }
 
 .facebook-button {
-  .social-media-button(#4267b2, #305aaf);
+  .social-media-button(#4267b2);
 }
 
 // universal styles
@@ -187,7 +204,8 @@
   border-color: #fff !important;
 }
 
-each(range(10px, 20px, 2), {
+// font-size classes
+each(range(10px, 24px, 2), {
   @i: 8 + (@index * 2);
   .font-@{i} {
     font-size: @value !important;

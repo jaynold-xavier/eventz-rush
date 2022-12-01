@@ -5,7 +5,8 @@
 
 const themeData = {
   primaryColor: "#24b1c6",
-  linkColor: "#8e1baa",
+  linkColor: "#753dff",
+  // linkHoverColor: "#672bd5",
   // infoColor: "#00bdd7",
   // processingColor: "#00bdd7",
   successColor: "#3fb951",
@@ -13,10 +14,9 @@ const themeData = {
   errorColor: "#ed4337",
   fontSizeBase: "16px",
   headingColor: "#001141",
-  // textColor: "#F2E3FD",
   // textColor: "#f4f2ff",
   textColor: "#383144cc",
-  textColorSecondary: "#383144cc",
+  textColorSecondary: "#753dff",
   // disabledColor: "rgba(254, 247, 255, 0.25)",
   borderRadiusBase: "4px",
   borderColorBase: "#dcdcdc",
