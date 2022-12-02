@@ -149,7 +149,7 @@
       max-width: 55%;
 
       .welcome-heading {
-        font-family: "Lato";
+        font-family: cursive;
         font-size: 2rem;
         font-weight: bold;
         line-height: 2.5rem;
@@ -324,7 +324,7 @@
   display: flex;
 
   @form-width: 600px;
-  @background: linear-gradient(44deg, #3a68eb, #601ffe, #9164ff);
+  @background: linear-gradient(45deg, #9164ff, #601ffe, #3a68eb);
 
   .login-content {
     background-color: #fff;
@@ -352,7 +352,7 @@
           width: calc(@form-width / 2);
           .multi-gradient-button(@background);
           &:hover {
-            box-shadow: 0px 1px 15px 0 #4d31c4bf;
+            box-shadow: 0px 1px 15px 0 lighten(#3a68eb, 5%);
           }
         }
       }
@@ -365,7 +365,7 @@
     position: relative;
     @color: #4801f3;
     background: @background;
-    width: 50%;
+    width: 60%;
     height: 100vh;
     overflow: hidden;
 

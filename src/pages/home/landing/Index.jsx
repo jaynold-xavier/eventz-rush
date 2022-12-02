@@ -31,8 +31,9 @@ export default function LandingSection() {
 
         <div className="landing-message">
           <div className="welcome-heading">
-            Find your vendor <span className="highlight">Dream Team</span>{" "}
-            for your event needs
+            Where <span className="highlight">vendors</span> meet{" "}
+            <span className="highlight">hosts</span> to organize the perfect
+            event
           </div>
           <br />
 
