@@ -18,7 +18,7 @@ root.render(
           ...appTheme,
           fontSize:
             document.documentElement.clientWidth <= 768
-              ? appTheme.fontSize - 2
+              ? appTheme.fontSize - 4
               : appTheme.fontSize,
         },
       }}

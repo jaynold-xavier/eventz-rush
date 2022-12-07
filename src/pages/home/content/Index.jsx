@@ -105,7 +105,7 @@ export default function Services() {
           </Space>
 
           <p>
-            Build your reputation in your profession as an event vendor- gain
+            Build your reputation in your profession as an event vendor - gain
             influence through profile building and custom content creation.
           </p>
         </article>

@@ -19,11 +19,13 @@
 @laptop-screen: ~"only screen and (min-width: 1024px) and (max-width: 1600px)";
 @tv-screen: ~"only screen and (min-width: 1600px)";
 
+@font-size: 16px;
+
 :root {
-  font-size: 16px;
+  font-size: @font-size;
 
   @media @small-screen, @mobile-screen {
-    font-size: 14px;
+    font-size: @font-size - 4;
   }
 }
 
