@@ -16,6 +16,7 @@ import Contact from "./pages/contact/Index";
 import FAQ from "./pages/faq/Index";
 import Login from "./pages/login/Index";
 import Register from "./pages/register/Index";
+import { VendorsList } from "./pages/vendors";
 
 import { PageNotFound, PageNotAuthorized } from "./pages/errors/index";
 
@@ -28,7 +29,7 @@ export default function Routes({ isAuthenticated, userRole }) {
           <Route path={appRoutes.home} element={<Home />} />
           <Route path={appRoutes.contactUs} element={<Contact />} />
           <Route path={appRoutes.faq} element={<FAQ />} />
-          {/* <Route path={appRoutes.vendors} element={<FAQ />} /> */}
+          <Route path={appRoutes.vendors} element={<VendorsList />} />
         </Route>
 
         <Route path={appRoutes.login} element={<Login />} />
