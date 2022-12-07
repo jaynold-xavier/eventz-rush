@@ -2,7 +2,7 @@ import { UserOutlined } from "@ant-design/icons";
 
 import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { Affix, Button, Image, Menu } from "antd";
+import { Affix, Button, ConfigProvider, Image, Menu } from "antd";
 import { startCase } from "lodash";
 
 import AppLogo from "../../assets/images/logos/app.svg";
@@ -34,9 +34,17 @@ const items = [
     key: appRoutes.login,
     label: (
       <NavLink to={appRoutes.login}>
-        <Button type="primary" shape="round" icon={<UserOutlined />}>
-          Login
-        </Button>
+        <ConfigProvider
+          theme={{
+            token: {
+              colorPrimary: "#24b1c6",
+            },
+          }}
+        >
+          <Button type="primary" shape="round" icon={<UserOutlined />}>
+            Login
+          </Button>
+        </ConfigProvider>
       </NavLink>
     ),
   },
@@ -52,13 +60,15 @@ export default function Navbar() {
 
   return (
     <Affix className="main-nav-bar-affix-container">
-      <Menu
-        className="main-nav-bar container"
-        mode="horizontal"
-        direction="rtr"
-        selectedKeys={[location.pathname]}
-        items={items}
-      />
+      <span>
+        <Menu
+          className="main-nav-bar container"
+          mode="horizontal"
+          direction="rtr"
+          selectedKeys={[location.pathname]}
+          items={items}
+        />
+      </span>
     </Affix>
   );
 }

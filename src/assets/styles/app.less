@@ -57,15 +57,16 @@
   .ant-affix {
     background-color: #efecff;
     // background: linear-gradient(180deg, #fff, #ccceff);
-    box-shadow: 0 8px 20px 0 rgb(0 0 0 / 10%);
+    box-shadow: -1px 5px 11px 0px #0000001a;
     height: @navbar-height - 20px !important;
 
     .main-nav-bar {
+      color: inherit;
       height: @navbar-height - 20px;
 
-      a:not(:hover) {
-        color: #5f00b5;
-      }
+      // a:not(:hover) {
+      //   color: #5f00b5;
+      // }
 
       .ant-image {
         width: 7rem !important;
@@ -86,11 +87,11 @@
 
     > li {
       text-transform: uppercase;
-      font-weight: bold;
+      font-weight: 600;
 
-      a {
-        color: white;
-      }
+      // a {
+      //   color: white;
+      // }
 
       &::after {
         border-bottom: none !important;
@@ -125,34 +126,28 @@
 
     > .container {
       flex-direction: row-reverse;
+      gap: 3rem;
 
       @media @small-screen, @mobile-screen, @tablet-screen {
-        gap: 3rem;
-
         .landing-message {
-          max-width: 80%;
+          width: calc(100vw / 1.5);
           text-align: center;
         }
       }
     }
 
     // animated map scene
-    div[aria-label="animation"] {
-      width: 85% !important;
+    // div[aria-label="animation"] {
+    //   width: 85% !important;
 
-      @media @small-screen, @mobile-screen {
-        width: 100% !important;
-      }
-    }
+    //   @media @small-screen, @mobile-screen {
+    //     width: 100% !important;
+    //   }
+    // }
 
     .landing-message {
-      max-width: 55%;
-
       .welcome-heading {
         font-family: cursive;
-        font-size: 2rem;
-        font-weight: bold;
-        line-height: 2.5rem;
         text-transform: uppercase;
         color: white;
       }
@@ -168,9 +163,8 @@
       .register-btn {
         height: 3.5rem;
         font-size: 1.3rem;
-        line-height: 1rem;
         width: 15rem;
-        .glowy-button(var(--ant-primary-6));
+        // .glowy-button(var(--ant-primary-6));
       }
     }
   }
@@ -196,6 +190,12 @@
     position: relative;
     background-color: #fefcff;
 
+    p {
+      font-family: auto;
+      font-size: 1.5rem;
+      line-height: 40px;
+    }
+
     .catch-content {
       flex-direction: column;
       height: 30rem;
@@ -204,8 +204,6 @@
       &::before {
         content: "";
         position: absolute;
-        top: 0;
-        left: 0;
         width: 100%;
         height: 100%;
         z-index: -1;
@@ -214,10 +212,6 @@
         background-image: url("../images/shapes/shape-1.svg");
         background-repeat: no-repeat;
         background-position: center;
-      }
-
-      p {
-        font-size: 1.5rem;
       }
     }
 
@@ -248,7 +242,6 @@
     .service-content {
       display: flex;
       align-items: center;
-      gap: 5rem;
 
       @media @small-screen, @mobile-screen, @tablet-screen {
         gap: 1rem;
@@ -283,24 +276,6 @@
           }
         }
       }
-
-      > .ant-image {
-        width: 100% !important;
-        z-index: 2;
-
-        @media @small-screen, @mobile-screen, @tablet-screen {
-          width: 50% !important;
-        }
-      }
-
-      > article {
-        width: 100%;
-
-        p {
-          font-family: initial;
-          font-size: 1.8rem;
-        }
-      }
     }
   }
 
@@ -320,37 +295,45 @@
   }
 }
 
-.login-layout {
+.auth-layout {
   display: flex;
+  flex-direction: row;
+  min-height: 100%;
 
   @form-width: 600px;
   @background: linear-gradient(45deg, #9164ff, #601ffe, #3a68eb);
 
-  .login-content {
+  .auth-content {
     background-color: #fff;
-    width: 50%;
-    height: 100vh;
+    width: 100%;
 
     > .container {
       max-width: @form-width;
       width: 100%;
 
-      .login-form {
+      .auth-form {
         .ant-input-affix-wrapper {
           border-radius: 20px;
 
+          // field icon
           .ant-input-prefix {
             margin-right: 0.7rem;
-          }
-        }
+            font-size: 1.5rem;
 
-        .ant-input-password-icon {
-          font-size: 24px;
+            > img {
+              width: 1.8rem;
+            }
+          }
+
+          .ant-input-password-icon {
+            font-size: 1.5rem;
+          }
         }
 
         .save-btn {
           width: calc(@form-width / 2);
           .multi-gradient-button(@background);
+
           &:hover {
             box-shadow: 0px 1px 15px 0 lighten(#3a68eb, 5%);
           }
@@ -359,14 +342,13 @@
     }
   }
 
-  .login-image {
+  .auth-image {
     // background-color: #552eff;
     // background: linear-gradient(140deg, #4801f3, #7f4aff, #4801f3);
     position: relative;
     @color: #4801f3;
     background: @background;
-    width: 60%;
-    height: 100vh;
+    width: 100%;
     overflow: hidden;
 
     @media @small-screen, @mobile-screen {

@@ -28,7 +28,7 @@ export default function Services() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
       >
-        <h1>Why Eventz Rush?</h1>
+        <h3>Why Eventz Rush?</h3>
         <p className="text-center">
           Both hosts and vendors have a place at Eventz Rush - monetize and
           publicize your vendor services or create events all the way from
@@ -62,7 +62,7 @@ export default function Services() {
               alt="login-icon"
             />
 
-            <h1 className="mb-0">Register as a Host or a Vendor</h1>
+            <h3>Register as a Host or a Vendor</h3>
           </Space>
 
           <p>
@@ -94,7 +94,7 @@ export default function Services() {
       >
         <article>
           <Space className="service-title mb-3" size={15} align="start">
-            <h1 className="mb-0">Facebook for Event Vendors</h1>
+            <h3>Facebook for Event Vendors</h3>
 
             <Image
               src={ProfileIcon}
@@ -113,7 +113,7 @@ export default function Services() {
         <Image
           className="profile-img"
           src={ProfileImg}
-          width="100%"
+          width="80%"
           preview={false}
           alt="profile-img"
         />
@@ -140,7 +140,7 @@ export default function Services() {
         <Image
           className="review-img"
           src={ReviewImg}
-          width="100%"
+          width="70%"
           preview={false}
           alt="review-img"
         />
@@ -154,12 +154,13 @@ export default function Services() {
               alt="profile-icon"
             />
 
-            <h1 className="mb-0">Write Reviews</h1>
+            <h3>Rate and Review Vendors</h3>
           </Space>
 
           <p>
-            Elaborate and describe the performance of vendors in events. This
-            adds to their reputation and assists them in getting more offers.
+            Elaborate and rate the performance of vendors in events through a
+            simple form - this adds to their reputation and assists them in
+            getting more offers for events.
           </p>
         </article>
       </motion.section>

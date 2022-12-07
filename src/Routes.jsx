@@ -5,8 +5,8 @@ import {
   Outlet,
   BrowserRouter,
 } from "react-router-dom";
-import { UpCircleFilled } from "@ant-design/icons";
-import { BackTop } from "antd";
+import { UpCircleOutlined } from "@ant-design/icons";
+import { FloatButton } from "antd";
 
 import Navbar from "./components/navBar/Index";
 import { appRoutes } from "./constants/routes";
@@ -37,9 +37,11 @@ export default function Routes({ isAuthenticated, userRole }) {
         <Route path="*" element={<PageNotFound />} />
       </Switch>
 
-      <BackTop>
-        <UpCircleFilled />
-      </BackTop>
+      <FloatButton.BackTop
+        className="font-24"
+        type="primary"
+        icon={<UpCircleOutlined />}
+      />
     </BrowserRouter>
   );
 }

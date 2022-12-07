@@ -19,17 +19,16 @@ import {
 
 import AppLogo from "../../assets/images/logos/app.svg";
 import LoginImg from "../../assets/images/form/login.svg";
-// import EmailIcon from "../../assets/images/form/email.png";
-import BlobImg1 from "../../assets/images/shapes/shape-3.svg";
 
 import { appRoutes } from "../../constants/routes";
+import appTheme from "../../assets/js/theme";
 
 const { Content } = Layout;
 
 export default function Login() {
   return (
-    <Layout prefixCls="login-layout">
-      <Content className="login-content center">
+    <Layout prefixCls="auth-layout">
+      <Content className="auth-content center">
         <div className="container">
           <Link to={appRoutes.home}>
             <Image
@@ -45,21 +44,22 @@ export default function Login() {
           <br />
           <br />
 
-          <h3 className="bold">Login</h3>
-          <p>Sign in to your account</p>
+          <h5>Login</h5>
+          <p>Sign in to your own account</p>
 
           <br />
 
-          <Form className="login-form" layout="vertical">
-            <Form.Item name="email" label="Email">
+          <Form
+            className="auth-form"
+            layout="vertical"
+            validateMessages={{ required: "${label} is required" }}
+          >
+            <Form.Item name="email" label="Email" rules={[{ required: true }]}>
               <Input
                 placeholder="Email/Username"
                 size="large"
                 prefix={
-                  <UserOutlined
-                    className="font-24"
-                    style={{ color: "#753dff" }}
-                  />
+                  <UserOutlined style={{ color: appTheme.colorPrimary }} />
                 }
               />
             </Form.Item>
@@ -68,14 +68,16 @@ export default function Login() {
               <Input.Password
                 placeholder="Password"
                 size="large"
-                prefix={
-                  <LockTwoTone className="font-24" twoToneColor="#753dff" />
-                }
+                prefix={<LockTwoTone twoToneColor={appTheme.colorPrimary} />}
               />
             </Form.Item>
 
             <Space className="w-100 justify-content-between mb-3" wrap>
-              <Form.Item className="mb-0" name="rememberMe">
+              <Form.Item
+                className="mb-0"
+                name="rememberMe"
+                valuePropName="checked"
+              >
                 <Checkbox>Remember Me</Checkbox>
               </Form.Item>
 
@@ -131,23 +133,14 @@ export default function Login() {
         </div>
       </Content>
 
-      <Content className="login-image center">
+      <Content className="auth-image center">
         <Image
           className="login-img"
           src={LoginImg}
-          width="50%"
+          width="60%"
           preview={false}
           alt="login-img"
         />
-
-        {/* <Image
-          className="blob"
-          rootClassName="blob-img"
-          src={BlobImg1}
-          alt="blob"
-          width="30rem"
-          preview={false}
-        /> */}
       </Content>
     </Layout>
   );

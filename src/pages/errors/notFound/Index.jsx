@@ -1,15 +1,14 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { Button, Layout, Divider, Image } from "antd";
+import { useNavigate } from "react-router-dom";
+import { Button, Layout, Image } from "antd";
 
 import Error404Image from "../../../assets/images/errors/404.svg";
-import BlobShape from "../../../assets/images/shapes/shape-2.svg";
-
-import { appRoutes } from "../../../constants/routes";
 
 const { Content } = Layout;
 
 export default function PageNotFound() {
+  const navigate = useNavigate();
+
   return (
     <Layout
       prefixCls="page-error-layout center"
@@ -17,20 +16,25 @@ export default function PageNotFound() {
     >
       <div className="container center">
         <Content prefixCls="error-content">
-          <h1 className="error-code mb-0">404</h1>
+          <h1 className="error-code">404</h1>
           <h2 className="error-subtitle"> Page not found</h2>
 
           {/* <Divider /> */}
 
-          <h3 className="error-message">
+          <p className="error-message font-20">
             The page you are looking for might have been removed had its name
             changed or is temporarily unavailable.
-          </h3>
+          </p>
 
           <br />
 
-          <Button type="primary" size="large" shape="round">
-            <Link to={appRoutes.home}>Go Back</Link>
+          <Button
+            type="primary"
+            size="large"
+            shape="round"
+            onClick={(e) => navigate("/")}
+          >
+            Go Back
           </Button>
         </Content>
 

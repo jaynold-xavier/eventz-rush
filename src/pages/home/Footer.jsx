@@ -22,7 +22,7 @@ export default function LandingFooter() {
           />
         </Link>
 
-        <h4>&#169; 2023 All Rights Reserved Designed By JXB</h4>
+        <h6>&#169; 2023 All Rights Reserved Designed By JXB</h6>
 
         <Space>
           <Link to={appRoutes.home}>Privacy</Link>

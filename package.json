@@ -7,17 +7,16 @@
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
-    "antd": "^4.24.3",
+    "antd": "^5.0.3",
     "cra-template": "1.2.0",
-    "craco-less": "^2.0.0",
-    "framer-motion": "^7.0.0",
+    "craco-antd": "^2.0.0",
+    "framer-motion": "^4.1.17",
     "lodash": "^4.17.21",
+    "lottie-react": "^2.3.1",
     "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-lottie": "^1.2.3",
     "react-router-dom": "^6.3.0",
-    "react-scripts": "^5.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -43,8 +42,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "@craco/craco": "^7.0.0"
   }
 }

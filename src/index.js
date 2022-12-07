@@ -6,20 +6,25 @@ import reportWebVitals from "./reportWebVitals";
 
 import "./assets/styles/index.less";
 
-import themeData from "./assets/js/theme";
 import Routes from "./Routes";
-
-// set app antd theme
-ConfigProvider.config({
-  theme: {
-    ...themeData,
-  },
-});
+import appTheme from "./assets/js/theme";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <Routes />
+    <ConfigProvider
+      theme={{
+        token: {
+          ...appTheme,
+          fontSize:
+            document.documentElement.clientWidth <= 768
+              ? appTheme.fontSize - 2
+              : appTheme.fontSize,
+        },
+      }}
+    >
+      <Routes />
+    </ConfigProvider>
   </React.StrictMode>
 );
 

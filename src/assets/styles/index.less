@@ -1,4 +1,4 @@
-@import "antd/dist/antd.variable.less";
+// @import "antd/dist/antd.variable.less";
 @import "./fonts.less";
 
 // app-container
@@ -9,8 +9,8 @@
 @highlight-color-2: #c9f4cb;
 
 // user types theme constants
-@host-theme: #d7ad0d;
-@vendor-theme: #eb5951;
+// @host-theme: #d7ad0d;
+// @vendor-theme: #eb5951;
 
 // mobile screen sizes constants
 @small-screen: ~"only screen and (max-width: 350px)";
@@ -28,14 +28,10 @@
 }
 
 html,
-body {
+body,
+body > #root {
   height: 100%;
   margin: 0;
-
-  // for antd components
-  @media @small-screen, @mobile-screen {
-    font-size: 14px !important;
-  }
 }
 
 body {
@@ -48,26 +44,39 @@ body {
   background-repeat: no-repeat;
 }
 
-h1 {
-  font-size: 2.5rem;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: 800;
   line-height: normal;
+  margin: 0;
+}
+
+h1 {
+  font-size: 3.5rem;
 }
 
 h2 {
-  font-size: 2rem;
-  font-weight: 800;
-  line-height: normal;
+  font-size: 3rem;
 }
 
 h3 {
-  font-size: 1.5rem;
-  font-weight: 800;
-  line-height: normal;
+  font-size: 2.5rem;
 }
 
-p {
-  color: #001141;
+h4 {
+  font-size: 2rem;
+}
+
+h5 {
+  font-size: 1.5rem;
+}
+
+h6 {
+  font-size: 1rem;
 }
 
 /* width */
@@ -93,23 +102,17 @@ p {
 //   background: #2e0840;
 // }
 
-::-moz-selection {
-  background: #552ab3;
-}
+// ::-moz-selection {
+//   background: #552ab3;
+// }
 
-::selection {
-  background: #552ab3;
-}
+// ::selection {
+//   background: #552ab3;
+// }
 
 // antd overrides
 .ant-layout {
   background: transparent;
-}
-
-.ant-back-top {
-  font-size: 2.5rem;
-  color: #00c4b4;
-  right: 2rem;
 }
 
 @import "./common.less";

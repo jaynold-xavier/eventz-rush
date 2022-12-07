@@ -23,4 +23,18 @@ const themeData = {
   boxShadowBase: "0 2px 8px rgba(254, 247, 255, 0.15)",
 };
 
-module.exports = themeData;
+const appTheme = {
+  colorPrimary: "#753dff",
+  colorLink: "#753dff",
+  colorLinkHover: "#24b1c6",
+  fontSize: 16,
+  fontFamily: "Lato",
+  colorBorder: "#dcdcdc",
+  borderRadius: 4,
+  fontWeightStrong: 800,
+  colorTextHeading: "#0e1318",
+  colorText: "#1b1b1b",
+  colorTextSecondary: "#753dff",
+};
+
+module.exports = appTheme;
