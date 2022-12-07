@@ -27,6 +27,7 @@ const appTheme = {
   colorPrimary: "#753dff",
   colorLink: "#753dff",
   colorLinkHover: "#24b1c6",
+  colorLinkActive: "#ffb13d",
   fontSize: 16,
   fontFamily: "Lato",
   colorBorder: "#dcdcdc",

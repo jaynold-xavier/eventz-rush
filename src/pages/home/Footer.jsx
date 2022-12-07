@@ -11,7 +11,7 @@ const { Footer } = Layout;
 export default function LandingFooter() {
   return (
     <Footer prefixCls="landing-footer">
-      <section className="center container">
+      <section className="center container pt-0 pb-0">
         <Link to={appRoutes.home}>
           <Image
             alt="app-logo"

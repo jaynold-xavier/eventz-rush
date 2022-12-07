@@ -8,9 +8,9 @@ import {
 import { UpCircleOutlined } from "@ant-design/icons";
 import { FloatButton } from "antd";
 
-import Navbar from "./components/navBar/Index";
 import { appRoutes } from "./constants/routes";
 
+import { HomeNavBar } from "./components/navBar";
 import Home from "./pages/home/Index";
 import Contact from "./pages/contact/Index";
 import FAQ from "./pages/faq/Index";
@@ -50,7 +50,7 @@ export default function Routes({ isAuthenticated, userRole }) {
 function LayoutWithNavBar() {
   return (
     <>
-      <Navbar />
+      <HomeNavBar />
       <Outlet />
     </>
   );

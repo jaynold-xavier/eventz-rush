@@ -5,9 +5,9 @@ import { NavLink, useLocation } from "react-router-dom";
 import { Affix, Button, ConfigProvider, Image, Menu } from "antd";
 import { startCase } from "lodash";
 
-import AppLogo from "../../assets/images/logos/app.svg";
+import AppLogo from "../../../assets/images/logos/app.svg";
 
-import { appRoutes } from "../../constants/routes";
+import { appRoutes } from "../../../constants/routes";
 
 const items = [
   {
