@@ -113,8 +113,18 @@ h6 {
 // }
 
 // antd overrides
-.ant-layout {
-  background: transparent;
+.ant-layout,
+section {
+  background: transparent !important;
+}
+
+.ant-input-affix-wrapper {
+  border-radius: 20px;
+
+  // field icon
+  .ant-input-prefix {
+    margin-right: 0.7rem;
+  }
 }
 
 @import "./common.less";

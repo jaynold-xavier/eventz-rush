@@ -44,7 +44,10 @@ export default function Register() {
           <Form
             className="auth-form"
             layout="vertical"
-            validateMessages={{ required: "${label} is required" }}
+            validateMessages={{
+              types: { email: "Please enter a valid email" },
+              required: "${label} is required",
+            }}
           >
             <Form.Item
               name="userName"
@@ -60,7 +63,11 @@ export default function Register() {
               />
             </Form.Item>
 
-            <Form.Item name="email" label="Email" rules={[{ required: true }]}>
+            <Form.Item
+              name="email"
+              label="Email"
+              rules={[{ required: true, type: "email" }]}
+            >
               <Input
                 placeholder="Email"
                 size="large"

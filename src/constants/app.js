@@ -5,10 +5,11 @@ export const USER_ROLES = {
 
 export const VENDOR_TYPES = {
   mc: "MC",
-  musicians: "MUSICIANS",
-  media: "MEDIA",
-  caterers: "CATERERS",
-  venueProviders: "VENUE_PROVIDERS",
+  musicians: "Musicians",
+  media: "Media",
+  caterers: "Caterers",
+  venueProviders: "Venue Providers",
+  bakery: "Bakery",
 };
 
 export const API_DATE_FORMAT = "DDMMYYY[T]HH:mm[Z]";
