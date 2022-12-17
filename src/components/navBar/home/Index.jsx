@@ -1,7 +1,6 @@
 import { UserOutlined } from "@ant-design/icons";
-
 import React from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { Affix, Button, ConfigProvider, Image, Menu } from "antd";
 import { startCase } from "lodash";
 
@@ -13,7 +12,7 @@ const items = [
   {
     key: "item-1",
     label: (
-      <NavLink to={appRoutes.home}>
+      <Link to={appRoutes.home}>
         <Image
           className="app-logo"
           src={AppLogo}
@@ -21,7 +20,7 @@ const items = [
           preview={false}
           alt="app-logo"
         />
-      </NavLink>
+      </Link>
     ),
   },
   ...["vendors", "faq", "contactUs"].map((route) => {
@@ -33,7 +32,7 @@ const items = [
   {
     key: appRoutes.login,
     label: (
-      <NavLink to={appRoutes.login}>
+      <Link to={appRoutes.login}>
         <ConfigProvider
           theme={{
             token: {
@@ -45,7 +44,7 @@ const items = [
             Login
           </Button>
         </ConfigProvider>
-      </NavLink>
+      </Link>
     ),
   },
   // {

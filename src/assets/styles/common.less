@@ -23,6 +23,23 @@
 //   background-size: cover;
 // }
 
+.header-title {
+  // font-family: "Patrick Hand";
+  font-family: monospace;
+  text-transform: uppercase;
+  color: @fore-color;
+  letter-spacing: 5px;
+  font-size: 5rem;
+  // @color: #ffb13d;
+  // font-style: italic;
+  // color: lighten(@color, 30%);
+
+  // &::first-letter {
+  //   font-size: 2em;
+  //   color: @color;
+  // }
+}
+
 .center {
   display: flex;
   align-items: center;
@@ -50,7 +67,7 @@
     lighten(@baseColor, 35%)
   );
   border: 1px solid lighten(@baseColor, 30%);
-  box-shadow: 0 0px 10px 1px lighten(@baseColor, 30%);
+  box-shadow: 0 0px 10px 1px #e7e7e7;
 }
 
 .glowy-button(@color) {

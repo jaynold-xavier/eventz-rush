@@ -1,7 +1,6 @@
 @navbar-height: 100px;
 
 @back: linear-gradient(45deg, #9164ff, #7e5bff, #7f66ff);
-@back-color: #fefcff;
 
 .page-error-layout {
   background: linear-gradient(180deg, #ffffff, #fcfbff, lighten(#5500df, 50%));
@@ -58,8 +57,8 @@
 
 .main-nav-bar-affix-container {
   .ant-affix {
-    background-color: #efecff;
-    box-shadow: -1px 5px 11px 0px #0000001a;
+    background-color: #ece6ff;
+    box-shadow: 0px 0px 11px 0px #d7d7d7;
     height: @navbar-height - 20px !important;
 
     .main-nav-bar {
@@ -180,13 +179,13 @@
     }
 
     .shape-fill {
-      fill: @back-color;
+      fill: @fore-color;
     }
   }
 
   .landing-content {
     position: relative;
-    background-color: @back-color;
+    background-color: @fore-color;
 
     p {
       font-family: auto;
@@ -352,59 +351,30 @@
 }
 
 .vendors-list-layout {
-  .vendors-list-header {
-    // height: calc(100vh / 5);
-    color: @back-color;
+  // .shape-divider {
+  //   width: 100%;
+  //   overflow: hidden;
+  //   line-height: 0;
+  //   transform: rotate(180deg);
 
-    > .container {
-      max-width: 1000px;
-      width: 100%;
-    }
+  //   svg {
+  //     position: relative;
+  //     display: block;
+  //     width: calc(111% + 1.3px);
+  //     height: 127px;
+  //   }
 
-    .header-title {
-      @color: #ffb13d;
-
-      font-family: "Patrick Hand";
-      letter-spacing: 10px;
-      text-transform: uppercase;
-      font-style: italic;
-      color: lighten(@color, 30%);
-
-      &::first-letter {
-        font-size: 2em;
-        color: @color;
-        // text-decoration: overline;
-      }
-    }
-  }
-
-  .shape-divider {
-    // position: absolute;
-    // bottom: 0;
-    // left: 0;
-    width: 100%;
-    overflow: hidden;
-    line-height: 0;
-    transform: rotate(180deg);
-  }
-
-  .shape-divider svg {
-    position: relative;
-    display: block;
-    width: calc(111% + 1.3px);
-    height: 127px;
-  }
-
-  .shape-divider .shape-fill {
-    fill: @back-color;
-  }
+  //   .shape-fill {
+  //     fill: @fore-color;
+  //   }
+  // }
 
   .vendors-list-content {
     height: calc(100vh);
-    background-color: @back-color;
+    background-color: @fore-color;
 
-    .vendors-list-filters {
-      .card-glow(#2318c2);
+    .ant-card.vendors-list-filters {
+      .card-glow(#6252f1);
     }
   }
 }
