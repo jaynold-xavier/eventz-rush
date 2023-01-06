@@ -3,7 +3,7 @@
 @back: linear-gradient(45deg, #9164ff, #7e5bff, #7f66ff);
 
 .page-error-layout {
-  background: linear-gradient(180deg, #ffffff, #fcfbff, lighten(#5500df, 50%));
+  background: linear-gradient(180deg, #ffffff, #fcfbff, lighten(#2100df, 50%));
   min-height: 100vh;
   height: 100%;
 
@@ -351,23 +351,29 @@
 }
 
 .vendors-list-layout {
-  // .shape-divider {
-  //   width: 100%;
-  //   overflow: hidden;
-  //   line-height: 0;
-  //   transform: rotate(180deg);
+  .vendors-list-header {
+    position: relative;
 
-  //   svg {
-  //     position: relative;
-  //     display: block;
-  //     width: calc(111% + 1.3px);
-  //     height: 127px;
-  //   }
+    .shape-divider {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      overflow: hidden;
+      line-height: 0;
 
-  //   .shape-fill {
-  //     fill: @fore-color;
-  //   }
-  // }
+      svg {
+        position: relative;
+        display: block;
+        width: calc(100% + 1.3px);
+        height: 110px;
+      }
+
+      .shape-fill {
+        fill: @fore-color;
+      }
+    }
+  }
 
   .vendors-list-content {
     height: calc(100vh);

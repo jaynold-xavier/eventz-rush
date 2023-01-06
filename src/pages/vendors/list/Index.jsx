@@ -18,7 +18,7 @@ export default function VendorsList() {
   // }, []);
 
   return (
-    <Layout prefixCls="vendors-list-layout">
+    <Layout className="vendors-list-layout">
       <HomePageHeader className="vendors-list-header" title="Vendors" />
 
       <Content prefixCls="vendors-list-content pt-4">

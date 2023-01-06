@@ -60,6 +60,7 @@ export default function Filters() {
                 mode="tags"
                 options={vendorOptions}
                 placeholder="Select Type"
+                allowClear
               />
             </Form.Item>
           </Col>
@@ -70,6 +71,7 @@ export default function Filters() {
                 className="w-100"
                 options={vendorStatusOptions}
                 placeholder="Select Status"
+                allowClear
               />
             </Form.Item>
           </Col>

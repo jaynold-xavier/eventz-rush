@@ -11,7 +11,7 @@ export default function PageNotFound() {
 
   return (
     <Layout
-      prefixCls="page-error-layout center"
+      className="page-error-layout center"
       style={{ "--error-color": "#5500df" }}
     >
       <div className="container center">

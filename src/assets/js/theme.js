@@ -31,7 +31,7 @@ const appTheme = {
   fontSize: 16,
   fontFamily: "Lato",
   colorBorder: "#dcdcdc",
-  borderRadius: 4,
+  borderRadius: "4px",
   fontWeightStrong: 800,
   colorTextHeading: "#0e1318",
   colorText: "#1b1b1b",

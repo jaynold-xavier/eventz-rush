@@ -12,7 +12,7 @@ const { Content } = Layout;
 export default function PageNotAuthorized() {
   return (
     <Layout
-      prefixCls="page-error-layout center"
+      className="page-error-layout center"
       style={{ "--error-color": "#d90505" }}
     >
       <div className="container center">

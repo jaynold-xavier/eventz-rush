@@ -27,7 +27,7 @@ const { Content } = Layout;
 
 export default function Login() {
   return (
-    <Layout prefixCls="auth-layout">
+    <Layout className="auth-layout">
       <Content className="auth-content center">
         <div className="container">
           <Link to={appRoutes.home}>
