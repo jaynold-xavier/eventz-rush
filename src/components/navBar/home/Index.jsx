@@ -33,17 +33,9 @@ const items = [
     key: appRoutes.login,
     label: (
       <Link to={appRoutes.login}>
-        <ConfigProvider
-          theme={{
-            token: {
-              colorPrimary: "#24b1c6",
-            },
-          }}
-        >
-          <Button type="primary" shape="round" icon={<UserOutlined />}>
-            Login
-          </Button>
-        </ConfigProvider>
+        <Button type="primary" shape="round" icon={<UserOutlined />}>
+          Login
+        </Button>
       </Link>
     ),
   },
@@ -58,16 +50,25 @@ export default function Navbar() {
   const location = useLocation();
 
   return (
-    <Affix className="main-nav-bar-affix-container">
-      <span>
-        <Menu
-          className="main-nav-bar container"
-          mode="horizontal"
-          direction="rtr"
-          selectedKeys={[location.pathname]}
-          items={items}
-        />
-      </span>
-    </Affix>
+    <ConfigProvider
+      theme={{
+        token: {
+          colorPrimary: "#24b1c6",
+          colorText: "#38e5ff",
+        },
+      }}
+    >
+      <Affix className="main-nav-bar-affix-container">
+        <span>
+          <Menu
+            className="main-nav-bar container"
+            mode="horizontal"
+            direction="rtr"
+            selectedKeys={[location.pathname]}
+            items={items}
+          />
+        </span>
+      </Affix>
+    </ConfigProvider>
   );
 }

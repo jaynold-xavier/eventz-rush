@@ -64,7 +64,11 @@ export default function Login() {
               />
             </Form.Item>
 
-            <Form.Item name="password" label="Password">
+            <Form.Item
+              name="password"
+              label="Password"
+              rules={[{ required: true }]}
+            >
               <Input.Password
                 placeholder="Password"
                 size="large"

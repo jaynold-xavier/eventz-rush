@@ -14,13 +14,7 @@ root.render(
   <React.StrictMode>
     <ConfigProvider
       theme={{
-        token: {
-          ...appTheme,
-          fontSize:
-            document.documentElement.clientWidth <= 768
-              ? appTheme.fontSize - 4
-              : appTheme.fontSize,
-        },
+        token: appTheme,
       }}
     >
       <Routes />

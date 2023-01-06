@@ -23,19 +23,23 @@ const themeData = {
   boxShadowBase: "0 2px 8px rgba(254, 247, 255, 0.15)",
 };
 
+const isMobileView = document.documentElement.clientWidth <= 768;
+const fontSize = 16;
+
 const appTheme = {
   colorPrimary: "#753dff",
+  // colorPrimaryActive: "#fff",
   colorLink: "#753dff",
   colorLinkHover: "#24b1c6",
   colorLinkActive: "#ffb13d",
-  fontSize: 16,
+  fontSize: isMobileView ? fontSize - 4 : fontSize,
   fontFamily: "Lato",
   colorBorder: "#dcdcdc",
   borderRadius: "4px",
   fontWeightStrong: 800,
   colorTextHeading: "#0e1318",
   colorText: "#1b1b1b",
-  colorTextSecondary: "#753dff",
+  colorTextSecondary: "#24b1c6",
 };
 
 module.exports = appTheme;

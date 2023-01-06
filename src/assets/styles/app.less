@@ -65,10 +65,6 @@
       color: inherit;
       height: @navbar-height - 20px;
 
-      // a:not(:hover) {
-      //   color: #5f00b5;
-      // }
-
       .ant-image {
         width: 7rem !important;
       }
@@ -80,15 +76,11 @@
     border: none;
     justify-content: flex-end;
     align-items: center;
-    color: white;
+    color: #fff;
 
     > li {
       text-transform: uppercase;
       font-weight: 600;
-
-      // a {
-      //   color: white;
-      // }
 
       &::after {
         border-bottom: none !important;
@@ -145,7 +137,7 @@
       .welcome-heading {
         font-family: cursive;
         text-transform: uppercase;
-        color: white;
+        color: #fff;
       }
 
       .welcome-tagline {
@@ -285,7 +277,7 @@
 
       > *,
       a:not(:hover) {
-        color: white;
+        color: #fff;
       }
     }
   }
@@ -325,7 +317,7 @@
 
         .save-btn {
           width: calc(@form-width / 2);
-          .multi-gradient-button(@background);
+          .multi-gradient-button(linear-gradient(45deg, #5db9c7, #00ddff, #9666ff));
 
           &:hover {
             box-shadow: 0px 1px 15px 0 lighten(#3a68eb, 5%);
