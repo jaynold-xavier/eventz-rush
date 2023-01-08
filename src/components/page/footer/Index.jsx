@@ -2,13 +2,13 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Space, Image, Layout } from "antd";
 
-import logo from "../../assets/images/logos/app.svg";
+import logo from "../../../assets/images/logos/app.svg";
 
-import { appRoutes } from "../../constants/routes";
+import { appRoutes } from "../../../constants/routes";
 
 const { Footer } = Layout;
 
-export default function LandingFooter() {
+export function HomePageFooter() {
   return (
     <Footer prefixCls="landing-footer">
       <section className="center container pt-0 pb-0">

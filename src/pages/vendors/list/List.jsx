@@ -2,31 +2,37 @@ import React from "react";
 import { Avatar, List, Skeleton } from "antd";
 
 import { vendors } from "../../../assets/js/mockData";
+import ListItem from "./Item";
 
 export default function VendorsList({ ...rest }) {
-  return <List dataSource={vendors} renderItem={renderItem} {...rest} />;
+  return (
+    <List
+      className="vendors-list"
+      dataSource={vendors}
+      grid={{
+        gutter: 16,
+        xs: 1,
+        sm: 2,
+        md: 3,
+        lg: 3,
+        xl: 3,
+        xxl: 3,
+      }}
+      renderItem={(data) => renderItem(data)}
+      {...rest}
+    />
+  );
 }
 
-function renderItem(item) {
-  const { id, email, title, details, phone, profilePicUrl } = item;
-
+function renderItem(item, loading) {
   return (
-    <List.Item
-      className="pl-0 pr-0"
+    <ListItem
+      data={item}
+      loading={loading}
       // actions={[
       //   <a key="list-loadmore-edit">edit</a>,
       //   <a key="list-loadmore-more">more</a>,
       // ]}
-    >
-      <Skeleton avatar title={false} loading={item.loading} active>
-        <List.Item.Meta
-          avatar={<Avatar src={profilePicUrl} shape="square" size={126} />}
-          title={title}
-          description={<div dangerouslySetInnerHTML={{ __html: details }} />}
-        />
-
-        <div>content</div>
-      </Skeleton>
-    </List.Item>
+    />
   );
 }

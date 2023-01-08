@@ -3,7 +3,7 @@ import { Layout } from "antd";
 
 import LandingSection from "./landing/Index";
 import Services from "./content/Index";
-import Footer from "./Footer";
+import Footer from "../../components/page/footer/Index";
 
 export default function Home() {
   return (
@@ -26,11 +26,6 @@ export default function Home() {
       </div>
 
       <Services />
-
-      <br />
-      <br />
-
-      <Footer />
     </Layout>
   );
 }

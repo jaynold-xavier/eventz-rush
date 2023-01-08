@@ -33,8 +33,8 @@ export default function LandingSection() {
 
         <div className="landing-message">
           <h4 className="welcome-heading">
-            Where <span className="highlight">vendors</span> meet{" "}
-            <span className="highlight">hosts</span> to organize the perfect
+            Where <span className="highlight-text">vendors</span> meet{" "}
+            <span className="highlight-text">hosts</span> to organize the perfect
             event
           </h4>
 

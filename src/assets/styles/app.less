@@ -267,19 +267,29 @@
       }
     }
   }
+}
 
-  .landing-footer {
-    background: #0a1535;
-    padding: 10px 0;
+.landing-footer {
+  display: flex;
+  background: #0a1535;
+  padding: 10px 0;
 
-    section {
-      justify-content: space-between;
+  section {
+    justify-content: space-between;
 
-      > *,
-      a:not(:hover) {
-        color: #fff;
-      }
+    > *,
+    a:not(:hover) {
+      color: #fff;
     }
+  }
+}
+
+.faq-layout {
+  height: 100%;
+
+  .faq-content {
+    height: 100%;
+    background-color: @fore-color;
   }
 }
 
@@ -343,36 +353,64 @@
 }
 
 .vendors-list-layout {
-  .vendors-list-header {
-    position: relative;
-
-    .shape-divider {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      overflow: hidden;
-      line-height: 0;
-
-      svg {
-        position: relative;
-        display: block;
-        width: calc(100% + 1.3px);
-        height: 110px;
-      }
-
-      .shape-fill {
-        fill: @fore-color;
-      }
-    }
-  }
+  // .vendors-list-header {
+  // }
 
   .vendors-list-content {
-    height: calc(100vh);
     background-color: @fore-color;
 
     .ant-card.vendors-list-filters {
       .card-glow(#6252f1);
+    }
+
+    .vendors-list {
+      position: relative;
+
+      .vendors-list-item {
+        .ant-card {
+          min-height: 25rem;
+
+          .ant-card-body {
+            background-color: #7667ff;
+            padding: 1rem 0 0;
+          }
+        }
+
+        .shape-divider {
+          background-color: #fff;
+          overflow: hidden;
+
+          svg {
+            width: 100%;
+            height: 25px;
+          }
+
+          .shape-fill {
+            fill: #7667ff;
+
+            &:nth-child(2) {
+              fill: #24b1c6;
+            }
+
+            &:nth-child(1) {
+              fill: #9443ff;
+            }
+          }
+        }
+
+        .vendor-item-content {
+          background-color: #fff;
+          padding-bottom: 1rem;
+
+          .vendor-item-description {
+            // width: calc(100% / 1.2);
+            // margin: auto;
+            p {
+              margin: 0;
+            }
+          }
+        }
+      }
     }
   }
 }

@@ -12,5 +12,16 @@ export const VENDOR_TYPES = {
   bakery: "Bakery",
 };
 
+export const VENDOR_STATUSES = {
+  available: {
+    text: "Available",
+    color: "green",
+  },
+  unavailable: {
+    text: "Unavailable",
+    color: "grey",
+  },
+};
+
 export const API_DATE_FORMAT = "DDMMYYY[T]HH:mm[Z]";
 export const DISPLAY_DATE_FORMAT = "dddd, DD MM YYYY";

@@ -9,7 +9,8 @@ export const vendors = [
     email: "jay@random.com",
     title: "James Rod",
     type: VENDOR_TYPES.bakery,
-    details: "<p>Test</p>",
+    description:
+      "<p>Sit aute exercitation commodo ullamco fugiat dolor aliquip pariatur aute nostrud Lorem nostrud veniam magna.</p>",
     phone: "7448290434",
     profilePicUrl: "https://randomuser.me/api/portraits/men/79.jpg",
   },
@@ -19,7 +20,8 @@ export const vendors = [
     email: "tell@random.com",
     title: "James Rod",
     type: VENDOR_TYPES.bakery,
-    details: "<p>Test</p>",
+    description:
+      "<p>Sit aute exercitation commodo ullamco fugiat dolor aliquip pariatur aute nostrud Lorem nostrud veniam magna.</p>",
     phone: "7448290434",
     profilePicUrl: "https://randomuser.me/api/portraits/men/59.jpg",
   },
@@ -29,7 +31,8 @@ export const vendors = [
     email: "2342@random.com",
     title: "James Rod",
     type: VENDOR_TYPES.media,
-    details: "<p>Test</p>",
+    description:
+      "<p>Sit aute exercitation commodo ullamco fugiat dolor aliquip pariatur aute nostrud Lorem nostrud veniam magna.</p>",
     phone: "7448290434",
     profilePicUrl: "https://randomuser.me/api/portraits/men/29.jpg",
   },
@@ -39,7 +42,8 @@ export const vendors = [
     email: "2342@random.com",
     title: "James Rod",
     type: VENDOR_TYPES.venueProviders,
-    details: "<p>Test</p>",
+    description:
+      "<p>Sit aute exercitation commodo ullamco fugiat dolor aliquip pariatur aute nostrud Lorem nostrud veniam magna.</p>",
     phone: "7448290434",
     profilePicUrl: "https://randomuser.me/api/portraits/men/19.jpg",
   },

@@ -19,6 +19,7 @@ import Register from "./pages/register/Index";
 import { VendorsList } from "./pages/vendors";
 
 import { PageNotFound, PageNotAuthorized } from "./pages/errors/index";
+import { HomePageFooter } from "./components/page";
 
 export default function Routes({ isAuthenticated, userRole }) {
   return (
@@ -52,6 +53,11 @@ function LayoutWithNavBar() {
     <>
       <HomeNavBar />
       <Outlet />
+
+      {/* <br />
+      <br /> */}
+
+      <HomePageFooter />
     </>
   );
 }

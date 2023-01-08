@@ -1,7 +1,7 @@
 import React from "react";
 import { Layout } from "antd";
 
-import { HomePageHeader } from "../../../components/page/header/Index";
+import { HomePageHeader } from "../../../components/page/index";
 import Filters from "./Filters";
 import List from "./List";
 
