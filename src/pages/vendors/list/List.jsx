@@ -15,8 +15,8 @@ export default function VendorsList({ ...rest }) {
         sm: 2,
         md: 3,
         lg: 3,
-        xl: 3,
-        xxl: 3,
+        xl: 4,
+        xxl: 4,
       }}
       renderItem={(data) => renderItem(data)}
       {...rest}

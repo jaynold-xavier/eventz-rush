@@ -78,7 +78,7 @@ export default function Filters() {
 
           <Col lg={6} md={12} sm={12} xs={12}>
             <Form.Item name="availability" noStyle>
-              <DatePicker className="w-100" placeholder="Availability" />
+              <DatePicker.RangePicker className="w-100" placeholder="Availability" />
             </Form.Item>
           </Col>
 

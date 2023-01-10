@@ -1,7 +1,5 @@
 @navbar-height: 100px;
 
-@back: linear-gradient(45deg, #9164ff, #7e5bff, #7f66ff);
-
 .page-error-layout {
   background: linear-gradient(180deg, #ffffff, #fcfbff, lighten(#2100df, 50%));
   min-height: 100vh;
@@ -338,13 +336,11 @@
   }
 
   .auth-image {
+    position: relative;
     // background-color: #552eff;
     // background: linear-gradient(140deg, #4801f3, #7f4aff, #4801f3);
-    position: relative;
-    @color: #4801f3;
     background: @background;
     width: 100%;
-    overflow: hidden;
 
     @media @small-screen, @mobile-screen {
       display: none;
@@ -368,44 +364,47 @@
 
       .vendors-list-item {
         .ant-card {
-          min-height: 25rem;
-
           .ant-card-body {
-            background-color: #7667ff;
-            padding: 1rem 0 0;
-          }
-        }
+            min-height: 28rem;
+            padding: 0;
 
-        .shape-divider {
-          background-color: #fff;
-          overflow: hidden;
-
-          svg {
-            width: 100%;
-            height: 25px;
-          }
-
-          .shape-fill {
-            fill: #7667ff;
-
-            &:nth-child(2) {
-              fill: #24b1c6;
+            .ant-avatar {
+              border: 2px solid #6252f1;
             }
 
-            &:nth-child(1) {
-              fill: #9443ff;
+            .shape-divider {
+              width: 100%;
+
+              svg {
+                position: relative;
+                display: block;
+                width: calc(100% + 1.3px);
+                height: 22px;
+              }
+
+              .shape-fill {
+                fill: lighten(#6252f1, 35%);
+              }
+            }
+
+            .vendor-item-content {
+              padding: 1rem;
+              padding-bottom: 0;
+
+              &:first-child {
+                background-color: lighten(#6252f1, 35%);
+              }
+
+              .vendor-item-description {
+                p {
+                  margin: 0;
+                }
+              }
             }
           }
-        }
 
-        .vendor-item-content {
-          background-color: #fff;
-          padding-bottom: 1rem;
-
-          .vendor-item-description {
-            // width: calc(100% / 1.2);
-            // margin: auto;
-            p {
+          .ant-card-actions {
+            li {
               margin: 0;
             }
           }

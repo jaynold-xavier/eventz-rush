@@ -15,11 +15,11 @@ export const VENDOR_TYPES = {
 export const VENDOR_STATUSES = {
   available: {
     text: "Available",
-    color: "green",
+    color: "#24b1c6",
   },
   unavailable: {
     text: "Unavailable",
-    color: "grey",
+    color: "#9f9f9f",
   },
 };
 

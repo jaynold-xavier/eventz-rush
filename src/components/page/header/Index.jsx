@@ -11,6 +11,7 @@ export function HomePageHeader({ className, title }) {
       </div>
 
       <br />
+      <br />
 
       <div className="shape-divider">
         <svg

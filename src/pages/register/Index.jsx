@@ -90,7 +90,9 @@ export default function Register() {
             <Form.Item
               name="confirmPassword"
               label="Confirm Password"
-              rules={[{ required: true }]}
+              rules={[
+                { required: true, message: "Please confirm your password" },
+              ]}
             >
               <Input.Password
                 placeholder="Confirm Password"
@@ -98,6 +100,8 @@ export default function Register() {
                 prefix={<LockTwoTone twoToneColor={appTheme.colorPrimary} />}
               />
             </Form.Item>
+
+            <br />
 
             <Form.Item className="center">
               <Button

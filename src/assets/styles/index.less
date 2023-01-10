@@ -120,6 +120,10 @@ section {
   background: transparent;
 }
 
+.ant-btn.ant-btn-lg {
+  height: 3rem;
+}
+
 // input field
 .ant-input-affix-wrapper {
   border-radius: 20px;
@@ -140,6 +144,55 @@ section {
       overflow: auto;
     }
   }
+}
+
+// collapse
+.ant-collapse {
+  border: none;
+  background-color: transparent;
+
+  .ant-collapse-item {
+    border: 1px solid #dcdcdc;
+
+    &:not(:first-child) {
+      margin-top: 1.5rem;
+    }
+
+    .ant-collapse-header {
+      background-color: transparent;
+      border-radius: 3px;
+      align-items: center;
+      font-weight: bold;
+
+      .ant-collapse-expand-icon {
+        background: #6252f1;
+        justify-content: flex-start;
+        color: #fff;
+        stroke: #fff;
+        margin: auto;
+        padding: 1rem;
+        padding-left: 0.6rem !important;
+        border-radius: 1rem;
+        width: 2rem;
+      }
+    }
+
+    .ant-collapse-content {
+      border: 0;
+    }
+
+    &.ant-collapse-item-active {
+      .ant-collapse-header {
+        border-bottom: 2px solid #6252f1;
+        color: #6252f1;
+      }
+    }
+  }
+}
+
+// icons
+.anticon.anticon-phone {
+  transform: rotateY(180deg) !important;
 }
 
 @import "./common.less";

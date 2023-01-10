@@ -141,11 +141,11 @@
 
   .header-title {
     // font-family: "Patrick Hand";
-    font-family: monospace;
-    text-transform: uppercase;
+    // font-family: monospace;
+    // text-transform: uppercase;
     color: @fore-color;
-    letter-spacing: 5px;
-    font-size: 5rem;
+    // letter-spacing: 5px;
+    font-size: 4rem;
     // @color: #ffb13d;
     // font-style: italic;
     // color: lighten(@color, 30%);
@@ -168,7 +168,8 @@
       position: relative;
       display: block;
       width: calc(100% + 1.3px);
-      height: 110px;
+      // height: 110px;
+      height: 60px;
     }
 
     .shape-fill {
@@ -191,10 +192,6 @@
 
 .highlight-text {
   color: @highlight-color;
-}
-
-.save-btn {
-  height: 3rem;
 }
 
 .card-glow(@baseColor) {
@@ -267,6 +264,12 @@
 
 .bg-transparent {
   background-color: transparent !important;
+}
+
+.block-center {
+  text-align: left;
+  width: calc(100% / 2);
+  margin: auto;
 }
 
 .border {
