@@ -5,5 +5,8 @@ export const appRoutes = {
   policy: "/policy",
   login: "/login",
   register: "/register",
-  vendors: "/vendors",
+  vendors: {
+    list: "/vendors",
+    details: "/vendor/{id}"
+  },
 };

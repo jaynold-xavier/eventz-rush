@@ -19,7 +19,7 @@ const avatarProps = {
   size: { xs: 80, sm: 80, md: 90, lg: 90, xl: 100, xxl: 100 },
 };
 
-export default function ListItem({ data, loading, ...rest }) {
+export default function ListItem({ data, loading, goToDetails, ...rest }) {
   const { id, email, title, type, description, phone, profilePicUrl } = data;
 
   const descriptionRender = (
@@ -30,7 +30,13 @@ export default function ListItem({ data, loading, ...rest }) {
     <List.Item className="vendors-list-item pl-0 pr-0" {...rest}>
       <Card
         actions={[
-          <Button className="rounded-0" size="large" type="primary" block>
+          <Button
+            className="rounded-0"
+            size="large"
+            type="primary"
+            onClick={(e) => goToDetails(id)}
+            block
+          >
             Explore Me
           </Button>,
         ]}

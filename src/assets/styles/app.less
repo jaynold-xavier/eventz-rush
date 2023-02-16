@@ -1,58 +1,5 @@
 @navbar-height: 100px;
 
-.page-error-layout {
-  background: linear-gradient(180deg, #ffffff, #fcfbff, lighten(#2100df, 50%));
-  min-height: 100vh;
-  height: 100%;
-
-  @media @small-screen, @mobile-screen, @tablet-screen {
-    > .container {
-      flex-direction: column-reverse !important;
-      gap: 3rem;
-    }
-
-    .error-content {
-      text-align: center;
-    }
-
-    .error-image {
-      .ant-image {
-        width: 30rem !important;
-      }
-    }
-  }
-
-  .error-content {
-    width: 100%;
-
-    .error-code {
-      font-family: cursive;
-      font-size: 7.5rem;
-      color: var(--error-color);
-    }
-
-    .error-subtitle {
-      font-size: 2.5rem;
-      margin-top: -1rem;
-    }
-
-    // .error-message {
-    //   font-size: 1rem;
-    // }
-  }
-
-  .error-image {
-    width: 100%;
-    text-align: center;
-
-    img[alt="blob-shape"] {
-      .container-absolute();
-      width: auto;
-      opacity: 0.1;
-    }
-  }
-}
-
 .main-nav-bar-affix-container {
   .ant-affix {
     background-color: #ece6ff;
@@ -268,28 +215,42 @@
 }
 
 .landing-footer {
-  display: flex;
-  background: #0a1535;
-  padding: 10px 0;
+  position: relative;
+  background: #fefcff;
+  // padding: 10px 0;
+  font-weight: bold;
 
-  section {
-    justify-content: space-between;
+  .container-absolute {
+    bottom: 0;
+    z-index: 1;
+  }
 
-    > *,
-    a:not(:hover) {
-      color: #fff;
+  .shape-divider {
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+    transform: rotate(180deg);
+
+    svg {
+      position: relative;
+      display: block;
+      width: calc(100% + 1.3px);
+      height: 10rem;
+    }
+
+    .shape-fill {
+      fill: #ece6ff;
     }
   }
 }
 
-.faq-layout {
-  height: 100%;
+// .faq-layout {
+//   height: 100%;
 
-  .faq-content {
-    height: 100%;
-    background-color: @fore-color;
-  }
-}
+//   .faq-content {
+//     height: 100%;
+//   }
+// }
 
 .auth-layout {
   display: flex;
@@ -383,7 +344,7 @@
               }
 
               .shape-fill {
-                fill: lighten(#6252f1, 35%);
+                fill: lighten(#6252f1, 33%);
               }
             }
 
@@ -392,7 +353,7 @@
               padding-bottom: 0;
 
               &:first-child {
-                background-color: lighten(#6252f1, 35%);
+                background-color: lighten(#6252f1, 33%);
               }
 
               .vendor-item-description {
@@ -410,6 +371,61 @@
           }
         }
       }
+    }
+  }
+}
+
+.vendor-details-layout {
+  .vendor-general-info {
+    color: @fore-color;
+  }
+}
+
+.page-error-layout {
+  background: linear-gradient(180deg, #ffffff, #fcfbff, lighten(#2100df, 50%));
+  min-height: 100vh;
+  height: 100%;
+
+  @media @small-screen, @mobile-screen, @tablet-screen {
+    > .container {
+      flex-direction: column-reverse !important;
+      gap: 3rem;
+    }
+
+    .error-content {
+      text-align: center;
+    }
+
+    .error-image {
+      .ant-image {
+        width: 30rem !important;
+      }
+    }
+  }
+
+  .error-content {
+    width: 100%;
+
+    .error-code {
+      font-family: cursive;
+      font-size: 7.5rem;
+      color: var(--error-color);
+    }
+
+    .error-subtitle {
+      font-size: 2.5rem;
+      margin-top: -1rem;
+    }
+  }
+
+  .error-image {
+    width: 100%;
+    text-align: center;
+
+    img[alt="blob-shape"] {
+      .container-absolute();
+      width: auto;
+      opacity: 0.1;
     }
   }
 }

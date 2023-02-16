@@ -5,32 +5,41 @@ import {
   Outlet,
   BrowserRouter,
 } from "react-router-dom";
-import { UpCircleOutlined } from "@ant-design/icons";
+import { UpOutlined } from "@ant-design/icons";
 import { FloatButton } from "antd";
 
 import { appRoutes } from "./constants/routes";
 
-import { HomeNavBar } from "./components/navBar";
-import Home from "./pages/home/Index";
-import Contact from "./pages/contact/Index";
-import FAQ from "./pages/faq/Index";
-import Login from "./pages/login/Index";
-import Register from "./pages/register/Index";
-import { VendorsList } from "./pages/vendors";
-
-import { PageNotFound, PageNotAuthorized } from "./pages/errors/index";
 import { HomePageFooter } from "./components/page";
+import { HomeNavBar } from "./components/navBar";
+
+import {
+  Contact,
+  FAQ,
+  Home,
+  Login,
+  PageNotAuthorized,
+  PageNotFound,
+  Register,
+  VendorDetails,
+  VendorsList,
+} from "./pages";
+import { getInBetweenCharactersRegex } from "./helpers/regex";
 
 export default function Routes({ isAuthenticated, userRole }) {
   return (
     <BrowserRouter>
       <Switch>
-        {/* Routes that need main navbar */}
+        {/* Unsigned Routes that need main navbar */}
         <Route path={appRoutes.home} element={<LayoutWithNavBar />}>
           <Route path={appRoutes.home} element={<Home />} />
           <Route path={appRoutes.contactUs} element={<Contact />} />
           <Route path={appRoutes.faq} element={<FAQ />} />
-          <Route path={appRoutes.vendors} element={<VendorsList />} />
+          <Route path={appRoutes.vendors.list} element={<VendorsList />} />
+          <Route
+            path={processRouteUrl(appRoutes.vendors.details)}
+            element={<VendorDetails />}
+          />
         </Route>
 
         <Route path={appRoutes.login} element={<Login />} />
@@ -42,12 +51,13 @@ export default function Routes({ isAuthenticated, userRole }) {
       <FloatButton.BackTop
         className="font-24"
         type="primary"
-        icon={<UpCircleOutlined />}
+        icon={<UpOutlined />}
       />
     </BrowserRouter>
   );
 }
 
+//#region outlets
 function LayoutWithNavBar() {
   return (
     <>
@@ -60,4 +70,15 @@ function LayoutWithNavBar() {
       <HomePageFooter />
     </>
   );
+}
+//#region
+
+const findParamPlaceholderRegex = getInBetweenCharactersRegex("{", "}");
+
+function processRouteUrl(url) {
+  return url.replace(findParamPlaceholderRegex, (char) => {
+    const getParamRegex = getInBetweenCharactersRegex("{", "}");
+    const id = getParamRegex.exec(char);
+    return id ? ":" + id[1] : char;
+  });
 }

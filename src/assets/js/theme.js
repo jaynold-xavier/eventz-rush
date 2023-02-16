@@ -40,6 +40,7 @@ const appTheme = {
   colorTextHeading: "#0e1318",
   colorText: "#1b1b1b",
   colorTextSecondary: "#24b1c6",
+  colorTextBase: "#121022",
 };
 
 module.exports = appTheme;

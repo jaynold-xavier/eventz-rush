@@ -23,7 +23,11 @@ const items = [
       </Link>
     ),
   },
-  ...["vendors", "faq", "contactUs"].map((route) => {
+  {
+    key: appRoutes.vendors.list,
+    label: <NavLink to={appRoutes.vendors.list}>Vendors</NavLink>,
+  },
+  ...["faq", "contactUs"].map((route) => {
     return {
       key: appRoutes[route],
       label: <NavLink to={appRoutes[route]}>{startCase(route)}</NavLink>,

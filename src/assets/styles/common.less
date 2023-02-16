@@ -122,12 +122,16 @@
 
 .container-absolute {
   position: absolute;
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
-  width: @container-width;
   left: 0;
   right: 0;
+  padding: 1rem;
+  margin-left: auto;
+  margin-right: auto;
+  width: @container-width;
+
+  @media only screen and (max-width: @container-width) {
+    width: auto;
+  }
 }
 
 // .applyBackground(@src) {
@@ -138,6 +142,7 @@
 
 .page-header {
   position: relative;
+  padding-bottom: 20px;
 
   .header-title {
     // font-family: "Patrick Hand";
@@ -176,6 +181,12 @@
       fill: @fore-color;
     }
   }
+}
+
+.page-content {
+  background-color: @fore-color;
+  box-shadow: 0px 1px 20px 20px @fore-color;
+  padding-top: 20px;
 }
 
 .center {
@@ -244,7 +255,6 @@
 }
 
 .social-media-button(@color) {
-  height: 3rem;
   text-align: left;
   .single-gradient-button(@color);
 }

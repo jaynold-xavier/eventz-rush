@@ -11,7 +11,7 @@ const { Footer } = Layout;
 export function HomePageFooter() {
   return (
     <Footer prefixCls="landing-footer">
-      <section className="center container pt-0 pb-0">
+      <div className="center container-absolute justify-content-between">
         <Link to={appRoutes.home}>
           <Image
             alt="app-logo"
@@ -28,7 +28,21 @@ export function HomePageFooter() {
           <Link to={appRoutes.home}>Privacy</Link>
           <Link to={appRoutes.home}>Legal</Link>
         </Space>
-      </section>
+      </div>
+
+      <div className="shape-divider">
+        <svg
+          data-name="Layer 1"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 1200 120"
+          preserveAspectRatio="none"
+        >
+          <path
+            d="M0,0V7.23C0,65.52,268.63,112.77,600,112.77S1200,65.52,1200,7.23V0Z"
+            class="shape-fill"
+          ></path>
+        </svg>
+      </div>
     </Footer>
   );
 }

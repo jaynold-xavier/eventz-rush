@@ -13,7 +13,7 @@ export default function FAQ() {
         title="Frequently Asked Questions"
       />
 
-      <Content prefixCls="faq-content pt-3">
+      <Content prefixCls="page-content" className="faq-content">
         <div className="container">
           <Collapse expandIconPosition="right" accordion>
             <Collapse.Panel header="Question?">
@@ -83,6 +83,15 @@ export default function FAQ() {
             </Collapse.Panel>
           </Collapse>
         </div>
+
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
       </Content>
     </Layout>
   );

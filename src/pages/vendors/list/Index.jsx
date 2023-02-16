@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Layout } from "antd";
 
 import { HomePageHeader } from "../../../components/page/index";
@@ -8,20 +8,11 @@ import List from "./List";
 const { Header, Content } = Layout;
 
 export default function VendorsList() {
-  // useEffect(() => {
-  //   document.body.style.background =
-  //     "linear-gradient(45deg, #9164ff, #7e5bff, #7f66ff)";
-
-  //   return () => {
-  //     document.body.style.removeProperty("background");
-  //   };
-  // }, []);
-
   return (
     <Layout className="vendors-list-layout">
       <HomePageHeader className="vendors-list-header" title="Vendors" />
 
-      <Content prefixCls="vendors-list-content pt-4">
+      <Content prefixCls="page-content" className="vendors-list-content">
         <div className="container">
           <Filters />
 
