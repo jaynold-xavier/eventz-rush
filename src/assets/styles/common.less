@@ -267,6 +267,32 @@
   .social-media-button(#4267b2);
 }
 
+// gallery
+.gallery {
+  column-count: 3;
+  column-width: 33%;
+
+  @media @small-screen, @mobile-screen {
+    column-count: 1;
+    column-width: 100%;
+  }
+
+  @media @tablet-screen {
+    column-count: 2;
+    column-width: 50%;
+  }
+
+  @media @laptop-screen {
+    column-count: 3;
+    column-width: 33%;
+  }
+
+  @media @tv-screen {
+    column-count: 4;
+    column-width: 25%;
+  }
+}
+
 // universal styles
 .bg-white {
   background-color: #fff !important;

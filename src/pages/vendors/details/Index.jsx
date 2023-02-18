@@ -17,6 +17,8 @@ import {
 
 import useBackground from "../../../hooks/useBackground";
 import { vendor } from "../../../assets/js/mockData";
+import Services from "./services/Index";
+import Photos from "./photos/Index";
 
 const { Header, Content } = Layout;
 
@@ -42,7 +44,7 @@ export default function VendorDetails() {
         >
           <Card bordered={false}>
             <Row align="middle" gutter={[24, 24]}>
-              <Col xs={3} sm={3} lg={3} md={3} xl={3} xxl={3}>
+              <Col xs={24} sm={6} lg={4} md={4} xl={3} xxl={3}>
                 <Skeleton
                   avatar={avatarProps}
                   title={false}
@@ -60,7 +62,7 @@ export default function VendorDetails() {
                 </Skeleton>
               </Col>
 
-              <Col xs={8} sm={8} lg={8} md={8} xl={8} xxl={8}>
+              <Col xs={24} sm={18} lg={20} md={20} xl={8} xxl={8}>
                 <Typography.Title
                   className="user-name mb-0"
                   level={2}
@@ -77,7 +79,7 @@ export default function VendorDetails() {
                 </Tag>
               </Col>
 
-              <Col span={9}>
+              <Col xs={24} sm={15} lg={15} md={15} xl={9} xxl={9}>
                 <Row>
                   <Col span={12}>
                     <Space direction="vertical" size={12}>
@@ -103,7 +105,15 @@ export default function VendorDetails() {
                 </Row>
               </Col>
 
-              <Col className="d-flex" span={4}>
+              <Col
+                className="d-flex"
+                xs={24}
+                sm={9}
+                lg={9}
+                md={9}
+                xl={3}
+                xxl={3}
+              >
                 <Space
                   direction="vertical"
                   className="user-actions ml-auto"
@@ -130,8 +140,13 @@ export default function VendorDetails() {
 
       <Content className="vendor-details-content">
         <Tabs className="tabs-container" size="large">
-          <Tabs.TabPane key="services" tab="Services"></Tabs.TabPane>
-          <Tabs.TabPane key="photos" tab="Photos"></Tabs.TabPane>
+          <Tabs.TabPane key="services" tab="Services">
+            <Services />
+          </Tabs.TabPane>
+
+          <Tabs.TabPane key="photos" tab="Photos">
+            <Photos />
+          </Tabs.TabPane>
         </Tabs>
       </Content>
     </Layout>

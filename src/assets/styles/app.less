@@ -13,6 +13,11 @@
       .ant-image {
         width: 7rem !important;
       }
+
+      // dividers
+      .ant-divider {
+        border-color: #000 !important;
+      }
     }
   }
 
@@ -37,10 +42,15 @@
         padding: 0 !important;
       }
 
-      // login button
+      // login/register button
       button {
         height: auto;
         padding: 5px 16px;
+      }
+
+      // dividers
+      .ant-divider {
+        border-color: #fff !important;
       }
     }
   }
@@ -374,7 +384,7 @@
 
 .vendor-details-layout {
   margin-top: 2rem;
-  height: 100%;
+  // height: 100%;
 
   .vendor-general-info {
     // color: @fore-color;
@@ -392,13 +402,35 @@
   }
 
   .vendor-details-content {
-    background-color: @fore-color;
-    height: 100%;
+    .ant-tabs {
+      // height: 100%;
+
+      .ant-tabs-nav {
+        margin: 0;
+
+        .ant-tabs-tab {
+          color: #fff;
+
+          &:hover {
+            color: #e1ddff;
+          }
+        }
+      }
+
+      .ant-tabs-content-holder {
+        background-color: @fore-color;
+      }
+    }
   }
 }
 
 .page-error-layout {
-  background: linear-gradient(180deg, #ffffff, #fcfbff, lighten(#2100df, 50%));
+  background: linear-gradient(
+    320deg,
+    lighten(#5500df, 50%),
+    lighten(#5500df, 60%),
+    lighten(#5500df, 50%)
+  );
   min-height: 100vh;
   height: 100%;
 

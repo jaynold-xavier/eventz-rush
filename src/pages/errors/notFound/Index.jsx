@@ -19,8 +19,6 @@ export default function PageNotFound() {
           <h1 className="error-code">404</h1>
           <h2 className="error-subtitle"> Page not found</h2>
 
-          {/* <Divider /> */}
-
           <p className="error-message font-20">
             The page you are looking for might have been removed had its name
             changed or is temporarily unavailable.
