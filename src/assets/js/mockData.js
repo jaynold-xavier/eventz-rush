@@ -8,11 +8,14 @@ export const vendors = [
     username: "jamesIam",
     email: "jay@random.com",
     title: "James Rod",
-    type: VENDOR_TYPES.bakery.text,
+    type: VENDOR_TYPES.caterers.text,
     description:
+      "<p>Sit aute exercitation commodo ullamco fugiat dolor aliquip pariatur aute nostrud Lorem nostrud veniam magna.</p>",
+    services:
       "<p>Sit aute exercitation commodo ullamco fugiat dolor aliquip pariatur aute nostrud Lorem nostrud veniam magna.</p>",
     phone: "7448290434",
     profilePicUrl: "https://randomuser.me/api/portraits/men/79.jpg",
+    experience: 5,
   },
   {
     id: random(),
@@ -48,18 +51,3 @@ export const vendors = [
     profilePicUrl: "https://randomuser.me/api/portraits/men/19.jpg",
   },
 ];
-
-export const vendor = {
-  id: random(),
-  username: "jamesIam",
-  email: "jay@random.com",
-  title: "James Rod",
-  type: VENDOR_TYPES.caterers.text,
-  description:
-    "<p>Sit aute exercitation commodo ullamco fugiat dolor aliquip pariatur aute nostrud Lorem nostrud veniam magna.</p>",
-  services:
-    "<p>Sit aute exercitation commodo ullamco fugiat dolor aliquip pariatur aute nostrud Lorem nostrud veniam magna.</p>",
-  phone: "7448290434",
-  profilePicUrl: "https://randomuser.me/api/portraits/men/79.jpg",
-  experience: 5,
-};

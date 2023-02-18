@@ -16,9 +16,10 @@ import {
 } from "antd";
 
 import useBackground from "../../../hooks/useBackground";
-import { vendor } from "../../../assets/js/mockData";
+import { vendors } from "../../../assets/js/mockData";
 import Services from "./services/Index";
 import Photos from "./photos/Index";
+import { find } from "lodash";
 
 const { Header, Content } = Layout;
 
@@ -31,6 +32,8 @@ export default function VendorDetails() {
   const { id } = useParams();
 
   useBackground("linear-gradient(45deg, #9164ff, #7e5bff, #7f66ff)");
+
+  const vendor = find(vendors, (v) => v.id === id) || vendors[0];
 
   return (
     <Layout className="vendor-details-layout">

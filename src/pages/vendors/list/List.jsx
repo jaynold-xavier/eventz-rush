@@ -6,6 +6,8 @@ import { vendors } from "../../../assets/js/mockData";
 import { appRoutes } from "../../../constants/routes";
 import ListItem from "./item/Index";
 
+const loading = false;
+
 export default function VendorsList({ ...rest }) {
   const navigate = useNavigate();
 
@@ -26,22 +28,22 @@ export default function VendorsList({ ...rest }) {
         xl: 4,
         xxl: 4,
       }}
-      renderItem={(data) => renderItem(data, false, goToDetails)}
+      renderItem={renderItem}
       {...rest}
     />
   );
-}
 
-function renderItem(item, loading, goToDetails) {
-  return (
-    <ListItem
-      data={item}
-      loading={loading}
-      goToDetails={goToDetails}
-      // actions={[
-      //   <a key="list-loadmore-edit">edit</a>,
-      //   <a key="list-loadmore-more">more</a>,
-      // ]}
-    />
-  );
+  function renderItem(item) {
+    return (
+      <ListItem
+        data={item}
+        loading={loading}
+        goToDetails={goToDetails}
+        // actions={[
+        //   <a key="list-loadmore-edit">edit</a>,
+        //   <a key="list-loadmore-more">more</a>,
+        // ]}
+      />
+    );
+  }
 }
