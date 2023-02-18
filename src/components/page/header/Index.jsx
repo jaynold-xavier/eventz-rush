@@ -13,6 +13,9 @@ export function HomePageHeader({ className, title }) {
       <div className="container">
         <h1 className="header-title text-center">{title}</h1>
       </div>
+
+      <br />
+      <br />
     </Header>
   );
 }

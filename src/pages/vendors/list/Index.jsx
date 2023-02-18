@@ -2,7 +2,7 @@ import React from "react";
 import { Layout } from "antd";
 
 import { HomePageHeader } from "../../../components/page/index";
-import Filters from "./Filters";
+import Filters from "./templates/Filters";
 import List from "./List";
 
 const { Header, Content } = Layout;

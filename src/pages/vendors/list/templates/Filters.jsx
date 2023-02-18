@@ -2,13 +2,13 @@ import { SearchOutlined, AudioOutlined } from "@ant-design/icons";
 import React, { useEffect } from "react";
 import { Col, DatePicker, Row, Select, Input, Form, Card } from "antd";
 
-import useVoice from "../../../hooks/useVoice";
-
-import appTheme from "../../../assets/js/theme";
+import { DISPLAY_DATE_FORMAT } from "../../../../constants/app";
+import useVoice from "../../../../hooks/useVoice";
+import appTheme from "../../../../assets/js/theme";
 import {
   vendorOptions,
   vendorStatusOptions,
-} from "../../../constants/dropdown";
+} from "../../../../constants/dropdown";
 
 export default function Filters() {
   const [form] = Form.useForm();
@@ -80,7 +80,8 @@ export default function Filters() {
             <Form.Item name="availability" noStyle>
               <DatePicker.RangePicker
                 className="w-100"
-                placeholder={["From", "To"]}
+                placeholder={["Available From", "Available Till"]}
+                format={DISPLAY_DATE_FORMAT}
               />
             </Form.Item>
           </Col>

@@ -310,14 +310,11 @@
 }
 
 .vendors-list-layout {
-  // .vendors-list-header {
-  // }
-
   .vendors-list-content {
     background-color: @fore-color;
 
     .ant-card.vendors-list-filters {
-      .card-glow(#6252f1);
+      .card-glow(#5d4ee6);
     }
 
     .vendors-list {
@@ -376,8 +373,21 @@
 }
 
 .vendor-details-layout {
+  margin-top: 2rem;
+
   .vendor-general-info {
-    color: @fore-color;
+    // color: @fore-color;
+
+    .ant-card {
+      background-color: #fffffff0;
+
+      .user-actions {
+        button {
+          width: 9rem;
+          height: 3rem;
+        }
+      }
+    }
   }
 }
 

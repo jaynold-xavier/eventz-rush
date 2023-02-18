@@ -4,7 +4,7 @@ import { Avatar, List, Skeleton } from "antd";
 
 import { vendors } from "../../../assets/js/mockData";
 import { appRoutes } from "../../../constants/routes";
-import ListItem from "./Item";
+import ListItem from "./templates/Item";
 
 export default function VendorsList({ ...rest }) {
   const navigate = useNavigate();

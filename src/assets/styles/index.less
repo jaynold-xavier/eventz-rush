@@ -28,6 +28,10 @@
   @media @small-screen, @mobile-screen {
     font-size: @font-size - 4;
   }
+
+  @media @tablet-screen {
+    font-size: @font-size - 2;
+  }
 }
 
 html,
@@ -185,6 +189,25 @@ section {
       .ant-collapse-header {
         border-bottom: 2px solid #6252f1;
         color: #6252f1;
+      }
+    }
+  }
+}
+
+// tabs
+.ant-tabs {
+  .ant-tabs-nav-list {
+    .ant-tabs-tab {
+      padding: 16px 24px;
+
+      & + .ant-tabs-tab {
+        margin: 0;
+      }
+
+      &.ant-tabs-active {
+        > div {
+          color: white;
+        }
       }
     }
   }

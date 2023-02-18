@@ -2,9 +2,9 @@ import { map } from "lodash";
 
 import { VENDOR_STATUSES, VENDOR_TYPES } from "./app";
 
-export const vendorOptions = map(VENDOR_TYPES, (value, key) => {
+export const vendorOptions = map(VENDOR_TYPES, (obj, key) => {
   return {
-    label: value,
+    label: obj.text,
     value: key,
   };
 });

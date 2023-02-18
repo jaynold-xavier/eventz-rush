@@ -8,7 +8,7 @@ export const vendors = [
     username: "jamesIam",
     email: "jay@random.com",
     title: "James Rod",
-    type: VENDOR_TYPES.bakery,
+    type: VENDOR_TYPES.bakery.text,
     description:
       "<p>Sit aute exercitation commodo ullamco fugiat dolor aliquip pariatur aute nostrud Lorem nostrud veniam magna.</p>",
     phone: "7448290434",
@@ -19,7 +19,7 @@ export const vendors = [
     username: "jamesIam",
     email: "tell@random.com",
     title: "James Rod",
-    type: VENDOR_TYPES.bakery,
+    type: VENDOR_TYPES.musicians.text,
     description:
       "<p>Sit aute exercitation commodo ullamco fugiat dolor aliquip pariatur aute nostrud Lorem nostrud veniam magna.</p>",
     phone: "7448290434",
@@ -30,23 +30,23 @@ export const vendors = [
     username: "jamesIam",
     email: "2342@random.com",
     title: "James Rod",
-    type: VENDOR_TYPES.media,
+    type: VENDOR_TYPES.media.text,
     description:
       "<p>Sit aute exercitation commodo ullamco fugiat dolor aliquip pariatur aute nostrud Lorem nostrud veniam magna.</p>",
     phone: "7448290434",
     profilePicUrl: "https://randomuser.me/api/portraits/men/29.jpg",
   },
-  // {
-  //   id: random(),
-  //   username: "jamesIam",
-  //   email: "2342@random.com",
-  //   title: "James Rod",
-  //   type: VENDOR_TYPES.venueProviders,
-  //   description:
-  //     "<p>Sit aute exercitation commodo ullamco fugiat dolor aliquip pariatur aute nostrud Lorem nostrud veniam magna.</p>",
-  //   phone: "7448290434",
-  //   profilePicUrl: "https://randomuser.me/api/portraits/men/19.jpg",
-  // },
+  {
+    id: random(),
+    username: "jamesIam",
+    email: "2342@random.com",
+    title: "James Rod",
+    type: VENDOR_TYPES.venueProviders.text,
+    description:
+      "<p>Sit aute exercitation commodo ullamco fugiat dolor aliquip pariatur aute nostrud Lorem nostrud veniam magna.</p>",
+    phone: "7448290434",
+    profilePicUrl: "https://randomuser.me/api/portraits/men/19.jpg",
+  },
 ];
 
 export const vendor = {
@@ -54,11 +54,13 @@ export const vendor = {
   username: "jamesIam",
   email: "jay@random.com",
   title: "James Rod",
-  type: VENDOR_TYPES.bakery,
+  type: VENDOR_TYPES.caterers.text,
   description:
     "<p>Sit aute exercitation commodo ullamco fugiat dolor aliquip pariatur aute nostrud Lorem nostrud veniam magna.</p>",
   services:
     "<p>Sit aute exercitation commodo ullamco fugiat dolor aliquip pariatur aute nostrud Lorem nostrud veniam magna.</p>",
   phone: "7448290434",
   profilePicUrl: "https://randomuser.me/api/portraits/men/79.jpg",
+  status: "Available",
+  experience: 5,
 };

@@ -11,8 +11,9 @@ import {
   Typography,
 } from "antd";
 import { Content } from "antd/es/layout/layout";
-import { VendorStatusIcon } from "../../../components/icons";
-import appTheme from "../../../assets/js/theme";
+
+import appTheme from "../../../../assets/js/theme";
+import StatusIcon from "./StatusIcon";
 
 const avatarProps = {
   shape: "circle",
@@ -51,12 +52,12 @@ export default function ListItem({ data, loading, goToDetails, ...rest }) {
           >
             <div className="d-inline-block position-relative">
               <Avatar
-                className="vendor-item-avatar"
+                className="user-avatar"
                 src={profilePicUrl}
                 {...avatarProps}
               />
 
-              <VendorStatusIcon
+              <StatusIcon
                 className="position-absolute font-24"
                 status="Available"
                 style={{ top: 0, right: 0 }}
