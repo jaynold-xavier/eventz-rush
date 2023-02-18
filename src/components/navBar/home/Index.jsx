@@ -27,7 +27,7 @@ const items = [
     key: appRoutes.vendors.list,
     label: <NavLink to={appRoutes.vendors.list}>Vendors</NavLink>,
   },
-  ...["faq", "contactUs"].map((route) => {
+  ...["faq"].map((route) => {
     return {
       key: appRoutes[route],
       label: <NavLink to={appRoutes[route]}>{startCase(route)}</NavLink>,
@@ -36,11 +36,14 @@ const items = [
   {
     key: appRoutes.login,
     label: (
-      <Link to={appRoutes.login}>
-        <Button type="primary" shape="round" icon={<UserOutlined />}>
+      <Button.Group>
+        <Button type="primary" shape="round">
           Login
         </Button>
-      </Link>
+        <Button type="primary" shape="round">
+          Register
+        </Button>
+      </Button.Group>
     ),
   },
   // {
@@ -57,8 +60,7 @@ export default function Navbar() {
     <ConfigProvider
       theme={{
         token: {
-          colorPrimary: "#24b1c6",
-          colorText: "#38e5ff",
+          colorPrimary: "#2dc3d9",
         },
       }}
     >

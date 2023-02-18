@@ -6,7 +6,6 @@ import {
   Card,
   Col,
   ConfigProvider,
-  Image,
   Layout,
   Row,
   Skeleton,
@@ -18,8 +17,6 @@ import {
 
 import useBackground from "../../../hooks/useBackground";
 import { vendor } from "../../../assets/js/mockData";
-import { VENDOR_STATUSES } from "../../../constants/app";
-import StatusIcon from "../list/templates/StatusIcon";
 
 const { Header, Content } = Layout;
 
@@ -32,8 +29,6 @@ export default function VendorDetails() {
   const { id } = useParams();
 
   useBackground("linear-gradient(45deg, #9164ff, #7e5bff, #7f66ff)");
-
-  const Icon = VENDOR_STATUSES.available.icon;
 
   return (
     <Layout className="vendor-details-layout">
@@ -60,11 +55,6 @@ export default function VendorDetails() {
                       className="user-avatar"
                       src={vendor.profilePicUrl}
                       {...avatarProps}
-                    />
-
-                    <StatusIcon
-                      status="Available"
-                      style={{ top: 5, right: 10 }}
                     />
                   </div>
                 </Skeleton>

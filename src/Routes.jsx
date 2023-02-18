@@ -14,7 +14,6 @@ import { HomePageFooter } from "./components/page";
 import { HomeNavBar } from "./components/navBar";
 
 import {
-  Contact,
   FAQ,
   Home,
   Login,
@@ -33,7 +32,6 @@ export default function Routes({ isAuthenticated, userRole }) {
         {/* Unsigned Routes that need main navbar */}
         <Route path={appRoutes.home} element={<LayoutWithNavBar />}>
           <Route path={appRoutes.home} element={<Home />} />
-          <Route path={appRoutes.contactUs} element={<Contact />} />
           <Route path={appRoutes.faq} element={<FAQ />} />
           <Route path={appRoutes.vendors.list} element={<VendorsList />} />
           <Route

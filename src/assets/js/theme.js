@@ -30,7 +30,7 @@ const appTheme = {
   colorPrimary: "#6252f1",
   // colorPrimaryActive: "#fff",
   colorLink: "#6252f1",
-  colorLinkHover: "#24b1c6",
+  colorLinkHover: "#2dc3d9",
   colorLinkActive: "#ffb13d",
   fontSize: isMobileView ? fontSize - 4 : fontSize,
   fontFamily: "Lato",
@@ -39,7 +39,7 @@ const appTheme = {
   fontWeightStrong: 800,
   colorTextHeading: "#0e1318",
   colorText: "#1b1b1b",
-  colorTextSecondary: "#24b1c6",
+  colorTextSecondary: "#2dc3d9",
   colorTextBase: "#121022",
 };
 

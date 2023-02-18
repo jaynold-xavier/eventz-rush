@@ -13,7 +13,6 @@ import {
 import { Content } from "antd/es/layout/layout";
 
 import appTheme from "../../../../assets/js/theme";
-import StatusIcon from "./StatusIcon";
 
 const avatarProps = {
   shape: "circle",
@@ -21,8 +20,7 @@ const avatarProps = {
 };
 
 export default function ListItem({ data, loading, goToDetails, ...rest }) {
-  const { id, email, status, title, type, description, phone, profilePicUrl } =
-    data;
+  const { id, email, title, type, description, phone, profilePicUrl } = data;
 
   const descriptionRender = (
     <div dangerouslySetInnerHTML={{ __html: description }} />
@@ -44,12 +42,6 @@ export default function ListItem({ data, loading, goToDetails, ...rest }) {
         ]}
       >
         <Content className="vendor-item-content text-center">
-          <StatusIcon
-            className="position-absolute text-uppercase rounded-0"
-            status={status}
-            style={{ top: 10, left: 0 }}
-          />
-
           <Skeleton
             avatar={avatarProps}
             title={false}

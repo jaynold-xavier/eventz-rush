@@ -1,4 +1,3 @@
-import { CheckCircleTwoTone, StopTwoTone } from "@ant-design/icons";
 import { Tag } from "antd";
 
 export const USER_ROLES = {
@@ -28,31 +27,6 @@ export const VENDOR_TYPES = {
   },
   bakery: {
     text: "Bakery",
-  },
-};
-
-export const VENDOR_STATUSES = {
-  available: {
-    text: "Available",
-    color: "#44c980",
-    get icon() {
-      return (props) => (
-        <Tag color={this.color} {...props}>
-          {this.text}
-        </Tag>
-      );
-    },
-  },
-  unavailable: {
-    text: "Unavailable",
-    color: "#9f9f9f",
-    get icon() {
-      return (props) => (
-        <Tag color={this.color} {...props}>
-          {this.text}
-        </Tag>
-      );
-    },
   },
 };
 
