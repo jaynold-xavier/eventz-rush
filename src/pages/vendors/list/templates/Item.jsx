@@ -21,7 +21,8 @@ const avatarProps = {
 };
 
 export default function ListItem({ data, loading, goToDetails, ...rest }) {
-  const { id, email, title, type, description, phone, profilePicUrl } = data;
+  const { id, email, status, title, type, description, phone, profilePicUrl } =
+    data;
 
   const descriptionRender = (
     <div dangerouslySetInnerHTML={{ __html: description }} />
@@ -43,6 +44,12 @@ export default function ListItem({ data, loading, goToDetails, ...rest }) {
         ]}
       >
         <Content className="vendor-item-content text-center">
+          <StatusIcon
+            className="position-absolute text-uppercase rounded-0"
+            status={status}
+            style={{ top: 10, left: 0 }}
+          />
+
           <Skeleton
             avatar={avatarProps}
             title={false}
@@ -56,17 +63,11 @@ export default function ListItem({ data, loading, goToDetails, ...rest }) {
                 src={profilePicUrl}
                 {...avatarProps}
               />
-
-              <StatusIcon
-                className="position-absolute font-24"
-                status="Available"
-                style={{ top: 0, right: 0 }}
-              />
             </div>
           </Skeleton>
 
           <Skeleton paragraph={{ rows: 1 }} loading={loading} active>
-            <Typography.Title className="text-uppercase mb-0 mt-1" level={5}>
+            <Typography.Title className="mb-0 mt-1" level={5}>
               {title}
             </Typography.Title>
 
@@ -93,6 +94,20 @@ export default function ListItem({ data, loading, goToDetails, ...rest }) {
         <Content className="vendor-item-content text-left">
           <Skeleton title loading={loading} active>
             <Space>
+              <InfoCircleOutlined
+                className="font-14"
+                style={{ color: appTheme.colorPrimary }}
+              />
+              <strong>About</strong>
+            </Space>
+            <Typography.Paragraph
+              className="vendor-item-description"
+              ellipsis={{ rows: 3, tooltip: descriptionRender }}
+            >
+              {descriptionRender}
+            </Typography.Paragraph>
+
+            <Space>
               <PhoneFilled
                 className="font-14"
                 style={{ color: appTheme.colorPrimary }}
@@ -118,20 +133,6 @@ export default function ListItem({ data, loading, goToDetails, ...rest }) {
                 {email}
               </a>
             </Typography.Text>
-
-            <Space className="mt-3">
-              <InfoCircleOutlined
-                className="font-14"
-                style={{ color: appTheme.colorPrimary }}
-              />
-              <strong>About</strong>
-            </Space>
-            <Typography.Paragraph
-              className="vendor-item-description"
-              ellipsis={{ rows: 3, tooltip: descriptionRender }}
-            >
-              {descriptionRender}
-            </Typography.Paragraph>
           </Skeleton>
         </Content>
       </Card>

@@ -9,6 +9,7 @@ import {
   Image,
   Layout,
   Row,
+  Skeleton,
   Space,
   Tabs,
   Tag,
@@ -18,8 +19,14 @@ import {
 import useBackground from "../../../hooks/useBackground";
 import { vendor } from "../../../assets/js/mockData";
 import { VENDOR_STATUSES } from "../../../constants/app";
+import StatusIcon from "../list/templates/StatusIcon";
 
 const { Header, Content } = Layout;
+
+const avatarProps = {
+  shape: "circle",
+  size: { xs: 100, sm: 130, md: 120, lg: 120, xl: 150, xxl: 150 },
+};
 
 export default function VendorDetails() {
   const { id } = useParams();
@@ -39,17 +46,31 @@ export default function VendorDetails() {
           }}
         >
           <Card bordered={false}>
-            <Row gutter={[24, 24]}>
-              <Col span={4}>
-                <Image
-                  className="user-avatar"
-                  src={vendor.profilePicUrl}
-                  width="100%"
-                  preview={false}
-                />
+            <Row align="middle" gutter={[24, 24]}>
+              <Col xs={3} sm={3} lg={3} md={3} xl={3} xxl={3}>
+                <Skeleton
+                  avatar={avatarProps}
+                  title={false}
+                  paragraph={false}
+                  loading={false}
+                  active
+                >
+                  <div className="d-inline-block position-relative">
+                    <Avatar
+                      className="user-avatar"
+                      src={vendor.profilePicUrl}
+                      {...avatarProps}
+                    />
+
+                    <StatusIcon
+                      status="Available"
+                      style={{ top: 5, right: 10 }}
+                    />
+                  </div>
+                </Skeleton>
               </Col>
 
-              <Col span={13}>
+              <Col xs={8} sm={8} lg={8} md={8} xl={8} xxl={8}>
                 <Typography.Title
                   className="user-name mb-0"
                   level={2}
@@ -64,10 +85,40 @@ export default function VendorDetails() {
                 >
                   {vendor.type}
                 </Tag>
+              </Col>
 
-                <br />
+              <Col span={9}>
+                <Row>
+                  <Col span={12}>
+                    <Space direction="vertical" size={12}>
+                      <strong>Phone</strong>
 
-                <Space className="user-actions mt-3" size={12}>
+                      <strong>Email</strong>
+
+                      <strong>Years of Experience</strong>
+                    </Space>
+                  </Col>
+
+                  <Col span={12}>
+                    <Space direction="vertical" size={12}>
+                      <div>{vendor.phone}</div>
+
+                      <a className="d-block" href={`mailto:${vendor.email}`}>
+                        {vendor.email}
+                      </a>
+
+                      <div>{vendor.experience}</div>
+                    </Space>
+                  </Col>
+                </Row>
+              </Col>
+
+              <Col className="d-flex" span={4}>
+                <Space
+                  direction="vertical"
+                  className="user-actions ml-auto"
+                  size={12}
+                >
                   <Button type="primary" size="large">
                     Contact
                   </Button>
@@ -78,46 +129,20 @@ export default function VendorDetails() {
                 </Space>
               </Col>
 
-              <Col span={3}>
-                <Space direction="vertical" size={12}>
-                  <strong>Availability</strong>
-
-                  <strong>Phone</strong>
-
-                  <strong>Email</strong>
-
-                  <strong>Years of Experience</strong>
-                </Space>
-              </Col>
-
-              <Col span={4}>
-                <Space direction="vertical" size={12}>
-                  <Space>
-                    <Icon className="font-18" />
-                    <span>{vendor.status}</span>
-                  </Space>
-
-                  <div>{vendor.phone}</div>
-
-                  <a className="d-block" href={`mailto:${vendor.email}`}>
-                    {vendor.email}
-                  </a>
-
-                  <div>{vendor.experience}</div>
-                </Space>
+              <Col span={24}>
+                <strong>About</strong>
+                <div dangerouslySetInnerHTML={{ __html: vendor.description }} />
               </Col>
             </Row>
           </Card>
         </ConfigProvider>
       </Header>
 
-      <Content className="vendors-list-content container">
-        <Card bodyStyle={{ padding: 0 }} bordered={false}>
-          <Tabs size="large">
-            <Tabs.TabPane key="services" tab="Services"></Tabs.TabPane>
-            <Tabs.TabPane key="events" tab="Events"></Tabs.TabPane>
-          </Tabs>
-        </Card>
+      <Content className="vendor-details-content">
+        <Tabs className="tabs-container" size="large">
+          <Tabs.TabPane key="services" tab="Services"></Tabs.TabPane>
+          <Tabs.TabPane key="photos" tab="Photos"></Tabs.TabPane>
+        </Tabs>
       </Content>
     </Layout>
   );

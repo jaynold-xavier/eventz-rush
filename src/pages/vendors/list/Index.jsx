@@ -22,6 +22,13 @@ export default function VendorsList() {
 
           <List />
         </div>
+
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
       </Content>
     </Layout>
   );

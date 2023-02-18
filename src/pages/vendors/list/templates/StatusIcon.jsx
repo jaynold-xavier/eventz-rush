@@ -10,9 +10,5 @@ export default function StatusIcon({ status, ...rest }) {
   if (!statusObj) return;
 
   const Icon = statusObj.icon;
-  return (
-    <Tooltip title={statusObj.text}>
-      <Icon {...rest} />
-    </Tooltip>
-  );
+  return <Icon {...rest} />;
 }

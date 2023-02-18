@@ -9,7 +9,10 @@ import "./assets/styles/index.less";
 import Routes from "./Routes";
 import appTheme from "./assets/js/theme";
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const element = document.getElementById("root");
+element.style.setProperty("--primary-color", appTheme.colorPrimary);
+const root = ReactDOM.createRoot(element);
+
 root.render(
   <React.StrictMode>
     <ConfigProvider

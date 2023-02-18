@@ -1,4 +1,5 @@
 import { CheckCircleTwoTone, StopTwoTone } from "@ant-design/icons";
+import { Tag } from "antd";
 
 export const USER_ROLES = {
   host: {
@@ -33,10 +34,12 @@ export const VENDOR_TYPES = {
 export const VENDOR_STATUSES = {
   available: {
     text: "Available",
-    color: "#24b1c6",
+    color: "#44c980",
     get icon() {
       return (props) => (
-        <CheckCircleTwoTone twoToneColor={this.color} {...props} />
+        <Tag color={this.color} {...props}>
+          {this.text}
+        </Tag>
       );
     },
   },
@@ -44,7 +47,11 @@ export const VENDOR_STATUSES = {
     text: "Unavailable",
     color: "#9f9f9f",
     get icon() {
-      return (props) => <StopTwoTone twoToneColor={this.color} {...props} />;
+      return (props) => (
+        <Tag color={this.color} {...props}>
+          {this.text}
+        </Tag>
+      );
     },
   },
 };

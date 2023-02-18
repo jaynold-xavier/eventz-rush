@@ -13,6 +13,7 @@ export const vendors = [
       "<p>Sit aute exercitation commodo ullamco fugiat dolor aliquip pariatur aute nostrud Lorem nostrud veniam magna.</p>",
     phone: "7448290434",
     profilePicUrl: "https://randomuser.me/api/portraits/men/79.jpg",
+    status: "Unavailable",
   },
   {
     id: random(),
@@ -24,6 +25,7 @@ export const vendors = [
       "<p>Sit aute exercitation commodo ullamco fugiat dolor aliquip pariatur aute nostrud Lorem nostrud veniam magna.</p>",
     phone: "7448290434",
     profilePicUrl: "https://randomuser.me/api/portraits/men/59.jpg",
+    status: "Available",
   },
   {
     id: random(),
@@ -35,6 +37,7 @@ export const vendors = [
       "<p>Sit aute exercitation commodo ullamco fugiat dolor aliquip pariatur aute nostrud Lorem nostrud veniam magna.</p>",
     phone: "7448290434",
     profilePicUrl: "https://randomuser.me/api/portraits/men/29.jpg",
+    status: "Unavailable",
   },
   {
     id: random(),
@@ -46,6 +49,7 @@ export const vendors = [
       "<p>Sit aute exercitation commodo ullamco fugiat dolor aliquip pariatur aute nostrud Lorem nostrud veniam magna.</p>",
     phone: "7448290434",
     profilePicUrl: "https://randomuser.me/api/portraits/men/19.jpg",
+    status: "Available",
   },
 ];
 
