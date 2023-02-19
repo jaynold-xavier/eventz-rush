@@ -10,7 +10,7 @@ import Routes from "./Routes";
 import appTheme from "./assets/js/theme";
 
 const element = document.getElementById("root");
-element.style.setProperty("--primary-color", appTheme.colorPrimary);
+element.style.setProperty("--color-primary", appTheme.colorPrimary);
 const root = ReactDOM.createRoot(element);
 
 root.render(

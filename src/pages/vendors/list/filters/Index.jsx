@@ -62,22 +62,22 @@ export default function Filters() {
             </Form.Item>
           </Col>
 
-          <Col lg={6} md={12} sm={12} xs={12}>
-            <Form.Item name="event" noStyle>
-              <Select
-                className="w-100"
-                size="large"
-                placeholder="Select Events List"
-              />
-            </Form.Item>
-          </Col>
-
           <Col lg={12} md={24} sm={24} xs={24}>
             <Form.Item name="availability" noStyle>
               <DatePicker.RangePicker
                 className="w-100"
                 placeholder={["Available From", "Available Till"]}
                 format={DISPLAY_DATE_FORMAT}
+              />
+            </Form.Item>
+          </Col>
+
+          <Col lg={6} md={12} sm={12} xs={12}>
+            <Form.Item name="event" noStyle>
+              <Select
+                className="w-100"
+                size="large"
+                placeholder="Select Events List"
               />
             </Form.Item>
           </Col>

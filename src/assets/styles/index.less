@@ -31,12 +31,14 @@
   @media @tablet-screen {
     font-size: @font-size - 2;
   }
+
+  --error-color: red;
 }
 
 html,
 body,
 body > #root {
-  min-height: 100vh;
+  height: 100vh;
   margin: 0;
 }
 
@@ -168,7 +170,7 @@ section {
       font-weight: bold;
 
       .ant-collapse-expand-icon {
-        background: #6252f1;
+        background: var(--color-primary);
         justify-content: flex-start;
         color: #fff;
         stroke: #fff;
@@ -186,8 +188,8 @@ section {
 
     &.ant-collapse-item-active {
       .ant-collapse-header {
-        border-bottom: 2px solid #6252f1;
-        color: #6252f1;
+        border-bottom: 2px solid var(--color-primary);
+        color: var(--color-primary);
       }
     }
   }

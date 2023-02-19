@@ -1,5 +1,6 @@
+import { ArrowLeftOutlined } from "@ant-design/icons";
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Avatar,
   Button,
@@ -14,12 +15,12 @@ import {
   Tag,
   Typography,
 } from "antd";
+import { find } from "lodash";
 
 import useBackground from "../../../hooks/useBackground";
 import { vendors } from "../../../assets/js/mockData";
 import Services from "./services/Index";
 import Photos from "./photos/Index";
-import { find } from "lodash";
 
 const { Header, Content } = Layout;
 
@@ -30,6 +31,7 @@ const avatarProps = {
 
 export default function VendorDetails() {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   useBackground("linear-gradient(45deg, #9164ff, #7e5bff, #7f66ff)");
 
@@ -38,6 +40,29 @@ export default function VendorDetails() {
   return (
     <Layout className="vendor-details-layout">
       <Header prefixCls="vendor-general-info" className="container">
+        <ConfigProvider
+          theme={{
+            token: {
+              colorLinkActive: "#fff",
+              colorLink: "#fff",
+              colorPrimary: "#30cfe7",
+              colorText: "#63f8e9",
+            },
+          }}
+        >
+          <Button
+            className="p-0"
+            type="link"
+            icon={<ArrowLeftOutlined />}
+            onClick={(e) => navigate(-1)}
+          >
+            Back
+          </Button>
+        </ConfigProvider>
+
+        <br />
+        <br />
+
         <ConfigProvider
           theme={{
             token: {
@@ -91,6 +116,8 @@ export default function VendorDetails() {
                       <strong>Email</strong>
 
                       <strong>Years of Experience</strong>
+
+                      <strong>Website</strong>
                     </Space>
                   </Col>
 
@@ -103,6 +130,8 @@ export default function VendorDetails() {
                       </a>
 
                       <div>{vendor.experience}</div>
+
+                      <div>{vendor.website}</div>
                     </Space>
                   </Col>
                 </Row>

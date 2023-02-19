@@ -16,6 +16,7 @@ export const vendors = [
     phone: "7448290434",
     profilePicUrl: "https://randomuser.me/api/portraits/men/79.jpg",
     experience: 5,
+    website: "https://google.com",
   },
   {
     id: random(),
