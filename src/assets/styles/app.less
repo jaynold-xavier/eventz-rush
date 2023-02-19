@@ -29,8 +29,8 @@
     color: #fff;
 
     > li {
-      text-transform: uppercase;
       font-weight: 600;
+      letter-spacing: 2px;
 
       &::after {
         border-bottom: none !important;
@@ -225,32 +225,23 @@
 }
 
 .landing-footer {
-  position: relative;
-  background: #fefcff;
-  // padding: 10px 0;
-  font-weight: bold;
+  background: #120f28;
+  color: #a7a7a7;
+  font-size: 14px;
 
-  .container-absolute {
-    bottom: 0;
-    z-index: 1;
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    @media @mobile-screen {
+      justify-content: center;
+    }
   }
 
-  .shape-divider {
-    width: 100%;
-    overflow: hidden;
-    line-height: 0;
-    transform: rotate(180deg);
-
-    svg {
-      position: relative;
-      display: block;
-      width: calc(100% + 1.3px);
-      height: 10rem;
-    }
-
-    .shape-fill {
-      fill: #ece6ff;
-    }
+  .ant-divider {
+    border-color: #1b1930;
+    margin: 10px 0;
   }
 }
 
@@ -321,8 +312,6 @@
 
 .vendors-list-layout {
   .vendors-list-content {
-    background-color: @fore-color;
-
     .ant-card.vendors-list-filters {
       .card-glow(#5d4ee6);
     }
@@ -393,7 +382,6 @@
 
       .user-actions {
         button {
-          width: 9rem;
           height: 3rem;
         }
       }

@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import React from "react";
-import { Avatar, List, Skeleton } from "antd";
+import { Avatar, Empty, List, Skeleton } from "antd";
 
 import { vendors } from "../../../assets/js/mockData";
 import { appRoutes } from "../../../constants/routes";
@@ -29,6 +29,7 @@ export default function VendorsList({ ...rest }) {
         xxl: 4,
       }}
       renderItem={renderItem}
+      locale={{ emptyText: <Empty description="No Vendors available" /> }}
       {...rest}
     />
   );

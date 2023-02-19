@@ -1,15 +1,7 @@
 import { UserOutlined } from "@ant-design/icons";
 import React from "react";
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
-import {
-  Affix,
-  Button,
-  ConfigProvider,
-  Divider,
-  Image,
-  Menu,
-  Space,
-} from "antd";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Affix, Button, ConfigProvider, Divider, Image, Menu } from "antd";
 import { startCase } from "lodash";
 
 import AppLogo from "../../../assets/images/logos/app.svg";
@@ -46,24 +38,24 @@ export default function Navbar() {
     ...["faq"].map((route) => {
       return {
         key: appRoutes[route],
-        label: startCase(route),
+        label: route.toUpperCase(),
         onClick: (e) => goToPage(appRoutes[route]),
       };
     }),
     {
       key: appRoutes.login,
-      className: "ml-5",
-      label: startCase("Login"),
+      label: <Button type="primary" ghost>Sign in</Button>,
       onClick: (e) => goToPage(appRoutes.login),
     },
-    {
-      key: "divider",
-      label: <Divider type="vertical" />,
-      className: "p-0",
-    },
+    // {
+    //   key: "divider",
+    //   label: <Divider type="vertical" />,
+    //   className: "p-0",
+    // },
     {
       key: appRoutes.register,
-      label: <Button type="primary">Register</Button>,
+      className: "pl-0",
+      label: <Button type="primary">Sign up</Button>,
       onClick: (e) => goToPage(appRoutes.register),
     },
     // {
@@ -77,8 +69,8 @@ export default function Navbar() {
     <ConfigProvider
       theme={{
         token: {
-          colorPrimary: "#2dc3d9",
-          colorText: "#40e0d0",
+          colorPrimary: "#30cfe7",
+          colorText: "#63f8e9",
         },
       }}
     >

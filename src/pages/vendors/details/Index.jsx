@@ -119,14 +119,14 @@ export default function VendorDetails() {
               >
                 <Space
                   direction="vertical"
-                  className="user-actions ml-auto"
+                  className="user-actions w-100"
                   size={12}
                 >
-                  <Button type="primary" size="large">
+                  <Button type="primary" size="large" block>
                     Contact
                   </Button>
 
-                  <Button type="primary" size="large" ghost>
+                  <Button type="primary" size="large" ghost block>
                     Contact
                   </Button>
                 </Space>

@@ -1,3 +1,4 @@
+import { ArrowRightOutlined } from "@ant-design/icons";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -63,6 +64,7 @@ export default function LandingSection() {
               onClick={(e) => navigate(appRoutes.register)}
             >
               Get Started
+              <ArrowRightOutlined className="ml-3" />
             </Button>
           </ConfigProvider>
         </div>
