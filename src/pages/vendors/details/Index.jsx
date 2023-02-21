@@ -21,6 +21,7 @@ import useBackground from "../../../hooks/useBackground";
 import { vendors } from "../../../assets/js/mockData";
 import Services from "./services/Index";
 import Photos from "./photos/Index";
+import { navLinkTheme } from "../../../assets/js/theme";
 
 const { Header, Content } = Layout;
 
@@ -43,10 +44,8 @@ export default function VendorDetails() {
         <ConfigProvider
           theme={{
             token: {
-              colorLinkActive: "#fff",
               colorLink: "#fff",
-              colorPrimary: "#30cfe7",
-              colorText: "#63f8e9",
+              ...navLinkTheme,
             },
           }}
         >
@@ -169,6 +168,10 @@ export default function VendorDetails() {
           </Card>
         </ConfigProvider>
       </Header>
+
+      <br />
+      <br />
+      <br />
 
       <Content className="vendor-details-content">
         <Tabs className="tabs-container" size="large">

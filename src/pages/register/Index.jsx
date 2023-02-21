@@ -3,6 +3,7 @@ import {
   FacebookOutlined,
   UserOutlined,
   LockTwoTone,
+  ArrowRightOutlined,
 } from "@ant-design/icons";
 import React from "react";
 import { Link } from "react-router-dom";
@@ -13,7 +14,7 @@ import RegisterImg from "../../assets/images/form/register.svg";
 import EmailIcon from "../../assets/images/form/email.png";
 
 import { appRoutes } from "../../constants/routes";
-import appTheme from "../../assets/js/theme";
+import { appTheme } from "../../assets/js/theme";
 
 const { Content } = Layout;
 
@@ -105,13 +106,14 @@ export default function Register() {
 
             <Form.Item className="center">
               <Button
-                className="save-btn"
+                className="save-btn icon-animated-button"
                 type="primary"
                 htmlType="submit"
                 shape="round"
                 size="large"
               >
                 Register
+                <ArrowRightOutlined />
               </Button>
             </Form.Item>
           </Form>

@@ -26,7 +26,7 @@
 const isMobileView = document.documentElement.clientWidth <= 768;
 const fontSize = 16;
 
-const appTheme = {
+export const appTheme = {
   colorPrimary: "#6252f1",
   // colorPrimaryActive: "#fff",
   colorLink: "#6252f1",
@@ -43,4 +43,8 @@ const appTheme = {
   colorTextBase: "#121022",
 };
 
-module.exports = appTheme;
+export const navLinkTheme = {
+  colorPrimary: "#59d7eb",
+  colorText: "#3bfdb2",
+  colorLinkHover: "#3bfdb2",
+};

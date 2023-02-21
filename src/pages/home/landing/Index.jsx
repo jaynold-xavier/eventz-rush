@@ -57,14 +57,14 @@ export default function LandingSection() {
             }}
           >
             <Button
-              className="register-btn"
+              className="register-btn icon-animated-button"
               type="primary"
               size="large"
               // shape="round"
               onClick={(e) => navigate(appRoutes.register)}
             >
               Get Started
-              <ArrowRightOutlined className="ml-3" />
+              <ArrowRightOutlined className="font-18" />
             </Button>
           </ConfigProvider>
         </div>

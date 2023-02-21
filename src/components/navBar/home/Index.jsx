@@ -1,12 +1,12 @@
 import { UserOutlined } from "@ant-design/icons";
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Affix, Button, ConfigProvider, Divider, Image, Menu } from "antd";
-import { startCase } from "lodash";
+import { Affix, Button, ConfigProvider, Image, Menu } from "antd";
 
 import AppLogo from "../../../assets/images/logos/app.svg";
 
 import { appRoutes } from "../../../constants/routes";
+import { navLinkTheme } from "../../../assets/js/theme";
 
 export default function Navbar() {
   const location = useLocation();
@@ -44,7 +44,11 @@ export default function Navbar() {
     }),
     {
       key: appRoutes.login,
-      label: <Button type="primary" ghost>Sign in</Button>,
+      label: (
+        <Button type="primary" ghost>
+          Sign in
+        </Button>
+      ),
       onClick: (e) => goToPage(appRoutes.login),
     },
     // {
@@ -69,8 +73,7 @@ export default function Navbar() {
     <ConfigProvider
       theme={{
         token: {
-          colorPrimary: "#30cfe7",
-          colorText: "#63f8e9",
+          ...navLinkTheme,
         },
       }}
     >

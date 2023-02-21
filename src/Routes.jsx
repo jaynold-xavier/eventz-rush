@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useLayoutEffect } from "react";
 import {
   Route,
   Routes as Switch,
   Outlet,
   BrowserRouter,
+  useLocation,
 } from "react-router-dom";
 import { UpOutlined } from "@ant-design/icons";
 import { FloatButton } from "antd";
@@ -28,29 +29,31 @@ import { getInBetweenCharactersRegex } from "./helpers/regex";
 export default function Routes({ isAuthenticated, userRole }) {
   return (
     <BrowserRouter>
-      <Switch>
-        {/* Unsigned Routes that need main navbar */}
-        <Route path={appRoutes.home} element={<LayoutWithNavBar />}>
-          <Route path={appRoutes.home} element={<Home />} />
-          <Route path={appRoutes.faq} element={<FAQ />} />
-          <Route path={appRoutes.vendors.list} element={<VendorsList />} />
-          <Route
-            path={processRouteUrl(appRoutes.vendors.details)}
-            element={<VendorDetails />}
-          />
-        </Route>
+      <Wrapper>
+        <Switch>
+          {/* Unsigned Routes that need main navbar */}
+          <Route path={appRoutes.home} element={<LayoutWithNavBar />}>
+            <Route path={appRoutes.home} element={<Home />} />
+            <Route path={appRoutes.faq} element={<FAQ />} />
+            <Route path={appRoutes.vendors.list} element={<VendorsList />} />
+            <Route
+              path={processRouteUrl(appRoutes.vendors.details)}
+              element={<VendorDetails />}
+            />
+          </Route>
 
-        <Route path={appRoutes.login} element={<Login />} />
-        <Route path={appRoutes.register} element={<Register />} />
+          <Route path={appRoutes.login} element={<Login />} />
+          <Route path={appRoutes.register} element={<Register />} />
 
-        <Route path="*" element={<PageNotFound />} />
-      </Switch>
+          <Route path="*" element={<PageNotFound />} />
+        </Switch>
 
-      <FloatButton.BackTop
-        className="font-24"
-        type="primary"
-        icon={<UpOutlined />}
-      />
+        <FloatButton.BackTop
+          className="font-24"
+          type="primary"
+          icon={<UpOutlined />}
+        />
+      </Wrapper>
     </BrowserRouter>
   );
 }
@@ -80,3 +83,11 @@ function processRouteUrl(url) {
     return id ? ":" + id[1] : char;
   });
 }
+
+const Wrapper = ({ children }) => {
+  const location = useLocation();
+  useLayoutEffect(() => {
+    document.documentElement.scrollTo(0, 0);
+  }, [location.pathname]);
+  return children;
+};

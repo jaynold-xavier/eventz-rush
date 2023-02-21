@@ -4,7 +4,7 @@ import { Col, DatePicker, Row, Select, Input, Form, Card } from "antd";
 
 import { DISPLAY_DATE_FORMAT } from "../../../../constants/app";
 import useVoice from "../../../../hooks/useVoice";
-import appTheme from "../../../../assets/js/theme";
+import { appTheme } from "../../../../assets/js/theme";
 import { vendorOptions } from "../../../../constants/dropdown";
 
 export default function Filters() {
@@ -50,6 +50,16 @@ export default function Filters() {
             </Form.Item>
           </Col>
 
+          <Col lg={12} md={24} sm={24} xs={24}>
+            <Form.Item name="availability" noStyle>
+              <DatePicker.RangePicker
+                className="w-100"
+                placeholder={["Available From", "Available Till"]}
+                format={DISPLAY_DATE_FORMAT}
+              />
+            </Form.Item>
+          </Col>
+
           <Col lg={6} md={12} sm={12} xs={12}>
             <Form.Item name="type" noStyle>
               <Select
@@ -62,17 +72,7 @@ export default function Filters() {
             </Form.Item>
           </Col>
 
-          <Col lg={12} md={24} sm={24} xs={24}>
-            <Form.Item name="availability" noStyle>
-              <DatePicker.RangePicker
-                className="w-100"
-                placeholder={["Available From", "Available Till"]}
-                format={DISPLAY_DATE_FORMAT}
-              />
-            </Form.Item>
-          </Col>
-
-          <Col lg={6} md={12} sm={12} xs={12}>
+          {/* <Col lg={6} md={12} sm={12} xs={12}>
             <Form.Item name="event" noStyle>
               <Select
                 className="w-100"
@@ -80,7 +80,7 @@ export default function Filters() {
                 placeholder="Select Events List"
               />
             </Form.Item>
-          </Col>
+          </Col> */}
         </Row>
       </Form>
     </Card>

@@ -2,6 +2,7 @@ import {
   GoogleOutlined,
   FacebookOutlined,
   UserOutlined,
+  ArrowRightOutlined,
   LockTwoTone,
 } from "@ant-design/icons";
 import React from "react";
@@ -21,7 +22,7 @@ import AppLogo from "../../assets/images/logos/app.svg";
 import LoginImg from "../../assets/images/form/login.svg";
 
 import { appRoutes } from "../../constants/routes";
-import appTheme from "../../assets/js/theme";
+import { appTheme } from "../../assets/js/theme";
 
 const { Content } = Layout;
 
@@ -90,13 +91,14 @@ export default function Login() {
 
             <Form.Item className="center">
               <Button
-                className="save-btn"
+                className="save-btn icon-animated-button"
                 type="primary"
                 htmlType="submit"
                 shape="round"
                 size="large"
               >
                 Login
+                <ArrowRightOutlined />
               </Button>
             </Form.Item>
           </Form>

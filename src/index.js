@@ -7,7 +7,7 @@ import reportWebVitals from "./reportWebVitals";
 import "./assets/styles/index.less";
 
 import Routes from "./Routes";
-import appTheme from "./assets/js/theme";
+import { appTheme } from "./assets/js/theme";
 
 const element = document.getElementById("root");
 element.style.setProperty("--color-primary", appTheme.colorPrimary);

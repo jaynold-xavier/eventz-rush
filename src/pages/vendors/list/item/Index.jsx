@@ -12,7 +12,7 @@ import {
 } from "antd";
 import { Content } from "antd/es/layout/layout";
 
-import appTheme from "../../../../assets/js/theme";
+import { appTheme } from "../../../../assets/js/theme";
 
 const avatarProps = {
   shape: "circle",
@@ -106,7 +106,7 @@ export default function ListItem({ data, loading, goToDetails, ...rest }) {
               />
               <strong>Phone</strong>
             </Space>
-            <div className="text-grey font-14">{phone}</div>
+            <div className="font-14">{phone}</div>
 
             <Space className="mt-3">
               <MailFilled
