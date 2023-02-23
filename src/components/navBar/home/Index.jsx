@@ -45,9 +45,17 @@ export default function Navbar() {
     {
       key: appRoutes.login,
       label: (
-        <Button type="primary" ghost>
-          Sign in
-        </Button>
+        <ConfigProvider
+          theme={{
+            token: {
+              colorPrimary: "#3bfdb2",
+            },
+          }}
+        >
+          <Button type="primary" ghost>
+            Sign in
+          </Button>
+        </ConfigProvider>
       ),
       onClick: (e) => goToPage(appRoutes.login),
     },

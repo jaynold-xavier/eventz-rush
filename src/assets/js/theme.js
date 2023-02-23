@@ -44,7 +44,10 @@ export const appTheme = {
 };
 
 export const navLinkTheme = {
-  colorPrimary: "#59d7eb",
+  colorPrimary: "#24b1c6",
   colorText: "#3bfdb2",
   colorLinkHover: "#3bfdb2",
+  // colorPrimaryHover: "#3bfdb2",
+  colorPrimaryActive: "#3bfdb2",
+  colorPrimaryTextHover: "#3bfdb2",
 };

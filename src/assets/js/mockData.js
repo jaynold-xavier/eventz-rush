@@ -2,6 +2,7 @@ import { random } from "lodash";
 
 import { VENDOR_TYPES } from "../../constants/app";
 
+// TODO: delete later
 export const vendors = [
   {
     id: random(),

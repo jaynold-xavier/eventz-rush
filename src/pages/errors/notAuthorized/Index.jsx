@@ -1,50 +1,64 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { Button, Layout, Divider, Image } from "antd";
+import { Button, Layout, Image, ConfigProvider } from "antd";
 
-import Error404Image from "../../../assets/images/errors/404.svg";
+import Error401Image from "../../../assets/images/errors/401.svg";
 import BlobShape from "../../../assets/images/shapes/shape-2.svg";
-
-import { appRoutes } from "../../../constants/routes";
+import { useNavigate } from "react-router-dom";
 
 const { Content } = Layout;
 
+const hueColor = 0;
+
 export default function PageNotAuthorized() {
+  const navigate = useNavigate();
+
   return (
-    <Layout
-      className="page-error-layout center"
-      style={{ "--error-color": "#d90505" }}
+    <ConfigProvider
+      theme={{
+        token: {
+          colorPrimary: `hsl(${hueColor}, 100%, 70%)`,
+          colorLink: "#fff",
+        },
+      }}
     >
-      <div className="container center">
-        <Content prefixCls="error-content">
-          <h1 className="error-code mb-0">401</h1>
-          <h2 className="error-subtitle"> Forbidden</h2>
+      <Layout
+        className="page-error-layout center"
+        style={{ "--error-color": hueColor }}
+      >
+        <div className="container center">
+          <Content prefixCls="error-content">
+            <h1 className="error-code mb-0">401</h1>
+            <h2 className="error-subtitle"> Forbidden</h2>
 
-          {/* <Divider /> */}
+            <p className="error-message font-20">
+              Sorry, you are not allowed to access this page unless your logged
+              in with valid credentials and privileges.
+            </p>
 
-          <h3 className="error-message">
-            This page is restricted to unregistered users or if your not logged
-            in.
-          </h3>
+            <br />
 
-          <br />
+            <Button
+              type="primary"
+              size="large"
+              shape="round"
+              onClick={(e) => navigate(-1)}
+            >
+              Go Back
+            </Button>
+          </Content>
 
-          <Button type="primary" size="large" shape="round">
-            <Link to={appRoutes.home}>Back Home</Link>
-          </Button>
-        </Content>
+          <Content prefixCls="error-image">
+            <Image
+              alt="error-401"
+              src={Error401Image}
+              width="35rem"
+              preview={false}
+            />
 
-        <Content prefixCls="error-image" className="w-100 text-center">
-          <Image
-            alt="error-404"
-            src={Error404Image}
-            width="35rem"
-            preview={false}
-          />
-
-          {/* <img alt="blob-shape" src={BlobShape} width="100%" /> */}
-        </Content>
-      </div>
-    </Layout>
+            {/* <img alt="blob-shape" src={BlobShape} width="100%" /> */}
+          </Content>
+        </div>
+      </Layout>
+    </ConfigProvider>
   );
 }

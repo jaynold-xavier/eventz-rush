@@ -1,5 +1,3 @@
-import { Tag } from "antd";
-
 export const USER_ROLES = {
   host: {
     text: "HOST",

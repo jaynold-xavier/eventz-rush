@@ -7,6 +7,7 @@ import { Button, ConfigProvider, Layout } from "antd";
 
 import animationData from "../../../assets/lotties/landing/data.json";
 import { appRoutes } from "../../../constants/routes";
+import { navLinkTheme } from "../../../assets/js/theme";
 
 const { Content } = Layout;
 
@@ -52,7 +53,7 @@ export default function LandingSection() {
           <ConfigProvider
             theme={{
               token: {
-                colorPrimary: "#24b1c6",
+                ...navLinkTheme,
               },
             }}
           >
