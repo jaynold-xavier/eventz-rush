@@ -6,8 +6,20 @@ import {
   ArrowRightOutlined,
 } from "@ant-design/icons";
 import React from "react";
-import { Link } from "react-router-dom";
-import { Button, Divider, Form, Image, Input, Layout, Space } from "antd";
+import { Link, useSearchParams } from "react-router-dom";
+import {
+  Button,
+  Divider,
+  Dropdown,
+  Form,
+  Image,
+  Input,
+  Layout,
+  Progress,
+  Radio,
+  Space,
+} from "antd";
+import { find, map } from "lodash";
 
 import AppLogo from "../../assets/images/logos/app.svg";
 import RegisterImg from "../../assets/images/form/register.svg";
@@ -15,10 +27,14 @@ import EmailIcon from "../../assets/images/form/email.png";
 
 import { appRoutes } from "../../constants/routes";
 import { appTheme } from "../../assets/js/theme";
+import { userRolesOption, vendorOptions } from "../../constants/dropdown";
 
 const { Content } = Layout;
 
 export default function Register() {
+  const [form] = Form.useForm();
+  const [searchParams, setSearchParams] = useSearchParams();
+
   return (
     <Layout className="auth-layout">
       <Content className="auth-content center">
@@ -43,13 +59,29 @@ export default function Register() {
           <br />
 
           <Form
+            form={form}
             className="auth-form"
             layout="vertical"
             validateMessages={{
               types: { email: "Please enter a valid email" },
               required: "${label} is required",
             }}
+            onFinish={console.log}
           >
+            <Form.Item
+              name="userType"
+              label="I am a"
+              rules={[{ required: true }]}
+              labelCol={{
+                className: "text-center text-uppercase",
+                style: { wordSpacing: 10 },
+              }}
+              initialValue={searchParams.get("type")}
+              required={false}
+            >
+              <UserTypeSelector />
+            </Form.Item>
+
             <Form.Item
               name="userName"
               label="Username"
@@ -79,16 +111,12 @@ export default function Register() {
             <Form.Item
               name="password"
               label="Password"
-              rules={[{ required: true }]}
+              rules={[{ required: true }, { min: 8 }]}
             >
-              <Input.Password
-                placeholder="Password"
-                size="large"
-                prefix={<LockTwoTone twoToneColor={appTheme.colorPrimary} />}
-              />
+              <PasswordWithStrengthMeter />
             </Form.Item>
 
-            <Form.Item
+            {/* <Form.Item
               name="confirmPassword"
               label="Confirm Password"
               rules={[
@@ -100,7 +128,7 @@ export default function Register() {
                 size="large"
                 prefix={<LockTwoTone twoToneColor={appTheme.colorPrimary} />}
               />
-            </Form.Item>
+            </Form.Item> */}
 
             <br />
 
@@ -163,5 +191,104 @@ export default function Register() {
         />
       </Content>
     </Layout>
+  );
+}
+
+function UserTypeSelector({ value, onChange, ...rest }) {
+  const setVendorType = ({ key }) => {
+    const vendorType = find(vendorOptions, (opt) => opt.key == key);
+    if (vendorType) {
+      onChange(vendorType.value);
+    }
+  };
+
+  return (
+    <Radio.Group
+      className="w-100"
+      buttonStyle="solid"
+      value={transformValue(value)}
+      onChange={onChange}
+      {...rest}
+    >
+      {map(userRolesOption, (option) => {
+        return (
+          <Radio.Button
+            className="text-center"
+            value={option.value}
+            style={{ width: "50%" }}
+          >
+            {option.value === userRolesOption[0].value ? (
+              option.label
+            ) : (
+              <Dropdown
+                menu={{
+                  items: vendorOptions,
+                  selectable: true,
+                  onClick: setVendorType,
+                }}
+              >
+                <div>{`${option.label} ▼`}</div>
+              </Dropdown>
+            )}
+          </Radio.Button>
+        );
+      })}
+    </Radio.Group>
+  );
+
+  function transformValue(value) {
+    if (!value) return;
+
+    return value === userRolesOption[0].value
+      ? userRolesOption[0].value
+      : userRolesOption[1].value;
+  }
+}
+
+const okRegex = new RegExp("(?=.{8,})", "gi");
+const weakRegex = new RegExp("(?=.*[A-Z])", "gi");
+const goodRegex = new RegExp("(?=.*[0-9])", "gi");
+const strongRegex = new RegExp("(?=.*[^A-Za-z0-9])", "gi");
+const colors = ["#ff4500", "#fade14", "#87d068", "#008000"];
+
+function PasswordWithStrengthMeter({ value, ...rest }) {
+  const percent = [okRegex, weakRegex, goodRegex, strongRegex]
+    .map((regex) => {
+      return !!value && regex.test(value);
+    })
+    .reduce((prev = 0, curr) => prev + curr);
+
+  const strokeColor = { 0: colors[0] };
+  new Array(percent).fill(null).map((val, i) => {
+    const key = Math.round(((i + 1) / percent) * 100);
+    strokeColor[key] = colors[i];
+  });
+
+  return (
+    <>
+      <Input.Password
+        placeholder="Password"
+        size="large"
+        prefix={<LockTwoTone twoToneColor={appTheme.colorPrimary} />}
+        value={value}
+        {...rest}
+      />
+
+      {/* <Progress
+        className="w-100"
+        percent={25 * percent}
+        steps={4}
+        strokeColor={colors}
+        showInfo={false}
+      /> */}
+
+      <Progress
+        className="mb-0"
+        status="active"
+        percent={25 * percent}
+        strokeColor={strokeColor}
+        showInfo={false}
+      />
+    </>
   );
 }

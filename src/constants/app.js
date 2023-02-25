@@ -1,9 +1,9 @@
 export const USER_ROLES = {
   host: {
-    text: "HOST",
+    text: "Host",
   },
   vendor: {
-    text: "VENDOR",
+    text: "Vendor",
   },
 };
 

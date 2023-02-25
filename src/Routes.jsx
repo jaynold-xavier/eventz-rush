@@ -29,7 +29,7 @@ import { getInBetweenCharactersRegex } from "./helpers/regex";
 export default function Routes({ isAuthenticated, userRole }) {
   return (
     <BrowserRouter>
-      <Wrapper>
+      <ScrollToTop>
         <Switch>
           {/* Unsigned Routes that need main navbar */}
           <Route path={appRoutes.home} element={<LayoutWithNavBar />}>
@@ -53,7 +53,7 @@ export default function Routes({ isAuthenticated, userRole }) {
           type="primary"
           icon={<UpOutlined />}
         />
-      </Wrapper>
+      </ScrollToTop>
     </BrowserRouter>
   );
 }
@@ -75,7 +75,6 @@ function LayoutWithNavBar() {
 //#region
 
 const findParamPlaceholderRegex = getInBetweenCharactersRegex("{", "}");
-
 function processRouteUrl(url) {
   return url.replace(findParamPlaceholderRegex, (char) => {
     const getParamRegex = getInBetweenCharactersRegex("{", "}");
@@ -84,7 +83,7 @@ function processRouteUrl(url) {
   });
 }
 
-const Wrapper = ({ children }) => {
+const ScrollToTop = ({ children }) => {
   const location = useLocation();
   useLayoutEffect(() => {
     document.documentElement.scrollTo(0, 0);

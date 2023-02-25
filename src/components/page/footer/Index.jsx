@@ -38,8 +38,10 @@ export function HomePageFooter() {
 
         <div className="container">
           <span style={{ wordSpacing: 2 }}>
-            Copyright &#169; 2023 All Rights Reserved Designed By JXB
+            Copyright &#169; 2023 All Rights Reserved
           </span>
+
+          <span>Design By Jaynold</span>
 
           <Button type="link" href={appRoutes.home}>
             Privacy & Legal
