@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 
 // sample value = "linear-gradient(45deg, #9164ff, #7e5bff, #7f66ff)"
 

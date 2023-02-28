@@ -65,7 +65,7 @@ export default function LandingSection() {
               onClick={(e) => navigate(appRoutes.register)}
             >
               Get Started
-              <ArrowRightOutlined className="font-18" />
+              <ArrowRightOutlined />
             </Button>
           </ConfigProvider>
         </div>

@@ -5,8 +5,8 @@ import {
   LockTwoTone,
   ArrowRightOutlined,
 } from "@ant-design/icons";
-import React from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import {
   Button,
   Divider,
@@ -15,11 +15,14 @@ import {
   Image,
   Input,
   Layout,
+  message,
   Progress,
   Radio,
   Space,
 } from "antd";
 import { find, map } from "lodash";
+
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 import AppLogo from "../../assets/images/logos/app.svg";
 import RegisterImg from "../../assets/images/form/register.svg";
@@ -27,13 +30,45 @@ import EmailIcon from "../../assets/images/form/email.png";
 
 import { appRoutes } from "../../constants/routes";
 import { appTheme } from "../../assets/js/theme";
+import { auth } from "../../assets/js/firebase";
 import { userRolesOption, vendorOptions } from "../../constants/dropdown";
+import { registerWithFacebook, registerWithGoogle } from "../../services/auth";
+import useAuth from "../../hooks/useAuth";
+import { addDocToTable } from "../../services/database";
 
 const { Content } = Layout;
 
 export default function Register() {
   const [form] = Form.useForm();
+  const navigate = useNavigate();
+
+  const { setUser } = useAuth();
+
+  const [loading, setLoading] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const register = async (data) => {
+    try {
+      setLoading(true);
+      const { email, password } = data;
+
+      const response = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+      await postRegister(response._tokenResponse.refreshToken, response.user);
+    } catch (error) {
+      console.log({ error });
+
+      if (error.code === "auth/email-already-in-use") {
+        message.error("Email already registered");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <Layout className="auth-layout">
@@ -66,7 +101,7 @@ export default function Register() {
               types: { email: "Please enter a valid email" },
               required: "${label} is required",
             }}
-            onFinish={console.log}
+            onFinish={register}
           >
             <Form.Item
               name="userType"
@@ -113,7 +148,7 @@ export default function Register() {
               label="Password"
               rules={[{ required: true }, { min: 8 }]}
             >
-              <PasswordWithStrengthMeter />
+              <PasswordField />
             </Form.Item>
 
             {/* <Form.Item
@@ -139,6 +174,7 @@ export default function Register() {
                 htmlType="submit"
                 shape="round"
                 size="large"
+                loading={loading}
               >
                 Register
                 <ArrowRightOutlined />
@@ -156,6 +192,7 @@ export default function Register() {
               type="primary"
               size="large"
               icon={<GoogleOutlined />}
+              onClick={onRegisterWithGoogle}
               block
             >
               Sign up with Google
@@ -166,6 +203,7 @@ export default function Register() {
               type="primary"
               size="large"
               icon={<FacebookOutlined />}
+              onClick={onRegisterWithFacebook}
               block
             >
               Sign up with Facebook
@@ -192,11 +230,50 @@ export default function Register() {
       </Content>
     </Layout>
   );
+
+  async function onRegisterWithGoogle() {
+    const { user, token } = await registerWithGoogle();
+    await postRegister(token, user);
+    return { user, token };
+  }
+
+  async function onRegisterWithFacebook() {
+    const { user, token } = await registerWithFacebook();
+    await postRegister(token, user);
+    return { user, token };
+  }
+
+  async function postRegister(token, user) {
+    sessionStorage.setItem("Auth Token", token);
+
+    const { userName = null, userType: type } = form.getFieldsValue();
+    let response;
+    if (type === "host") {
+      response = await addDocToTable("hosts", {
+        email: user.email,
+        phone: user.phoneNumber || null,
+        userName,
+      });
+    } else {
+      response = await addDocToTable("vendors", {
+        email: user.email,
+        phone: user.phoneNumber || null,
+        profilePicURL: user.photoURL,
+        title: user.displayName,
+        type,
+        userName,
+      });
+    }
+    console.log({ response });
+
+    setUser({ ...user, type, userName });
+    navigate(appRoutes.account.dashboard);
+  }
 }
 
 function UserTypeSelector({ value, onChange, ...rest }) {
   const setVendorType = ({ key }) => {
-    const vendorType = find(vendorOptions, (opt) => opt.key == key);
+    const vendorType = find(vendorOptions, (opt) => opt.key === key);
     if (vendorType) {
       onChange(vendorType.value);
     }
@@ -213,6 +290,7 @@ function UserTypeSelector({ value, onChange, ...rest }) {
       {map(userRolesOption, (option) => {
         return (
           <Radio.Button
+            key={option.value}
             className="text-center"
             value={option.value}
             style={{ width: "50%" }}
@@ -245,13 +323,14 @@ function UserTypeSelector({ value, onChange, ...rest }) {
   }
 }
 
-const okRegex = new RegExp("(?=.{8,})", "gi");
-const weakRegex = new RegExp("(?=.*[A-Z])", "gi");
-const goodRegex = new RegExp("(?=.*[0-9])", "gi");
-const strongRegex = new RegExp("(?=.*[^A-Za-z0-9])", "gi");
+const okRegex = new RegExp("(?=.{8,})", "g");
+const weakRegex = new RegExp("(?=.*[A-Z])", "g");
+const goodRegex = new RegExp("(?=.*[0-9])", "g");
+const strongRegex = new RegExp("(?=.*[^A-Za-z0-9])", "g");
+
 const colors = ["#ff4500", "#fade14", "#87d068", "#008000"];
 
-function PasswordWithStrengthMeter({ value, ...rest }) {
+function PasswordField({ value, ...rest }) {
   const percent = [okRegex, weakRegex, goodRegex, strongRegex]
     .map((regex) => {
       return !!value && regex.test(value);

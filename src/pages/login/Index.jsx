@@ -5,8 +5,8 @@ import {
   ArrowRightOutlined,
   LockTwoTone,
 } from "@ant-design/icons";
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Button,
   Checkbox,
@@ -15,18 +15,59 @@ import {
   Image,
   Input,
   Layout,
+  message,
   Space,
 } from "antd";
+import { get } from "lodash";
 
 import AppLogo from "../../assets/images/logos/app.svg";
 import LoginImg from "../../assets/images/form/login.svg";
 
 import { appRoutes } from "../../constants/routes";
 import { appTheme } from "../../assets/js/theme";
+import { registerWithFacebook, registerWithGoogle } from "../../services/auth";
+import useAuth from "../../hooks/useAuth";
+import { findDocInTable } from "../../services/database";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../assets/js/firebase";
 
 const { Content } = Layout;
 
 export default function Login() {
+  const [form] = Form.useForm();
+  const navigate = useNavigate();
+  const { setUser } = useAuth();
+
+  const [loading, setLoading] = useState(false);
+
+  const login = async (data) => {
+    try {
+      setLoading(true);
+      const { email, password } = data;
+
+      const response = await signInWithEmailAndPassword(auth, email, password);
+      console.log({ response });
+
+      await postRegister(response._tokenResponse.refreshToken, response.user);
+    } catch (error) {
+      console.log({ error });
+
+      switch (error.code) {
+        case "auth/user-not-found":
+          message.error("User not found");
+          break;
+        case "auth/wrong-password":
+          message.error("Incorrect password");
+          break;
+        default:
+          message.error(error.message);
+          break;
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Layout className="auth-layout">
       <Content className="auth-content center">
@@ -51,9 +92,11 @@ export default function Login() {
           <br />
 
           <Form
+            form={form}
             className="auth-form"
             layout="vertical"
             validateMessages={{ required: "${label} is required" }}
+            onFinish={login}
           >
             <Form.Item name="email" label="Email" rules={[{ required: true }]}>
               <Input
@@ -96,6 +139,7 @@ export default function Login() {
                 htmlType="submit"
                 shape="round"
                 size="large"
+                loading={loading}
               >
                 Login
                 <ArrowRightOutlined />
@@ -113,6 +157,7 @@ export default function Login() {
               type="primary"
               size="large"
               icon={<GoogleOutlined />}
+              onClick={onRegisterWithGoogle}
               block
             >
               Sign in with Google
@@ -123,6 +168,7 @@ export default function Login() {
               type="primary"
               size="large"
               icon={<FacebookOutlined />}
+              onClick={onRegisterWithFacebook}
               block
             >
               Sign in with Facebook
@@ -150,4 +196,29 @@ export default function Login() {
       </Content>
     </Layout>
   );
+
+  async function onRegisterWithGoogle() {
+    const { user, token } = await registerWithGoogle();
+    await postRegister(token, user);
+    return { user, token };
+  }
+
+  async function onRegisterWithFacebook() {
+    const { user, token } = await registerWithFacebook();
+    await postRegister(token, user);
+    return { user, token };
+  }
+
+  async function postRegister(token, user) {
+    sessionStorage.setItem("Auth Token", token);
+
+    let userData = await findDocInTable("vendors", { email: user.email });
+    if (!userData) {
+      userData = await findDocInTable("hosts", { email: user.email });
+    }
+    console.log({ userData });
+
+    setUser(get(userData, "0") || user);
+    navigate(appRoutes.account.dashboard);
+  }
 }

@@ -1,4 +1,5 @@
 export const appRoutes = {
+  root: "/",
   home: "/",
   faq: "/faq",
   policy: "/policy",
@@ -6,6 +7,12 @@ export const appRoutes = {
   register: "/register",
   vendors: {
     list: "/vendors",
-    details: "/vendor/{id}"
+    details: "/vendors/{id}",
+  },
+  account: {
+    root: "/account",
+    get dashboard() {
+      return this.root + "/dashboard";
+    },
   },
 };

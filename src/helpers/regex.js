@@ -1,3 +1,3 @@
-export const getInBetweenCharactersRegex = (left = "[", right = "]") => {
+export const getInBetweenCharsRegex = (left = "[", right = "]") => {
   return new RegExp(`\\${left}(.*?)\\${right}`, "gi");
 };
