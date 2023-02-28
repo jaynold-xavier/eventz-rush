@@ -32,7 +32,10 @@ import { appRoutes } from "../../constants/routes";
 import { appTheme } from "../../assets/js/theme";
 import { auth } from "../../assets/js/firebase";
 import { userRolesOption, vendorOptions } from "../../constants/dropdown";
-import { registerWithFacebook, registerWithGoogle } from "../../services/auth";
+import {
+  authenticateWithFacebook,
+  authenticateWithGoogle,
+} from "../../services/auth";
 import useAuth from "../../hooks/useAuth";
 import { addDocToTable } from "../../services/database";
 
@@ -106,7 +109,21 @@ export default function Register() {
             <Form.Item
               name="userType"
               label="I am a"
-              rules={[{ required: true }]}
+              rules={[
+                { required: true, message: "Please select a user type" },
+                {
+                  // validateTrigger: "onSubmit",
+                  validator: (rule, value) => {
+                    console.log({ rule, value });
+                    if (value && value === userRolesOption[1].value) {
+                      return Promise.reject(
+                        new Error("Please select a vendor type")
+                      );
+                    }
+                    return Promise.resolve(true);
+                  },
+                },
+              ]}
               labelCol={{
                 className: "text-center text-uppercase",
                 style: { wordSpacing: 10 },
@@ -167,7 +184,7 @@ export default function Register() {
 
             <br />
 
-            <Form.Item className="center">
+            <Form.Item className="center mb-0">
               <Button
                 className="save-btn icon-animated-button"
                 type="primary"
@@ -186,9 +203,9 @@ export default function Register() {
             Or
           </Divider>
 
-          <Space className="w-100" direction="vertical">
+          <div className="w-100 center">
             <Button
-              className="google-button"
+              className="google-button text-center"
               type="primary"
               size="large"
               icon={<GoogleOutlined />}
@@ -199,7 +216,7 @@ export default function Register() {
             </Button>
 
             <Button
-              className="facebook-button"
+              className="facebook-button text-center"
               type="primary"
               size="large"
               icon={<FacebookOutlined />}
@@ -208,7 +225,7 @@ export default function Register() {
             >
               Sign up with Facebook
             </Button>
-          </Space>
+          </div>
 
           <br />
           <br />
@@ -232,13 +249,17 @@ export default function Register() {
   );
 
   async function onRegisterWithGoogle() {
-    const { user, token } = await registerWithGoogle();
+    await form.validateFields(["userType"]);
+
+    const { user, token } = await authenticateWithGoogle();
     await postRegister(token, user);
     return { user, token };
   }
 
   async function onRegisterWithFacebook() {
-    const { user, token } = await registerWithFacebook();
+    await form.validateFields(["userType"]);
+
+    const { user, token } = await authenticateWithFacebook();
     await postRegister(token, user);
     return { user, token };
   }
@@ -247,15 +268,15 @@ export default function Register() {
     sessionStorage.setItem("Auth Token", token);
 
     const { userName = null, userType: type } = form.getFieldsValue();
-    let response;
+    console.log({ type });
+
     if (type === "host") {
-      response = await addDocToTable("hosts", {
+      await addDocToTable("hosts", {
         email: user.email,
-        phone: user.phoneNumber || null,
         userName,
       });
     } else {
-      response = await addDocToTable("vendors", {
+      await addDocToTable("vendors", {
         email: user.email,
         phone: user.phoneNumber || null,
         profilePicURL: user.photoURL,
@@ -264,10 +285,8 @@ export default function Register() {
         userName,
       });
     }
-    console.log({ response });
 
     setUser({ ...user, type, userName });
-    navigate(appRoutes.account.dashboard);
   }
 }
 
@@ -302,6 +321,7 @@ function UserTypeSelector({ value, onChange, ...rest }) {
                 menu={{
                   items: vendorOptions,
                   selectable: true,
+                  selectedKeys: [value],
                   onClick: setVendorType,
                 }}
               >

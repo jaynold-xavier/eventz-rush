@@ -1,21 +1,18 @@
 export function getHSL(color) {
-  var r = parseInt(color.substr(1, 2), 16); // Grab the hex representation of red (chars 1-2) and convert to decimal (base 10).
-  var g = parseInt(color.substr(3, 2), 16);
-  var b = parseInt(color.substr(5, 2), 16);
+  let r = parseInt(color.substr(1, 2), 16) / 255; // Grab the hex representation of red (chars 1-2) and convert to decimal (base 10).
+  let g = parseInt(color.substr(3, 2), 16) / 255;
+  let b = parseInt(color.substr(5, 2), 16) / 255;
 
-  r /= 255;
-  g /= 255;
-  b /= 255;
-  var max = Math.max(r, g, b),
-    min = Math.min(r, g, b);
-  var h,
-    s,
-    l = (max + min) / 2;
+  let max = Math.max(r, g, b);
+  let min = Math.min(r, g, b);
+
+  let h, s;
+  let l = (max + min) / 2;
 
   if (max === min) {
     h = s = 0; // achromatic
   } else {
-    var d = max - min;
+    let d = max - min;
     s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
     switch (max) {
       case r:

@@ -18,14 +18,17 @@ import {
   message,
   Space,
 } from "antd";
-import { get } from "lodash";
+import { get, isEmpty } from "lodash";
 
 import AppLogo from "../../assets/images/logos/app.svg";
 import LoginImg from "../../assets/images/form/login.svg";
 
 import { appRoutes } from "../../constants/routes";
 import { appTheme } from "../../assets/js/theme";
-import { registerWithFacebook, registerWithGoogle } from "../../services/auth";
+import {
+  authenticateWithFacebook,
+  authenticateWithGoogle,
+} from "../../services/auth";
 import useAuth from "../../hooks/useAuth";
 import { findDocInTable } from "../../services/database";
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -48,13 +51,16 @@ export default function Login() {
       const response = await signInWithEmailAndPassword(auth, email, password);
       console.log({ response });
 
-      await postRegister(response._tokenResponse.refreshToken, response.user);
+      await postLogin(response._tokenResponse.refreshToken, response.user);
     } catch (error) {
       console.log({ error });
 
       switch (error.code) {
         case "auth/user-not-found":
           message.error("User not found");
+          break;
+        case "auth/invalid-email":
+          message.error("Incorrect email");
           break;
         case "auth/wrong-password":
           message.error("Incorrect password");
@@ -132,7 +138,7 @@ export default function Login() {
               <Link to="/">Forgot Password ?</Link>
             </Space>
 
-            <Form.Item className="center">
+            <Form.Item className="center mb-0">
               <Button
                 className="save-btn icon-animated-button"
                 type="primary"
@@ -151,29 +157,29 @@ export default function Login() {
             Or
           </Divider>
 
-          <Space className="w-100" direction="vertical">
+          <div className="w-100 center">
             <Button
-              className="google-button"
+              className="google-button text-center"
               type="primary"
               size="large"
               icon={<GoogleOutlined />}
-              onClick={onRegisterWithGoogle}
+              onClick={onLoginWithGoogle}
               block
             >
               Sign in with Google
             </Button>
 
             <Button
-              className="facebook-button"
+              className="facebook-button text-center"
               type="primary"
               size="large"
               icon={<FacebookOutlined />}
-              onClick={onRegisterWithFacebook}
+              onClick={onLoginWithFacebook}
               block
             >
               Sign in with Facebook
             </Button>
-          </Space>
+          </div>
 
           <br />
           <br />
@@ -197,28 +203,27 @@ export default function Login() {
     </Layout>
   );
 
-  async function onRegisterWithGoogle() {
-    const { user, token } = await registerWithGoogle();
-    await postRegister(token, user);
+  async function onLoginWithGoogle() {
+    const { user, token } = await authenticateWithGoogle();
+    await postLogin(token, user);
     return { user, token };
   }
 
-  async function onRegisterWithFacebook() {
-    const { user, token } = await registerWithFacebook();
-    await postRegister(token, user);
+  async function onLoginWithFacebook() {
+    const { user, token } = await authenticateWithFacebook();
+    await postLogin(token, user);
     return { user, token };
   }
 
-  async function postRegister(token, user) {
+  async function postLogin(token, user) {
     sessionStorage.setItem("Auth Token", token);
 
     let userData = await findDocInTable("vendors", { email: user.email });
-    if (!userData) {
+    if (isEmpty(userData)) {
       userData = await findDocInTable("hosts", { email: user.email });
     }
     console.log({ userData });
 
     setUser(get(userData, "0") || user);
-    navigate(appRoutes.account.dashboard);
   }
 }

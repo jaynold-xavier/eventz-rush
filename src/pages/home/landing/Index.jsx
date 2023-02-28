@@ -50,7 +50,7 @@ export default function LandingSection() {
           <br />
           <br />
 
-          <ConfigProvider
+          {/* <ConfigProvider
             theme={{
               token: {
                 ...buttonActionTheme,
@@ -67,7 +67,7 @@ export default function LandingSection() {
               Get Started
               <ArrowRightOutlined />
             </Button>
-          </ConfigProvider>
+          </ConfigProvider> */}
         </div>
       </motion.div>
     </Content>

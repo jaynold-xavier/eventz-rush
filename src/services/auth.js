@@ -32,7 +32,7 @@ export async function getCurrentUser() {
   }
 }
 
-export function registerWithGoogle() {
+export function authenticateWithGoogle() {
   return signInWithPopup(auth, googleProvider)
     .then((result) => {
       // This gives you a Google Access Token. You can use it to access the Google API.
@@ -60,7 +60,7 @@ export function registerWithGoogle() {
     });
 }
 
-export function registerWithFacebook() {
+export function authenticateWithFacebook() {
   return signInWithPopup(auth, facebookProvider)
     .then((result) => {
       // This gives you a Facebook Access Token. You can use it to access the Facebook API.

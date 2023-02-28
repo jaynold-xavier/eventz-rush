@@ -41,6 +41,7 @@ export default function App() {
   }, []);
 
   const isAuthenticated = !isEmpty(user);
+  console.log({ user });
 
   if (user === undefined) return null;
 
@@ -64,14 +65,18 @@ export default function App() {
             <Route
               path={appRoutes.login}
               element={
-                isAuthenticated ? <Navigate to={appRoutes.home} /> : <Login />
+                isAuthenticated ? (
+                  <Navigate to={appRoutes.account.dashboard} />
+                ) : (
+                  <Login />
+                )
               }
             />
             <Route
               path={appRoutes.register}
               element={
                 isAuthenticated ? (
-                  <Navigate to={appRoutes.home} />
+                  <Navigate to={appRoutes.account.dashboard} />
                 ) : (
                   <Register />
                 )
