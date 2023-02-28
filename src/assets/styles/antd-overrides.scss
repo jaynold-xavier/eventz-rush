@@ -83,7 +83,7 @@
       // }
 
       &.ant-tabs-tab-active {
-        background-color: @fore-color;
+        background-color: $fore-color;
         border-top-left-radius: 15px;
         border-top-right-radius: 15px;
       }
@@ -92,7 +92,7 @@
 
   &.tabs-container {
     .ant-tabs-nav-list {
-      .container();
+      @extend .container;
       width: 100%;
       padding-top: 0;
       padding-bottom: 0;
@@ -100,7 +100,7 @@
 
     .ant-tabs-content-holder {
       .ant-tabs-content {
-        .container();
+        @extend .container;
       }
     }
   }

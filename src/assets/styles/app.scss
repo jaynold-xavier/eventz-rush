@@ -1,4 +1,4 @@
-@navbar-height: 100px;
+$navbar-height: 100px;
 
 .main-nav-bar-affix-container {
   .ant-affix {
@@ -12,7 +12,7 @@
     height: auto !important;
 
     .main-nav-bar {
-      height: @navbar-height - 20px;
+      height: $navbar-height - 20px;
 
       .ant-image {
         width: 7rem !important;
@@ -24,15 +24,13 @@
     background-color: transparent;
     border: none;
     align-items: center;
-    max-width: calc(@container-width + 20rem);
+    max-width: calc($container-width + 20rem);
 
     > li {
       letter-spacing: 2px;
       text-transform: uppercase;
 
-      &:first-child:after,
-      &.ant-menu-item-selected:after,
-      &.sign-up-item::after {
+      &:not(.link-item):after {
         border-bottom: none !important;
       }
 
@@ -74,21 +72,21 @@
 }
 
 .home-layout {
-  @media @small-screen, @mobile-screen, @tablet-screen {
+  @media #{$small-screen}, #{$mobile-screen}, #{$tablet-screen} {
     margin-top: 4rem;
   }
 
   .landing-intro {
     height: 100%;
     min-height: calc(
-      100vh - @navbar-height - 84px - 20px
+      100vh - $navbar-height - 84px - 20px
     ); // 84px - shape divider, 20px extra space
 
     > .container {
       flex-direction: row-reverse;
       gap: 3rem;
 
-      @media @small-screen, @mobile-screen, @tablet-screen {
+      @media #{$small-screen}, #{$mobile-screen}, #{$tablet-screen} {
         .landing-message {
           width: calc(100vw / 1.2);
           text-align: center;
@@ -100,7 +98,7 @@
     // div[aria-label="animation"] {
     //   width: 85% !important;
 
-    //   @media @small-screen, @mobile-screen {
+    //   @media #{$small-screen}, #{$mobile-screen} {
     //     width: 100% !important;
     //   }
     // }
@@ -125,7 +123,7 @@
         height: 3.5rem;
         font-size: 1.3rem;
         width: 15rem;
-        // .glowy-button(var(--ant-primary-6));
+        // @include glowy-button(var(--ant-primary-6));
       }
     }
   }
@@ -143,13 +141,13 @@
     }
 
     .shape-fill {
-      fill: @fore-color;
+      fill: $fore-color;
     }
   }
 
   .landing-content {
     position: relative;
-    background-color: @fore-color;
+    background-color: $fore-color;
 
     p {
       font-family: auto;
@@ -195,7 +193,7 @@
         bottom: -2%;
       }
 
-      @media @small-screen, @mobile-screen, @tablet-screen {
+      @media #{$small-screen}, #{$mobile-screen}, #{$tablet-screen} {
         display: none;
       }
     }
@@ -204,7 +202,7 @@
       display: flex;
       align-items: center;
 
-      @media @small-screen, @mobile-screen, @tablet-screen {
+      @media #{$small-screen}, #{$mobile-screen}, #{$tablet-screen} {
         gap: 1rem;
       }
 
@@ -212,7 +210,7 @@
         justify-content: flex-start;
         text-align: right;
 
-        @media @small-screen, @mobile-screen, @tablet-screen {
+        @media #{$small-screen}, #{$mobile-screen}, #{$tablet-screen} {
           flex-direction: column !important;
 
           > article {
@@ -229,7 +227,7 @@
         justify-content: flex-end;
         text-align: left;
 
-        @media @small-screen, @mobile-screen, @tablet-screen {
+        @media #{$small-screen}, #{$mobile-screen}, #{$tablet-screen} {
           flex-direction: column-reverse !important;
 
           > article {
@@ -271,15 +269,15 @@
   flex-direction: row;
   min-height: 100%;
 
-  @form-width: 600px;
-  @background: linear-gradient(45deg, #9164ff, #601ffe, #3a68eb);
+  $form-width: 600px;
+  $background: linear-gradient(45deg, #9164ff, #601ffe, #3a68eb);
 
   .auth-content {
     background-color: #fff;
     width: 100%;
 
     > .container {
-      max-width: @form-width;
+      max-width: $form-width;
       width: 100%;
 
       .auth-form {
@@ -299,8 +297,10 @@
         }
 
         .save-btn {
-          width: calc(@form-width / 2);
-          .multi-gradient-button(linear-gradient(45deg, #5db9c7, #00ddff, #9666ff));
+          width: calc($form-width / 2);
+          @include multi-gradient-button(
+            linear-gradient(45deg, #5db9c7, #00ddff, #9666ff)
+          );
 
           &:hover {
             box-shadow: 0px 1px 15px 0 lighten(#3a68eb, 5%);
@@ -318,10 +318,10 @@
     position: relative;
     // background-color: #552eff;
     // background: linear-gradient(140deg, #4801f3, #7f4aff, #4801f3);
-    background: @background;
+    background: $background;
     width: 100%;
 
-    @media @small-screen, @mobile-screen {
+    @media #{$small-screen}, #{$mobile-screen} {
       display: none;
     }
   }
@@ -330,7 +330,7 @@
 .vendors-list-layout {
   .vendors-list-content {
     .ant-card.vendors-list-filters {
-      .card-glow(#5d4ee6);
+      @include card-glow(#5d4ee6);
     }
 
     .vendors-list {
@@ -390,7 +390,7 @@
 .vendor-details-layout {
   .vendor-general-info {
     .ant-card {
-      background-color: @fore-color;
+      background-color: $fore-color;
 
       .user-actions {
         button {
@@ -406,7 +406,7 @@
         margin: 0;
 
         .ant-tabs-tab {
-          color: @fore-color;
+          color: $fore-color;
 
           &:hover {
             color: #e1ddff;
@@ -415,7 +415,7 @@
       }
 
       .ant-tabs-content-holder {
-        background-color: @fore-color;
+        background-color: $fore-color;
       }
     }
   }
@@ -431,7 +431,7 @@
   min-height: 100vh;
   height: 100%;
 
-  @media @small-screen, @mobile-screen, @tablet-screen {
+  @media #{$small-screen}, #{$mobile-screen}, #{$tablet-screen} {
     > .container {
       flex-direction: column-reverse !important;
       gap: 3rem;
@@ -468,7 +468,7 @@
     text-align: center;
 
     img[alt="blob-shape"] {
-      .container-absolute();
+      @extend .container-absolute;
       width: auto;
       opacity: 0.1;
     }

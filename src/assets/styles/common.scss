@@ -23,8 +23,6 @@
   color: #00bcd4 !important;
 }
 .text-blue-grey,
-.hover-text-blue-grey:hover,
-.text-blue-grey,
 .hover-text-blue-grey:hover {
   color: #607d8b !important;
 }
@@ -93,19 +91,13 @@
   color: #000 !important;
 }
 .text-grey,
-.hover-text-grey:hover,
-.text-grey,
 .hover-text-grey:hover {
   color: #757575 !important;
 }
 .text-light-grey,
-.hover-text-light-grey:hover,
-.text-light-grey,
 .hover-text-light-grey:hover {
   color: #f1f1f1 !important;
 }
-.text-dark-grey,
-.hover-text-dark-grey:hover,
 .text-dark-grey,
 .hover-text-dark-grey:hover {
   color: #3a3a3a !important;
@@ -114,10 +106,10 @@
 .container {
   padding: 1rem;
   margin: 0 auto;
-  // width: @container-width;
+  // width: $container-width;
   min-width: 50%;
   // max-width: 100%;
-  max-width: @container-width;
+  max-width: $container-width;
 }
 
 .container-absolute {
@@ -127,15 +119,15 @@
   padding: 1rem;
   margin-left: auto;
   margin-right: auto;
-  max-width: @container-width;
+  max-width: $container-width;
 
-  @media only screen and (max-width: @container-width) {
+  @media only screen and (max-width: $container-width) {
     width: auto;
   }
 }
 
-// .applyBackground(@src) {
-//   background: url(@src);
+// @mixin applyBackground($src){
+//   background: url($src);
 //   background-repeat: no-repeat;
 //   background-size: cover;
 // }
@@ -148,23 +140,23 @@
     // font-family: "Patrick Hand";
     // font-family: monospace;
     // text-transform: uppercase;
-    color: @fore-color;
+    color: $fore-color;
     // letter-spacing: 5px;
     font-size: 4rem;
-    // @color: #ffb13d;
+    // $color: #ffb13d;
     // font-style: italic;
-    // color: lighten(@color, 30%);
+    // color: lighten($color, 30%);
 
     // &::first-letter {
     //   font-size: 2em;
-    //   color: @color;
+    //   color: $color;
     // }
   }
 }
 
 .page-content {
-  background-color: @fore-color;
-  // box-shadow: 0px 0px 20px 20px @fore-color;
+  background-color: $fore-color;
+  // box-shadow: 0px 0px 20px 20px $fore-color;
   padding-top: 20px;
 }
 
@@ -175,22 +167,22 @@
   flex-direction: row;
   gap: 1rem;
 
-  @media @small-screen, @mobile-screen, @tablet-screen {
+  @media #{$small-screen}, #{$mobile-screen}, #{$tablet-screen} {
     flex-direction: column !important;
   }
 }
 
 .highlight-text {
-  color: @highlight-color;
+  color: $highlight-color;
 }
 
-.card-glow(@baseColor) {
+@mixin card-glow($baseColor) {
   background: linear-gradient(
     140deg,
-    lighten(@baseColor, 36%),
-    lighten(@baseColor, 35%)
+    lighten($baseColor, 36%),
+    lighten($baseColor, 35%)
   );
-  border: 1px solid lighten(@baseColor, 30%);
+  border: 1px solid lighten($baseColor, 30%);
   box-shadow: 0 0px 10px 1px #e7e7e7;
 }
 
@@ -211,56 +203,56 @@
   }
 }
 
-.glowy-button(@color) {
-  box-shadow: 2px -1px 17px 9px @color !important;
+@mixin glowy-button($color) {
+  box-shadow: 2px -1px 17px 9px $color !important;
 }
 
-.single-gradient-button(@color) {
+@mixin single-gradient-button($color) {
   background: linear-gradient(
     45deg,
-    lighten(@color, 5%),
-    lighten(@color, 10%),
-    lighten(@color, 15%)
+    lighten($color, 5%),
+    lighten($color, 10%),
+    lighten($color, 15%)
   );
 
   border: 1px solid #dcdcdc !important;
 
   &:hover {
-    @hoverColor: lighten(@color, 3%);
+    $hoverColor: lighten($color, 3%);
     background: linear-gradient(
       45deg,
-      lighten(@hoverColor, 5%),
-      lighten(@hoverColor, 10%),
-      lighten(@hoverColor, 15%)
+      lighten($hoverColor, 5%),
+      lighten($hoverColor, 10%),
+      lighten($hoverColor, 15%)
     );
   }
 }
 
-.multi-gradient-button(@gradient) {
-  background: @gradient;
+@mixin multi-gradient-button($gradient) {
+  background: $gradient;
   border: 1px solid #dcdcdc !important;
   background-size: 300% 100%;
 
   &:hover {
     background-position: 100% 0;
-    moz-transition: all 0.2s ease-in-out;
+    // moz-transition: all 0.2s ease-in-out;
     -o-transition: all 0.2s ease-in-out;
     -webkit-transition: all 0.2s ease-in-out;
     transition: all 0.2s ease-in-out;
   }
 }
 
-.social-media-button(@color) {
+@mixin social-media-button($color) {
   text-align: left;
-  .single-gradient-button(@color);
+  @include single-gradient-button($color);
 }
 
 .google-button {
-  .social-media-button(#db3236);
+  @include social-media-button(#db3236);
 }
 
 .facebook-button {
-  .social-media-button(#4267b2);
+  @include social-media-button(#4267b2);
 }
 
 // gallery
@@ -268,22 +260,22 @@
   column-count: 3;
   column-width: 33%;
 
-  @media @small-screen, @mobile-screen {
+  @media #{$small-screen}, #{$mobile-screen} {
     column-count: 1;
     column-width: 100%;
   }
 
-  @media @tablet-screen {
+  @media #{$tablet-screen} {
     column-count: 2;
     column-width: 50%;
   }
 
-  @media @laptop-screen {
+  @media #{$laptop-screen} {
     column-count: 3;
     column-width: 33%;
   }
 
-  @media @tv-screen {
+  @media #{$tv-screen} {
     column-count: 4;
     column-width: 25%;
   }
@@ -321,12 +313,12 @@
 }
 
 // font-size classes
-each(range(10px, 24px, 2), {
-  @i: 8 + (@index * 2);
-  .font-@{i} {
-    font-size: @value !important;
+@for $i from 1 through 6 {
+  $fontSize: 8 + ($i * 2);
+  .font-#{$fontSize} {
+    font-size: #{$fontSize}px !important;
   }
-});
+}
 
 .rounded-input {
   border-radius: 20px !important;

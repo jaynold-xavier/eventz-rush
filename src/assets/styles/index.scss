@@ -1,34 +1,34 @@
-@import "./fonts.less";
+@import "./fonts.scss";
 
 // app-container
-@container-width: 90rem;
+$container-width: 90rem;
 
 // colors
-@highlight-color: #ffecbf;
-@highlight-color-2: #c9f4cb;
-@fore-color: #fafafa;
+$highlight-color: #ffecbf;
+$highlight-color-2: #c9f4cb;
+$fore-color: #fafafa;
 
 // user types theme constants
-// @host-theme: #d7ad0d;
-// @vendor-theme: #eb5951;
+// $host-theme: #d7ad0d;
+// $vendor-theme: #eb5951;
 
 // mobile screen sizes constants
-@small-screen: ~"only screen and (max-width: 350px)";
-@mobile-screen: ~"only screen and (min-width: 350px) and (max-width: 768px)";
-@tablet-screen: ~"only screen and (min-width: 768px) and (max-width: 1024px)";
-@laptop-screen: ~"only screen and (min-width: 1024px) and (max-width: 1600px)";
-@tv-screen: ~"only screen and (min-width: 1600px)";
+$small-screen: #{"only screen and (max-width: 350px)"};
+$mobile-screen: #{"only screen and (min-width: 350px) and (max-width: 768px)"};
+$tablet-screen: #{"only screen and (min-width: 768px) and (max-width: 1024px)"};
+$laptop-screen: #{"only screen and (min-width: 1024px) and (max-width: 1600px)"};
+$tv-screen: #{"only screen and (min-width: 1600px)"};
 
 :root {
-  @font-size: 16px;
-  font-size: @font-size;
+  $font-size: 16px;
+  font-size: $font-size;
 
-  @media @small-screen, @mobile-screen {
-    font-size: @font-size - 4;
+  @media #{$small-screen}, #{$mobile-screen} {
+    font-size: $font-size - 4;
   }
 
-  @media @tablet-screen {
-    font-size: @font-size - 2;
+  @media #{$tablet-screen} {
+    font-size: $font-size - 2;
   }
 }
 
@@ -116,6 +116,6 @@ h6 {
 //   background: #552ab3;
 // }
 
-@import "./antd-overrides.less";
-@import "./common.less";
-@import "./app.less";
+@import "./common.scss";
+@import "./antd-overrides.scss";
+@import "./app.scss";
