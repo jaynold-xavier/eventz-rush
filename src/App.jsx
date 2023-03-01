@@ -8,13 +8,13 @@ import {
   useLocation,
   Navigate,
 } from "react-router-dom";
-import { FloatButton } from "antd";
+import { FloatButton, Layout } from "antd";
 import { get, isEmpty } from "lodash";
 
 import { appRoutes } from "./constants/routes";
 
 import { HomePageFooter } from "./components/page";
-import { HomeNavBar } from "./components/navBar";
+import { HomeNavBar, HostNavbar, VendorNavbar } from "./components/navBar";
 
 import {
   FAQ,
@@ -33,6 +33,8 @@ import { UserContext } from "./contexts";
 import { getCurrentUser } from "./services/auth";
 import useBackground from "./hooks/useBackground";
 
+const { Sider } = Layout;
+
 export default function App() {
   const [user, setUser] = useState();
 
@@ -41,7 +43,7 @@ export default function App() {
   }, []);
 
   const isAuthenticated = !isEmpty(user);
-  console.log({ user });
+  const isVendor = get(user, "type");
 
   if (user === undefined) return null;
 
@@ -51,7 +53,7 @@ export default function App() {
         <UserContext.Provider value={{ user, setUser }}>
           <Switch>
             {/* Unsigned Routes */}
-            <Route path={appRoutes.root} element={<HomeLayout user={user} />}>
+            <Route element={<HomeLayout user={user} />}>
               <Route path={appRoutes.home} element={<Home />} />
               <Route path={appRoutes.faq} element={<FAQ />} />
 
@@ -90,9 +92,7 @@ export default function App() {
             >
               <Route
                 path={appRoutes.account.dashboard}
-                element={
-                  get(user, "type") ? <VendorDashboard /> : <HostDashboard />
-                }
+                element={isVendor ? <VendorDashboard /> : <HostDashboard />}
               />
             </Route>
 
@@ -123,16 +123,25 @@ function HomeLayout({ user }) {
   );
 }
 
-function AccountLayout({ isAuthenticated }) {
-  useBackground("linear-gradient(45deg, #c3bcff, #f1f1f1, #c3bcff)");
+function AccountLayout({ isAuthenticated, isVendor }) {
+  useBackground(
+    "linear-gradient(313deg, #e5e2ff, rgb(241, 241, 241), rgb(245 244 255))"
+  );
 
   if (isAuthenticated === undefined) return null;
 
-  const Container = isAuthenticated ? React.Fragment : PageNotAuthorized;
+  if (!isAuthenticated) {
+    return <PageNotAuthorized />;
+  }
+
   return (
-    <Container>
+    <Layout style={{ minHeight: "100vh" }}>
+      <Sider>
+        <HostNavbar />
+      </Sider>
+
       <Outlet />
-    </Container>
+    </Layout>
   );
 }
 //#region

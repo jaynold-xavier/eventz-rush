@@ -1,14 +1,10 @@
 $navbar-height: 100px;
 
+//#region home screens
 .main-nav-bar-affix-container {
   .ant-affix {
-    background: linear-gradient(
-      174deg,
-      rgb(145, 100, 255),
-      rgb(126, 91, 255),
-      rgb(127, 102, 255)
-    );
-    box-shadow: 0px 0px 11px 0px #8478ff;
+    background: linear-gradient(174deg, #9164ff, #7e5bff, #7f66ff);
+    box-shadow: 0px 0px 11px 0px #7f66ff;
     height: auto !important;
 
     .main-nav-bar {
@@ -256,14 +252,6 @@ $navbar-height: 100px;
   }
 }
 
-// .faq-layout {
-//   height: 100%;
-
-//   .faq-content {
-//     height: 100%;
-//   }
-// }
-
 .auth-layout {
   display: flex;
   flex-direction: row;
@@ -420,6 +408,7 @@ $navbar-height: 100px;
     }
   }
 }
+//#endregion
 
 .page-error-layout {
   background: linear-gradient(
@@ -440,12 +429,6 @@ $navbar-height: 100px;
     .error-content {
       text-align: center;
     }
-
-    .error-image {
-      .ant-image {
-        width: 30rem !important;
-      }
-    }
   }
 
   .error-content {
@@ -454,23 +437,12 @@ $navbar-height: 100px;
     .error-code {
       font-family: cursive;
       font-size: 7.5rem;
-      color: hsl(var(--error-color), 100%, 50%);
+      color: hsl(var(--error-color), 100%, 40%);
     }
 
     .error-subtitle {
       font-size: 2.5rem;
       margin-top: -1rem;
-    }
-  }
-
-  .error-image {
-    width: 100%;
-    text-align: center;
-
-    img[alt="blob-shape"] {
-      @extend .container-absolute;
-      width: auto;
-      opacity: 0.1;
     }
   }
 }

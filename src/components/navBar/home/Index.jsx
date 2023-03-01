@@ -9,6 +9,7 @@ import {
   Dropdown,
   Image,
   Menu,
+  Popover,
   Space,
   Tooltip,
 } from "antd";
@@ -83,13 +84,23 @@ export default function Navbar({ user }) {
     {
       key: "notifications",
       label: (
-        <Tooltip
-          placement="bottomRight"
-          title={"Notifications"}
-          arrowPointAtCenter
+        <ConfigProvider
+          theme={{
+            token: {
+              ...buttonActionTheme,
+              colorText: appTheme.colorText,
+            },
+          }}
         >
-          <BellOutlined className="font-20" />
-        </Tooltip>
+          <Popover
+            title="Notifications"
+            content="Coming Soon!!"
+            placement="bottomRight"
+            trigger="click"
+          >
+            <BellOutlined className="font-20" />
+          </Popover>
+        </ConfigProvider>
       ),
       onClick: (e) => goToPage(appRoutes.home),
     },

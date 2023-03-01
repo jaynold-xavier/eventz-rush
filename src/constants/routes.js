@@ -1,5 +1,4 @@
 export const appRoutes = {
-  root: "/",
   home: "/",
   faq: "/faq",
   policy: "/policy",
@@ -13,6 +12,18 @@ export const appRoutes = {
     root: "/account",
     get dashboard() {
       return this.root + "/dashboard";
+    },
+    get events() {
+      return this.root + "/events";
+    },
+    get photos() {
+      return this.root + "/photos";
+    },
+    get documents() {
+      return this.root + "/documents";
+    },
+    get settings() {
+      return this.root + "/settings";
     },
   },
 };

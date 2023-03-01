@@ -6,7 +6,7 @@ import {
   ArrowRightOutlined,
 } from "@ant-design/icons";
 import React, { useState } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import {
   Button,
   Divider,
@@ -18,7 +18,6 @@ import {
   message,
   Progress,
   Radio,
-  Space,
 } from "antd";
 import { find, map } from "lodash";
 
@@ -43,12 +42,11 @@ const { Content } = Layout;
 
 export default function Register() {
   const [form] = Form.useForm();
-  const navigate = useNavigate();
 
   const { setUser } = useAuth();
 
   const [loading, setLoading] = useState(false);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   const register = async (data) => {
     try {
@@ -284,9 +282,10 @@ export default function Register() {
         type,
         userName,
       });
+      user.type = type;
     }
 
-    setUser({ ...user, type, userName });
+    setUser({ ...user, userName });
   }
 }
 
@@ -358,10 +357,10 @@ function PasswordField({ value, ...rest }) {
     .reduce((prev = 0, curr) => prev + curr);
 
   const strokeColor = { 0: colors[0] };
-  new Array(percent).fill(null).map((val, i) => {
+  for (let i = 0; i < percent; i++) {
     const key = Math.round(((i + 1) / percent) * 100);
     strokeColor[key] = colors[i];
-  });
+  }
 
   return (
     <>

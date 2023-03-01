@@ -40,7 +40,7 @@ export default function PageNotFound() {
               type="primary"
               size="large"
               shape="round"
-              onClick={(e) => navigate("/")}
+              onClick={(e) => navigate(-1)}
             >
               Go Back
             </Button>
