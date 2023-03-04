@@ -104,17 +104,18 @@ h6 {
 }
 
 /* Handle on hover */
-// ::-webkit-scrollbar-thumb:hover {
-//   background: #2e0840;
-// }
+::-webkit-scrollbar-thumb:hover {
+  background: #2e0840;
+}
 
-// ::-moz-selection {
-//   background: #552ab3;
-// }
+/* Selection */
+::-moz-selection {
+  background: #00bcd4;
+}
 
-// ::selection {
-//   background: #552ab3;
-// }
+::selection {
+  background: #00bcd4;
+}
 
 @import "./common.scss";
 @import "./antd-overrides.scss";

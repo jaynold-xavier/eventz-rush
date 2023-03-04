@@ -38,9 +38,10 @@ export const appTheme = {
   borderRadius: 4,
   fontWeightStrong: 800,
   colorTextHeading: "#0e1318",
-  colorText: "#1b1b1b",
+  colorText: "#120f45",
   colorTextSecondary: "#2dc3d9",
-  colorTextBase: "#121022",
+  colorBgContainer: "#fafafa",
+  colorTextBase: "#120f45",
 };
 
 export const navLinkTheme = {

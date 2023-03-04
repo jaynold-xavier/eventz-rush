@@ -17,7 +17,6 @@ $navbar-height: 100px;
   }
 
   .main-nav-bar {
-    background-color: transparent;
     border: none;
     align-items: center;
     max-width: calc($container-width + 20rem);
@@ -378,8 +377,6 @@ $navbar-height: 100px;
 .vendor-details-layout {
   .vendor-general-info {
     .ant-card {
-      background-color: $fore-color;
-
       .user-actions {
         button {
           height: 3rem;
@@ -410,6 +407,7 @@ $navbar-height: 100px;
 }
 //#endregion
 
+//#region error screens
 .page-error-layout {
   background: linear-gradient(
     320deg,
@@ -446,3 +444,91 @@ $navbar-height: 100px;
     }
   }
 }
+//#endregion
+
+//#region account screens
+.account-layout {
+  min-height: 100vh;
+
+  .ant-layout-sider {
+    overflow: hidden;
+
+    .blob-img {
+      position: absolute;
+      opacity: 0.1;
+      bottom: 0;
+      left: -15rem;
+    }
+  }
+
+  .host-nav-bar,
+  .vendor-nav-bar {
+    .ant-menu-item {
+      margin: 0;
+      width: 100%;
+      border-radius: 0;
+
+      &:first-child {
+        height: auto;
+
+        &:hover {
+          background-color: initial !important;
+        }
+
+        .ant-menu-title-content {
+          display: none;
+        }
+      }
+
+      &.user-item {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+
+        &:hover {
+          background-color: initial !important;
+          cursor: default;
+        }
+      }
+
+      &.link-item {
+        height: 3rem;
+
+        &.ant-menu-item-selected {
+          color: #fff;
+          border-right: 2px solid;
+          // background: linear-gradient(45deg, transparent, lighten(#6252f1, 30%));
+          background-color: #6252f1;
+
+          svg {
+            // width: 25px !important;
+
+            path {
+              fill: #fff;
+            }
+          }
+        }
+      }
+    }
+
+    &.ant-menu-inline-collapsed {
+      .ant-menu-item {
+        &.user-item {
+          .ant-menu-title-content {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+
+  .host-dashboard-layout {
+    padding: 2rem;
+
+    .create-event-bg {
+      @include glowy-button(#a59df3);
+    }
+  }
+}
+
+//#endregion

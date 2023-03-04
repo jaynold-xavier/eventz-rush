@@ -103,6 +103,10 @@
   color: #3a3a3a !important;
 }
 
+.highlight-text {
+  color: $highlight-color;
+}
+
 .container {
   padding: 1rem;
   margin: 0 auto;
@@ -135,6 +139,7 @@
 .page-header {
   position: relative;
   padding-bottom: 20px;
+  font-family: Open sans;
 
   .header-title {
     // font-family: "Patrick Hand";
@@ -172,10 +177,6 @@
   }
 }
 
-.highlight-text {
-  color: $highlight-color;
-}
-
 @mixin card-glow($baseColor) {
   background: linear-gradient(
     140deg,
@@ -187,7 +188,6 @@
 }
 
 // buttons
-
 .icon-animated-button {
   span[role="img"] {
     transition: all 200ms ease-in-out;
@@ -282,6 +282,14 @@
 }
 
 // universal styles
+// font-size classes
+@for $i from 1 through 6 {
+  $fontSize: 8 + ($i * 2);
+  .font-#{$fontSize} {
+    font-size: #{$fontSize}px !important;
+  }
+}
+
 .bg-white {
   background-color: #fff !important;
 }
@@ -310,14 +318,6 @@
 
 .border-white {
   border-color: #fff !important;
-}
-
-// font-size classes
-@for $i from 1 through 6 {
-  $fontSize: 8 + ($i * 2);
-  .font-#{$fontSize} {
-    font-size: #{$fontSize}px !important;
-  }
 }
 
 .rounded-input {

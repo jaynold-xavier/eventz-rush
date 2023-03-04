@@ -1,86 +1,126 @@
-import { DownOutlined, BellOutlined, UserOutlined } from "@ant-design/icons";
+import { UserOutlined } from "@ant-design/icons";
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import {
-  Affix,
-  Avatar,
-  Button,
-  ConfigProvider,
-  Divider,
-  Dropdown,
-  Image,
-  Menu,
-  Popover,
-  Space,
-  Tooltip,
-} from "antd";
+import { Avatar, ConfigProvider, Image, Menu, Typography } from "antd";
 import { get } from "lodash";
 
 import AppLogo from "../../../../assets/images/logos/app.svg";
-import LogOutIcon from "../../../../assets/images/icons/log-out.svg";
+import LogOutIcon from "../../../../assets/images/icons/LogOut";
+import DashboardIcon from "../../../../assets/images/icons/Dashboard";
+import EventsIcon from "../../../../assets/images/icons/Events";
 
 import { appRoutes } from "../../../../constants/routes";
-import {
-  appTheme,
-  buttonActionTheme,
-  navLinkTheme,
-} from "../../../../assets/js/theme";
 import { signOutOfApp } from "../../../../services/auth";
+import useAuth from "../../../../hooks/useAuth";
 
-export default function HostNavbar({ user }) {
+import BlobImg3 from "../../../../assets/images/shapes/shape-2.svg";
+import { getDisplayName } from "../../../../helpers/auth";
+
+export default function HostNavbar({ user, collapsed }) {
   const location = useLocation();
   const navigate = useNavigate();
+
+  const { setUser } = useAuth();
 
   const goToPage = (route, options) => {
     navigate(route, options);
   };
 
-  const menuItems = [
+  const logOut = () => {
+    return signOutOfApp().then(() => {
+      setUser(null);
+      navigate(appRoutes.home);
+    });
+  };
+
+  const navItems = [
     {
       key: appRoutes.home,
-      label: (
+      label: "Home",
+      icon: (
         <Image
-          className="app-logo"
+          rootClassName="app-logo d-block m-auto"
           src={AppLogo}
           preview={false}
           alt="app-logo"
+          width="60%"
         />
       ),
       onClick: (e) => goToPage(appRoutes.home),
     },
     {
+      key: "user",
+      className: "user-item mt-5 pt-2 pb-2",
+      label: (
+        <div className="d-flex flex-column align-items-center">
+          <Typography.Text className="mt-1">
+            {getDisplayName(user)}
+          </Typography.Text>
+          <Typography.Text className="font-12 text-grey mb-0">
+            {get(user, "email")}
+          </Typography.Text>
+        </div>
+      ),
+      icon: (
+        <Avatar
+          className="user-avatar justify-content-center"
+          src={get(user, "photoURL")}
+          icon={<UserOutlined style={{ fontSize: "100%" }} />}
+          size={collapsed ? 25 : 80}
+        />
+      ),
+    },
+    {
       key: appRoutes.account.dashboard,
-      className: "link-item",
+      className: "link-item mt-5",
       label: "Dashboard",
+      icon: <DashboardIcon />,
       onClick: (e) => goToPage(appRoutes.account.dashboard),
     },
     {
       key: appRoutes.account.events,
       className: "link-item",
+      icon: <EventsIcon />,
       label: "Events",
       onClick: (e) => goToPage(appRoutes.account.events),
     },
+  ];
+
+  const userItems = [
+    { type: "divider" },
     {
-      label: <Divider />,
-    },
-    {
-      label: "Log out",
-      // icon: <img src={LogOutIcon} />,
-      onClick: () => {
-        return signOutOfApp().then(() => {
-          navigate(appRoutes.home);
-        });
-      },
+      key: appRoutes.home,
+      label: "Logout",
+      icon: <LogOutIcon />,
+      onClick: logOut,
     },
   ];
 
   return (
+    // <ConfigProvider theme={{ token: { colorText: "#c1bfd5" } }}>
     <ConfigProvider>
+      <Image
+        className="blob-3"
+        rootClassName="blob-img"
+        src={BlobImg3}
+        width="30rem"
+        preview={false}
+        alt="blob-3"
+      />
+
       <Menu
-        className="host-nav-bar container"
+        className="host-nav-bar h-100 pt-3"
         mode="inline"
         selectedKeys={[location.pathname]}
-        items={menuItems}
+        items={navItems}
+      />
+
+      <Menu
+        className="host-nav-bar position-sticky"
+        style={{ bottom: 0 }}
+        mode="inline"
+        selectedKeys={[location.pathname]}
+        items={userItems}
       />
     </ConfigProvider>
   );

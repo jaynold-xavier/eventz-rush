@@ -197,6 +197,7 @@ export default function Navbar({ user }) {
       theme={{
         token: {
           ...navLinkTheme,
+          colorBgContainer: "transparent",
         },
       }}
     >

@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { ConfigProvider } from "antd";
+import { ConfigProvider, Spin } from "antd";
 
 import reportWebVitals from "./reportWebVitals";
 
@@ -8,6 +8,9 @@ import "./assets/styles/index.scss";
 
 import App from "./App";
 import { appTheme } from "./assets/js/theme";
+import FlipFlopLoader from "./assets/images/loaders/flipFlop.gif";
+
+Spin.setDefaultIndicator(<img src={FlipFlopLoader} alt="loader" />);
 
 const element = document.getElementById("root");
 element.style.setProperty("--color-primary", appTheme.colorPrimary);

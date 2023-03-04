@@ -25,7 +25,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 
 import AppLogo from "../../assets/images/logos/app.svg";
 import RegisterImg from "../../assets/images/form/register.svg";
-import EmailIcon from "../../assets/images/form/email.png";
+import EmailIcon from "../../assets/images/form/email.svg";
 
 import { appRoutes } from "../../constants/routes";
 import { appTheme } from "../../assets/js/theme";

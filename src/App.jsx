@@ -14,7 +14,7 @@ import { get, isEmpty } from "lodash";
 import { appRoutes } from "./constants/routes";
 
 import { HomePageFooter } from "./components/page";
-import { HomeNavBar, HostNavbar, VendorNavbar } from "./components/navBar";
+import { HomeNavBar, HostNavbar } from "./components/navBar";
 
 import {
   FAQ,
@@ -26,6 +26,7 @@ import {
   VendorDetails,
   VendorsList,
   HostDashboard,
+  HostEvents,
   VendorDashboard,
 } from "./pages";
 import { getInBetweenCharsRegex } from "./helpers/regex";
@@ -44,6 +45,8 @@ export default function App() {
 
   const isAuthenticated = !isEmpty(user);
   const isVendor = get(user, "type");
+
+  console.log({ user, isVendor, isAuthenticated });
 
   if (user === undefined) return null;
 
@@ -88,11 +91,18 @@ export default function App() {
             {/* Signed Routes */}
             <Route
               path={appRoutes.account.root}
-              element={<AccountLayout isAuthenticated={isAuthenticated} />}
+              element={
+                <AccountLayout isAuthenticated={isAuthenticated} user={user} />
+              }
             >
               <Route
                 path={appRoutes.account.dashboard}
                 element={isVendor ? <VendorDashboard /> : <HostDashboard />}
+              />
+
+              <Route
+                path={appRoutes.account.events}
+                element={isVendor ? <HostEvents /> : <HostEvents />}
               />
             </Route>
 
@@ -123,10 +133,12 @@ function HomeLayout({ user }) {
   );
 }
 
-function AccountLayout({ isAuthenticated, isVendor }) {
-  useBackground(
-    "linear-gradient(313deg, #e5e2ff, rgb(241, 241, 241), rgb(245 244 255))"
-  );
+function AccountLayout({ isAuthenticated, user }) {
+  const collapsible = window.innerWidth < 1024;
+  const [collapsed, setCollapsed] = useState(collapsible);
+
+  useBackground("#f5f6fa");
+  // useBackground("linear-gradient(313deg, #eeecff, #f7f6ff, #fff)");
 
   if (isAuthenticated === undefined) return null;
 
@@ -135,9 +147,23 @@ function AccountLayout({ isAuthenticated, isVendor }) {
   }
 
   return (
-    <Layout style={{ minHeight: "100vh" }}>
-      <Sider>
-        <HostNavbar />
+    <Layout className="account-layout">
+      <Sider
+        width={250}
+        collapsedWidth={50}
+        collapsible={collapsible}
+        collapsed={collapsed}
+        onMouseEnter={(e) => {
+          if (!collapsible) return;
+          setCollapsed((s) => !s);
+        }}
+        onMouseLeave={(e) => {
+          if (!collapsible) return;
+          setCollapsed(true);
+        }}
+        trigger={null}
+      >
+        <HostNavbar user={user} collapsed={collapsed} />
       </Sider>
 
       <Outlet />

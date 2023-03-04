@@ -17,4 +17,4 @@ export { default as Login } from "./login/Index";
 export { default as Register } from "./register/Index";
 
 // account pages
-export { HostDashboard, VendorDashboard } from "./account";
+export { HostDashboard, HostEvents, VendorDashboard } from "./account";

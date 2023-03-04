@@ -1,4 +1,3 @@
-import { message } from "antd";
 import {
   GoogleAuthProvider,
   FacebookAuthProvider,
@@ -49,8 +48,8 @@ export function authenticateWithGoogle() {
     })
     .catch((error) => {
       // Handle Errors here.
-      const errorCode = error.code;
-      const errorMessage = error.message;
+      // const errorCode = error.code;
+      // const errorMessage = error.message;
       // The email of the user's account used.
       const email = error.customData.email;
       // The AuthCredential type that was used.
@@ -79,8 +78,8 @@ export function authenticateWithFacebook() {
     })
     .catch((error) => {
       // Handle Errors here.
-      const errorCode = error.code;
-      const errorMessage = error.message;
+      // const errorCode = error.code;
+      // const errorMessage = error.message;
       // The email of the user's account used.
       const email = error.customData.email;
       // The AuthCredential type that was used.
@@ -95,7 +94,7 @@ export function signOutOfApp() {
   return signOut(auth)
     .then(() => {
       sessionStorage.removeItem("Auth Token");
-      message.success("Signing out...");
+      // message.success("Signing out...");
     })
     .catch((error) => {
       console.log("sign out error", { error });
