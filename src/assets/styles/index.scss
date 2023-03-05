@@ -33,8 +33,7 @@ $tv-screen: #{"only screen and (min-width: 1600px)"};
 }
 
 html,
-body,
-body > #root {
+body {
   height: 100%;
   margin: 0;
 }
@@ -47,6 +46,11 @@ body {
 
   background-image: url("../images/back.jpg");
   background-repeat: no-repeat;
+}
+
+#root {
+  min-height: 100vh;
+  letter-spacing: 1px;
 }
 
 h1,
@@ -110,11 +114,11 @@ h6 {
 
 /* Selection */
 ::-moz-selection {
-  background: #00bcd4;
+  background: #6ce2ff;
 }
 
 ::selection {
-  background: #00bcd4;
+  background: #6ce2ff;
 }
 
 @import "./common.scss";

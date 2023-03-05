@@ -36,7 +36,7 @@ import {
   authenticateWithGoogle,
 } from "../../services/auth";
 import useAuth from "../../hooks/useAuth";
-import { addDocToTable } from "../../services/database";
+import { addUser } from "../../services/database";
 
 const { Content } = Layout;
 
@@ -62,7 +62,6 @@ export default function Register() {
       await postRegister(response._tokenResponse.refreshToken, response.user);
     } catch (error) {
       console.log({ error });
-
       if (error.code === "auth/email-already-in-use") {
         message.error("Email already registered");
       }
@@ -105,14 +104,13 @@ export default function Register() {
             onFinish={register}
           >
             <Form.Item
-              name="userType"
+              name="type"
               label="I am a"
               rules={[
                 { required: true, message: "Please select a user type" },
                 {
                   // validateTrigger: "onSubmit",
                   validator: (rule, value) => {
-                    console.log({ rule, value });
                     if (value && value === userRolesOption[1].value) {
                       return Promise.reject(
                         new Error("Please select a vendor type")
@@ -247,7 +245,7 @@ export default function Register() {
   );
 
   async function onRegisterWithGoogle() {
-    await form.validateFields(["userType"]);
+    await form.validateFields(["type"]);
 
     const { user, token } = await authenticateWithGoogle();
     await postRegister(token, user);
@@ -255,7 +253,7 @@ export default function Register() {
   }
 
   async function onRegisterWithFacebook() {
-    await form.validateFields(["userType"]);
+    await form.validateFields(["type"]);
 
     const { user, token } = await authenticateWithFacebook();
     await postRegister(token, user);
@@ -265,27 +263,20 @@ export default function Register() {
   async function postRegister(token, user) {
     sessionStorage.setItem("Auth Token", token);
 
-    const { userName = null, userType: type } = form.getFieldsValue();
-    console.log({ type });
+    const { userName = null, type } = form.getFieldsValue();
+    const data = {
+      email: user.email,
+      photoURL: user.photoURL,
+      userName,
+    };
 
-    if (type === "host") {
-      await addDocToTable("hosts", {
-        email: user.email,
-        userName,
-      });
-    } else {
-      await addDocToTable("vendors", {
-        email: user.email,
-        phone: user.phoneNumber || null,
-        profilePicURL: user.photoURL,
-        title: user.displayName,
-        type,
-        userName,
-      });
-      user.type = type;
+    if (type !== "host") {
+      data.title = user.displayName || "";
+      data.type = type;
     }
 
-    setUser({ ...user, userName });
+    await addUser(data, type);
+    setUser(data);
   }
 }
 

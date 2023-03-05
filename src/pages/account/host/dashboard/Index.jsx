@@ -1,55 +1,88 @@
 import { PlusOutlined } from "@ant-design/icons";
 import React from "react";
-import { Content } from "antd/es/layout/layout";
-import { Alert, Button, Col, ConfigProvider, Row } from "antd";
+import {
+  Alert,
+  Button,
+  Calendar,
+  Col,
+  ConfigProvider,
+  Layout,
+  Row,
+} from "antd";
 
 import { getDisplayName } from "../../../../helpers/auth";
 import ScrollableCard from "../../../../components/card/scrollable/Index";
 
-export default function HostDashboard({ user }) {
+import BlobImg1 from "../../../../assets/images/shapes/shape-2.svg";
+import BlobImg2 from "../../../../assets/images/shapes/shape-3.svg";
+
+const { Header, Content } = Layout;
+
+export default function Dashboard({ user }) {
   const [firstName] = getDisplayName(user).split(" ");
 
   return (
-    <Content className="host-dashboard-layout">
-      <h4>Dashboard</h4>
+    <Layout prefixCls="host-dashboard-layout">
+      <Header prefixCls="host-dashboard-header">
+        <h5>Dashboard</h5>
+      </Header>
 
-      <br />
-      <br />
-
-      <ConfigProvider
-        theme={{
-          token: {
-            colorText: "#fc7985",
-            colorInfo: "#ff4455",
-          },
-        }}
-      >
-        <Alert
-          className="mb-5"
-          message={<h5 className="mb-3">Welcome {firstName}!</h5>}
-          closable
-        />
-      </ConfigProvider>
-
-      <Row>
-        <Col span={6}>
-          <ScrollableCard>Upcoming Events</ScrollableCard>
-        </Col>
-      </Row>
-
-      <br />
-      <br />
-
-      <div className="text-center">
-        <Button
-          className="create-event-bg"
-          type="primary"
-          size="large"
-          icon={<PlusOutlined />}
+      <Content>
+        <ConfigProvider
+          theme={{
+            token: {
+              colorText: "#fc7985",
+              colorInfo: "#ff4455",
+            },
+          }}
         >
-          Create Event
-        </Button>
-      </div>
-    </Content>
+          <Alert
+            className="mb-5"
+            message={<h5 className="mb-3">Welcome {firstName}!</h5>}
+            closable
+          />
+        </ConfigProvider>
+
+        <Row gutter={[24, 24]}>
+          <Col xl={6} lg={12} md={12} sm={24} xs={24}>
+            <ScrollableCard blobImg={BlobImg2}>Upcoming Events</ScrollableCard>
+          </Col>
+
+          <Col xl={6} lg={12} md={12} sm={24} xs={24}>
+            <ScrollableCard blobImg={BlobImg1}>
+              Processing Events
+            </ScrollableCard>
+          </Col>
+        </Row>
+
+        <br />
+        <br />
+
+        <div className="text-center">
+          <Button
+            className="create-event-btn"
+            type="primary"
+            size="large"
+            icon={<PlusOutlined />}
+            ghost
+          >
+            Create Event
+          </Button>
+        </div>
+
+        <Row gutter={[24, 24]}>
+          <Col xl={6} lg={12} md={12} sm={24} xs={24}>
+            <Calendar
+              headerRender={() => (
+                <Header prefixCls="p-3">
+                  <h5>Events</h5>
+                </Header>
+              )}
+              fullscreen={false}
+            />
+          </Col>
+        </Row>
+      </Content>
+    </Layout>
   );
 }

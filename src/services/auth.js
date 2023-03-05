@@ -4,8 +4,10 @@ import {
   signInWithPopup,
   signOut,
 } from "firebase/auth";
+import { get } from "lodash";
 
 import { auth } from "../assets/js/firebase";
+import { getUser } from "./database";
 
 const googleProvider = new GoogleAuthProvider();
 const facebookProvider = new FacebookAuthProvider();
@@ -13,7 +15,13 @@ const facebookProvider = new FacebookAuthProvider();
 export async function getCurrentUser() {
   try {
     await waitForAuthInit();
-    return await auth.currentUser;
+    const user = await auth.currentUser;
+    const email = get(user, "email");
+    if (email) {
+      return await getUser(email);
+    } else {
+      return user;
+    }
   } catch (err) {
     console.log("Failed to get current user...", err);
     return null;
@@ -39,7 +47,6 @@ export function authenticateWithGoogle() {
       const token = credential.accessToken;
       // The signed-in user info.
       const user = result.user;
-      console.log({ user, token });
       // IdP data available using getAdditionalUserInfo(result)
       return {
         user,

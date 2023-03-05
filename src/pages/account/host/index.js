@@ -1,2 +1,2 @@
-export { default as HostDashboard } from "./dashboard/Index";
-export { default as HostEvents } from "./events/Index";
+export { default as Dashboard } from "./dashboard/Index";
+export { EventsList, EventCreateWizard } from "./events";

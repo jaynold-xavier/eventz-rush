@@ -114,12 +114,11 @@ $navbar-height: 100px;
         color: #e2d9ff;
       }
 
-      .register-btn {
-        height: 3.5rem;
-        font-size: 1.3rem;
-        width: 15rem;
-        // @include glowy-button(var(--ant-primary-6));
-      }
+      // .register-btn {
+      //   height: 3.5rem;
+      //   font-size: 1.3rem;
+      //   width: 15rem;
+      // }
     }
   }
 
@@ -449,6 +448,7 @@ $navbar-height: 100px;
 //#region account screens
 .account-layout {
   min-height: 100vh;
+  $color-primary: #6252f1;
 
   .ant-layout-sider {
     overflow: hidden;
@@ -523,11 +523,18 @@ $navbar-height: 100px;
   }
 
   .host-dashboard-layout {
-    padding: 2rem;
-
-    .create-event-bg {
-      @include glowy-button(#a59df3);
+    .host-dashboard-header {
+      padding: 1rem;
+      color: $color-primary;
     }
+
+    main {
+      padding: 1rem;
+    }
+  }
+
+  .host-events-layout {
+    padding: 2rem;
   }
 }
 

@@ -177,6 +177,7 @@
   }
 }
 
+// card
 @mixin card-glow($baseColor) {
   background: linear-gradient(
     140deg,
@@ -185,6 +186,16 @@
   );
   border: 1px solid lighten($baseColor, 30%);
   box-shadow: 0 0px 10px 1px #e7e7e7;
+}
+
+.scrollable-card {
+  overflow: hidden;
+
+  .blob-img {
+    position: absolute;
+    bottom: -4rem;
+    right: -4rem;
+  }
 }
 
 // buttons

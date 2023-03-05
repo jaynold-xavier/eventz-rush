@@ -1,5 +1,5 @@
 //#region host screens
-export { HostDashboard, HostEvents } from "./host";
+export { Dashboard as HostDashboard, EventsList as HostEvents } from "./host";
 //#region
 
 //#region vendor screens

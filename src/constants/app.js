@@ -28,5 +28,39 @@ export const VENDOR_TYPES = {
   },
 };
 
+export const EVENT_STATUSES = {
+  processing: {
+    text: "Processing",
+    color: "cyan",
+  },
+  open: {
+    text: "Open",
+    color: "green",
+  },
+  settled: {
+    text: "Settled",
+    color: "orange",
+  },
+  closed: {
+    text: "Closed",
+    color: "black",
+  },
+};
+
+export const VENDOR_INVITE_STATUSES = {
+  pending: {
+    text: "Pending",
+    color: "orange",
+  },
+  accepted: {
+    text: "Accepted",
+    color: "green",
+  },
+  declined: {
+    text: "Declined",
+    color: "red",
+  },
+};
+
 export const API_DATE_FORMAT = "DDMMYYY[T]HH:mm[Z]";
 export const DISPLAY_DATE_FORMAT = "MMMM DD, YYYY";

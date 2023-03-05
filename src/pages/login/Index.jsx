@@ -6,7 +6,7 @@ import {
   LockTwoTone,
 } from "@ant-design/icons";
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   Button,
   Checkbox,
@@ -18,7 +18,6 @@ import {
   message,
   Space,
 } from "antd";
-import { get, isEmpty } from "lodash";
 
 import AppLogo from "../../assets/images/logos/app.svg";
 import LoginImg from "../../assets/images/form/login.svg";
@@ -30,7 +29,7 @@ import {
   authenticateWithGoogle,
 } from "../../services/auth";
 import useAuth from "../../hooks/useAuth";
-import { findDocInTable } from "../../services/database";
+import { getUser } from "../../services/database";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../assets/js/firebase";
 
@@ -38,7 +37,6 @@ const { Content } = Layout;
 
 export default function Login() {
   const [form] = Form.useForm();
-  const navigate = useNavigate();
   const { setUser } = useAuth();
 
   const [loading, setLoading] = useState(false);
@@ -49,12 +47,9 @@ export default function Login() {
       const { email, password } = data;
 
       const response = await signInWithEmailAndPassword(auth, email, password);
-      console.log({ response });
 
       await postLogin(response._tokenResponse.refreshToken, response.user);
     } catch (error) {
-      console.log({ error });
-
       switch (error.code) {
         case "auth/user-not-found":
           message.error("User not found");
@@ -218,12 +213,7 @@ export default function Login() {
   async function postLogin(token, user) {
     sessionStorage.setItem("Auth Token", token);
 
-    let userData = await findDocInTable("vendors", { email: user.email });
-    if (isEmpty(userData)) {
-      userData = await findDocInTable("hosts", { email: user.email });
-    }
-    console.log({ userData });
-
-    setUser(get(userData, "0") || user);
+    const userData = await getUser(user.email);
+    setUser(userData);
   }
 }

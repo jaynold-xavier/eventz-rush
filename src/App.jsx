@@ -13,7 +13,7 @@ import { get, isEmpty } from "lodash";
 
 import { appRoutes } from "./constants/routes";
 
-import { HomePageFooter } from "./components/page";
+import { HomeFooter } from "./components/page";
 import { HomeNavBar, HostNavbar } from "./components/navBar";
 
 import {
@@ -34,19 +34,20 @@ import { UserContext } from "./contexts";
 import { getCurrentUser } from "./services/auth";
 import useBackground from "./hooks/useBackground";
 
-const { Sider } = Layout;
+const { Header, Sider } = Layout;
 
 export default function App() {
   const [user, setUser] = useState();
 
   useEffect(() => {
-    getCurrentUser().then(setUser);
+    getCurrentUser().then((user) => {
+      console.log("init", { user });
+      setUser(user);
+    });
   }, []);
 
   const isAuthenticated = !isEmpty(user);
   const isVendor = get(user, "type");
-
-  console.log({ user, isVendor, isAuthenticated });
 
   if (user === undefined) return null;
 
@@ -124,11 +125,13 @@ export default function App() {
 function HomeLayout({ user }) {
   return (
     <>
-      <HomeNavBar user={user} />
+      <Header>
+        <HomeNavBar user={user} />
+      </Header>
 
       <Outlet />
 
-      <HomePageFooter />
+      <HomeFooter />
     </>
   );
 }

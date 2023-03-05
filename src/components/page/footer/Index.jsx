@@ -7,7 +7,7 @@ import { appRoutes } from "../../../constants/routes";
 
 const { Footer } = Layout;
 
-export function HomePageFooter() {
+export function HomeFooter() {
   return (
     <ConfigProvider
       theme={{
