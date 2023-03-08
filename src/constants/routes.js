@@ -14,7 +14,10 @@ export const appRoutes = {
       return this.root + "/dashboard";
     },
     get events() {
-      return this.root + "/events";
+      return {
+        list: this.root + "/events",
+        create: this.root + "/event/create",
+      };
     },
     get photos() {
       return this.root + "/photos";

@@ -290,10 +290,6 @@ $navbar-height: 100px;
 
           &:hover {
             box-shadow: 0px 1px 15px 0 lighten(#3a68eb, 5%);
-
-            span[role="img"] {
-              margin-left: 2rem;
-            }
           }
         }
       }
@@ -451,7 +447,13 @@ $navbar-height: 100px;
   $color-primary: #6252f1;
 
   .ant-layout-sider {
-    overflow: hidden;
+    height: 100%;
+    max-height: 100vh;
+
+    .ant-layout-sider-children {
+      position: fixed;
+      width: inherit;
+    }
 
     .blob-img {
       position: absolute;
@@ -495,16 +497,14 @@ $navbar-height: 100px;
         height: 3rem;
 
         &.ant-menu-item-selected {
-          color: #fff;
-          border-right: 2px solid;
-          // background: linear-gradient(45deg, transparent, lighten(#6252f1, 30%));
-          background-color: #6252f1;
+          box-shadow: 0px 0px 20px 0px #dfdfdf;
+          background-color: transparent;
+        }
 
+        &:not(.ant-menu-item-selected) {
           svg {
-            // width: 25px !important;
-
             path {
-              fill: #fff;
+              fill: #000;
             }
           }
         }
@@ -525,16 +525,56 @@ $navbar-height: 100px;
   .host-dashboard-layout {
     .host-dashboard-header {
       padding: 1rem;
-      color: $color-primary;
     }
 
     main {
       padding: 1rem;
     }
+
+    .create-event-btn {
+      width: 50%;
+      height: 3rem;
+    }
+
+    .ant-picker-calendar {
+      .ant-picker-cell-inner {
+        .ant-picker-calendar-date-content {
+          position: absolute;
+          top: 0;
+          left: 0;
+          background: #ff4d4f;
+          color: #fff;
+          padding: 0 3px;
+          border-radius: 5px;
+        }
+      }
+    }
   }
 
   .host-events-layout {
-    padding: 2rem;
+    .host-events-header {
+      display: flex;
+      justify-content: space-between;
+      padding: 24px;
+      background-color: #fafafa;
+    }
+  }
+
+  .event-create-layout {
+    .event-create-header {
+      padding: 24px;
+      background-color: #fafafa;
+      box-shadow: 0px 0px 10px 0px gainsboro;
+    }
+
+    .event-create-footer {
+      position: sticky;
+      bottom: 0;
+      padding: 16px 24px;
+      background-color: #fafafa;
+      box-shadow: 0px 0px 10px 0px gainsboro;
+      z-index: 10;
+    }
   }
 }
 

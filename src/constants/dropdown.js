@@ -1,8 +1,8 @@
 import { map } from "lodash";
 
-import { USER_ROLES, VENDOR_TYPES } from "./app";
+import { EVENT_TYPES, USER_ROLES, VENDOR_TYPES } from "./app";
 
-export const userRolesOption = map(USER_ROLES, (obj, key) => {
+export const userRolesOptions = map(USER_ROLES, (obj, key) => {
   return {
     key,
     label: obj.text,
@@ -11,6 +11,14 @@ export const userRolesOption = map(USER_ROLES, (obj, key) => {
 });
 
 export const vendorOptions = map(VENDOR_TYPES, (obj, key) => {
+  return {
+    key,
+    label: obj.text,
+    value: key,
+  };
+});
+
+export const eventTypesOptions = map(EVENT_TYPES, (obj, key) => {
   return {
     key,
     label: obj.text,

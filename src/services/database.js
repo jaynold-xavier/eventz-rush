@@ -63,7 +63,28 @@ export async function getUser(id) {
 export async function getEvents(hostId) {
   if (!hostId) return [];
 
-  const events = getRecords("events", [where("hostEmail", "==", hostId)]);
+  const events = await getRecords("events", [where("hostEmail", "==", hostId)]);
+  if (events) {
+    return map(events, (e) => e.record);
+  } else {
+    return [];
+  }
+}
+
+export async function getEventsByMonth(hostId, date) {
+  if (!hostId) return [];
+
+  const dtString = date.format("YYYY-MM");
+  const range = [
+    new Date(dtString),
+    new Date(new Date(dtString).setMonth(new Date(dtString).getMonth() + 1)),
+  ];
+
+  const events = await getRecords("events", [
+    where("hostEmail", "==", hostId),
+    where("fromDate", ">", range[0]),
+    where("fromDate", "<=", range[1]),
+  ]);
   if (events) {
     return map(events, (e) => e.record);
   } else {

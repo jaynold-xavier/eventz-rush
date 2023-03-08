@@ -1,9 +1,10 @@
 import {
-  GoogleOutlined,
-  FacebookOutlined,
-  UserOutlined,
-  LockTwoTone,
   ArrowRightOutlined,
+  FacebookOutlined,
+  GoogleOutlined,
+  LockTwoTone,
+  MailTwoTone,
+  UserOutlined,
 } from "@ant-design/icons";
 import React, { useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
@@ -25,12 +26,11 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 
 import AppLogo from "../../assets/images/logos/app.svg";
 import RegisterImg from "../../assets/images/form/register.svg";
-import EmailIcon from "../../assets/images/form/email.svg";
 
 import { appRoutes } from "../../constants/routes";
 import { appTheme } from "../../assets/js/theme";
 import { auth } from "../../assets/js/firebase";
-import { userRolesOption, vendorOptions } from "../../constants/dropdown";
+import { userRolesOptions, vendorOptions } from "../../constants/dropdown";
 import {
   authenticateWithFacebook,
   authenticateWithGoogle,
@@ -111,7 +111,7 @@ export default function Register() {
                 {
                   // validateTrigger: "onSubmit",
                   validator: (rule, value) => {
-                    if (value && value === userRolesOption[1].value) {
+                    if (value && value === userRolesOptions[1].value) {
                       return Promise.reject(
                         new Error("Please select a vendor type")
                       );
@@ -152,7 +152,7 @@ export default function Register() {
               <Input
                 placeholder="Email"
                 size="large"
-                prefix={<img src={EmailIcon} alt="email-icon" />}
+                prefix={<MailTwoTone twoToneColor={appTheme.colorPrimary} />}
               />
             </Form.Item>
 
@@ -296,7 +296,7 @@ function UserTypeSelector({ value, onChange, ...rest }) {
       onChange={onChange}
       {...rest}
     >
-      {map(userRolesOption, (option) => {
+      {map(userRolesOptions, (option) => {
         return (
           <Radio.Button
             key={option.value}
@@ -304,7 +304,7 @@ function UserTypeSelector({ value, onChange, ...rest }) {
             value={option.value}
             style={{ width: "50%" }}
           >
-            {option.value === userRolesOption[0].value ? (
+            {option.value === userRolesOptions[0].value ? (
               option.label
             ) : (
               <Dropdown
@@ -327,9 +327,9 @@ function UserTypeSelector({ value, onChange, ...rest }) {
   function transformValue(value) {
     if (!value) return;
 
-    return value === userRolesOption[0].value
-      ? userRolesOption[0].value
-      : userRolesOption[1].value;
+    return value === userRolesOptions[0].value
+      ? userRolesOptions[0].value
+      : userRolesOptions[1].value;
   }
 }
 

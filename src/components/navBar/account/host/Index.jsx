@@ -78,11 +78,11 @@ export default function HostNavbar({ user, collapsed }) {
       onClick: (e) => goToPage(appRoutes.account.dashboard),
     },
     {
-      key: appRoutes.account.events,
+      key: appRoutes.account.events.list,
       className: "link-item",
       icon: <EventsIcon />,
       label: "Events",
-      onClick: (e) => goToPage(appRoutes.account.events),
+      onClick: (e) => goToPage(appRoutes.account.events.list),
     },
   ];
 

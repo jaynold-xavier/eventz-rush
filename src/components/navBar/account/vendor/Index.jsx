@@ -58,11 +58,11 @@ export default function VendorNavbar({ user }) {
       onClick: (e) => goToPage(appRoutes.account.dashboard),
     },
     {
-      key: appRoutes.account.events,
+      key: appRoutes.account.events.list,
       className: "link-item mt-2",
       icon: <EventsIcon />,
       label: "Events",
-      onClick: (e) => goToPage(appRoutes.account.events),
+      onClick: (e) => goToPage(appRoutes.account.events.list),
     },
     {
       key: appRoutes.account.photos,

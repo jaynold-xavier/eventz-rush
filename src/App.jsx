@@ -22,12 +22,13 @@ import {
   Login,
   PageNotAuthorized,
   PageNotFound,
-  Register,
-  VendorDetails,
-  VendorsList,
+  EventCreateWizard,
   HostDashboard,
   HostEvents,
+  Register,
   VendorDashboard,
+  VendorDetails,
+  VendorsList,
 } from "./pages";
 import { getInBetweenCharsRegex } from "./helpers/regex";
 import { UserContext } from "./contexts";
@@ -98,12 +99,35 @@ export default function App() {
             >
               <Route
                 path={appRoutes.account.dashboard}
-                element={isVendor ? <VendorDashboard /> : <HostDashboard />}
+                element={
+                  isVendor ? (
+                    <VendorDashboard user={user} />
+                  ) : (
+                    <HostDashboard user={user} />
+                  )
+                }
               />
 
               <Route
-                path={appRoutes.account.events}
-                element={isVendor ? <HostEvents /> : <HostEvents />}
+                path={appRoutes.account.events.list}
+                element={
+                  isVendor ? (
+                    <HostEvents user={user} />
+                  ) : (
+                    <HostEvents user={user} />
+                  )
+                }
+              />
+
+              <Route
+                path={appRoutes.account.events.create}
+                element={
+                  isVendor ? (
+                    <PageNotAuthorized />
+                  ) : (
+                    <EventCreateWizard user={user} />
+                  )
+                }
               />
             </Route>
 

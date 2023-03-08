@@ -33,7 +33,7 @@ export const appTheme = {
   colorLinkHover: "#2dc3d9",
   colorLinkActive: "#ffb13d",
   fontSize: isMobileView ? fontSize - 4 : fontSize,
-  fontFamily: "Lato",
+  fontFamily: "Open Sans",
   colorBorder: "#dcdcdc",
   borderRadius: 4,
   fontWeightStrong: 800,

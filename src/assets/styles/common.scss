@@ -190,11 +190,14 @@
 
 .scrollable-card {
   overflow: hidden;
+  min-height: 15rem;
 
   .blob-img {
     position: absolute;
     bottom: -4rem;
     right: -4rem;
+    width: 10rem;
+    opacity: 0.8;
   }
 }
 
@@ -302,7 +305,7 @@
 }
 
 .bg-white {
-  background-color: #fff !important;
+  background-color: #fafafa !important;
 }
 
 .bg-transparent {

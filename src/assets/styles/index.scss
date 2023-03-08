@@ -39,7 +39,7 @@ body {
 }
 
 body {
-  font-family: "Lato", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+  font-family: "Open Sans", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
     "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -51,6 +51,7 @@ body {
 #root {
   min-height: 100vh;
   letter-spacing: 1px;
+  height: 100%;
 }
 
 h1,

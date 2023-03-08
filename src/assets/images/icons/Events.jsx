@@ -6,7 +6,7 @@ export default function EventsIcon({ ...props }) {
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
       xmlSpace="preserve"
-      fill="#000"
+      fill="#e3c465"
       width={20}
       {...props}
     >

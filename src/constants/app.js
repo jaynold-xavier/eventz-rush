@@ -28,6 +28,27 @@ export const VENDOR_TYPES = {
   },
 };
 
+export const EVENT_TYPES = {
+  prom: {
+    text: "Prom",
+  },
+  engagement: {
+    text: "Engagement",
+  },
+  birthday: {
+    text: "Birthday",
+  },
+  wedding: {
+    text: "Wedding",
+  },
+  christmasParty: {
+    text: "Christmas Party",
+  },
+  christening: {
+    text: "Christening",
+  },
+};
+
 export const EVENT_STATUSES = {
   processing: {
     text: "Processing",
@@ -44,6 +65,10 @@ export const EVENT_STATUSES = {
   closed: {
     text: "Closed",
     color: "black",
+  },
+  cancelled: {
+    text: "Cancelled",
+    color: "grey",
   },
 };
 

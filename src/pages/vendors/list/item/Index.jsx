@@ -83,47 +83,36 @@ export default function ListItem({ data, loading, goToDetails, ...rest }) {
           </svg>
         </div>
 
-        <Content className="vendor-item-content text-left">
+        <Content className="vendor-item-content text-left font-14">
           <Skeleton title loading={loading} active>
             <Space>
-              <InfoCircleOutlined
-                className="font-14"
-                style={{ color: appTheme.colorPrimary }}
-              />
+              <InfoCircleOutlined style={{ color: appTheme.colorPrimary }} />
               <strong>About</strong>
             </Space>
             <Typography.Paragraph
-              className="vendor-item-description"
+              className="vendor-item-description font-14"
               ellipsis={{ rows: 3, tooltip: descriptionRender }}
             >
               {descriptionRender}
             </Typography.Paragraph>
 
             <Space>
-              <PhoneFilled
-                className="font-14"
-                style={{ color: appTheme.colorPrimary }}
-              />
+              <PhoneFilled style={{ color: appTheme.colorPrimary }} />
               <strong>Phone</strong>
             </Space>
             <div className="font-14">{phone}</div>
 
             <Space className="mt-3">
-              <MailFilled
-                className="font-14"
-                style={{ color: appTheme.colorPrimary }}
-              />
+              <MailFilled style={{ color: appTheme.colorPrimary }} />
               <strong>Email</strong>
             </Space>
 
             <Typography.Text
-              className="d-block"
+              className="d-block font-14"
               ellipsis={{ tooltip: email }}
               style={{ maxWidth: 250 }}
             >
-              <a href={`mailto:${email}`} className="font-14">
-                {email}
-              </a>
+              <a href={`mailto:${email}`}>{email}</a>
             </Typography.Text>
           </Skeleton>
         </Content>

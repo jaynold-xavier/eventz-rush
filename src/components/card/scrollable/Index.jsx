@@ -1,17 +1,42 @@
 import React from "react";
-import { Card, ConfigProvider, Image } from "antd";
+import { Card, ConfigProvider, Image, Empty, Spin } from "antd";
+import { first, isEmpty } from "lodash";
 
 import { appTheme } from "../../../assets/js/theme";
-
 import BlobImg3 from "../../../assets/images/shapes/shape-3.svg";
+import usePaginatedData from "../../../hooks/usePaginatedData";
+
+const emptyRender = (
+  <Empty description="No Events" image={Empty.PRESENTED_IMAGE_SIMPLE} />
+);
 
 export default function ScrollableCard({
-  total,
+  title,
+  resource,
+  constraints,
   blobImg = BlobImg3,
   hasMore,
   children,
   ...rest
 }) {
+  const { data, loadNext, loading } = usePaginatedData({
+    table: resource,
+    constraints,
+    pageSize: 1,
+  });
+
+  const render = () => {
+    if (loading) {
+      return <Spin spinning={loading} />;
+    } else {
+      if (isEmpty(data)) {
+        return emptyRender;
+      } else {
+        return children && children(first(data));
+      }
+    }
+  };
+
   return (
     <ConfigProvider
       theme={{
@@ -19,13 +44,14 @@ export default function ScrollableCard({
       }}
     >
       <Card className="scrollable-card" {...rest}>
-        {children}
+        <span className="title">{title}</span>
+
+        {render()}
 
         <Image
           className="blob"
           rootClassName="blob-img"
           src={blobImg}
-          width="15rem"
           preview={false}
           alt="blob"
         />
