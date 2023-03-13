@@ -1,3 +1,8 @@
+import dayjs from "dayjs";
+import isBetween from "dayjs/plugin/isBetween"; // load on demand
+
+dayjs.extend(isBetween); // use plugin
+
 export function dateRangeString(fromDateJs, toDateJs) {
   if (!fromDateJs || !toDateJs) return null;
 
@@ -14,8 +19,13 @@ export function dateRangeString(fromDateJs, toDateJs) {
   }
 }
 
-export function timeString(fromDateJs, toDateJs) {
+export function timeRangeString(fromDateJs, toDateJs) {
   if (!fromDateJs || !toDateJs) return null;
 
   return fromDateJs.format("hh:mm A") + " - " + toDateJs.format("hh:mm A");
+}
+
+// with new Date()
+export function isDateInRange(selectedDate, fromDate, toDate) {
+  return selectedDate.isBetween(fromDate, toDate, "day", "[]");
 }

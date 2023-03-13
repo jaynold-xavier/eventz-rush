@@ -18,13 +18,13 @@ import {
   Typography,
 } from "antd";
 import { get, isEmpty, map } from "lodash";
+import { orderBy, Timestamp, where } from "firebase/firestore";
 import dayjs from "dayjs";
 
 import BlobImg1 from "../../../../assets/images/shapes/shape-1.svg";
 import BlobImg2 from "../../../../assets/images/shapes/shape-2.svg";
 import BlobImg3 from "../../../../assets/images/shapes/shape-3.svg";
 import BlobImg4 from "../../../../assets/images/shapes/shape-4.svg";
-import LocationIcon from "../../../../assets/images/icons/Location";
 
 import { getDisplayName } from "../../../../helpers/auth";
 import ScrollableCard from "../../../../components/card/scrollable/Index";
@@ -34,8 +34,7 @@ import { appTheme } from "../../../../assets/js/theme";
 import { EVENT_STATUSES } from "../../../../constants/app";
 import IconFont from "../../../../components/icons/Index";
 import { appRoutes } from "../../../../constants/routes";
-import { dateRangeString, timeString } from "../../../../helpers/timetamp";
-import { orderBy, Timestamp, where } from "firebase/firestore";
+import { dateRangeString, timeRangeString } from "../../../../helpers/timestamp";
 
 const { Header, Content } = Layout;
 
@@ -67,20 +66,24 @@ export default function Dashboard({ user }) {
         <br />
 
         <Row gutter={[24, 24]}>
-          <Col xxl={6} xl={12} lg={12} md={12} sm={24} xs={24}>
+          <Col xxl={10} xl={12} lg={12} md={12} sm={24} xs={24}>
             <ScrollableCard
               title="Upcoming Events"
               resource="events"
               constraints={[
-                where("status", "==", EVENT_STATUSES.open.text),
+                where("status", "==", EVENT_STATUSES.booked.text),
                 where("fromDate", ">", Timestamp.fromDate(new Date())),
                 orderBy("fromDate"),
               ]}
-              blobImg={BlobImg1}
-            />
+              blobImg={BlobImg3}
+            >
+              {(item) => {
+                return <CardEventItem item={item} />;
+              }}
+            </ScrollableCard>
           </Col>
 
-          <Col xxl={6} xl={12} lg={12} md={12} sm={24} xs={24}>
+          <Col xxl={10} xl={12} lg={12} md={12} sm={24} xs={24}>
             <ScrollableCard
               title="Processing Events"
               resource="events"
@@ -101,7 +104,7 @@ export default function Dashboard({ user }) {
         <br />
 
         <Row gutter={[24, 24]}>
-          <Col xl={18} lg={18} md={24} sm={24} xs={24}>
+          <Col xl={20} lg={20} md={24} sm={24} xs={24}>
             <EventCalendar params={{ email: get(user, "email") }} />
           </Col>
         </Row>
@@ -112,10 +115,11 @@ export default function Dashboard({ user }) {
 
 function EventCalendar({ params = {} }) {
   const [selectedDate, setSelectedDate] = useState(dayjs());
-  const [eventsByMonth, setEventsByMonth] = useState([]);
+  const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const hostEmail = get(params, "email");
+  const selectedMonth = selectedDate && selectedDate.format("YYYY-MM");
 
   useEffect(() => {
     let isCancel = false;
@@ -128,7 +132,7 @@ function EventCalendar({ params = {} }) {
       try {
         setLoading(true);
         const data = await getEventsByMonth(hostEmail, selectedDate);
-        setEventsByMonth(data);
+        setDataSource(data);
       } finally {
         setLoading(false);
       }
@@ -137,23 +141,23 @@ function EventCalendar({ params = {} }) {
     return () => {
       isCancel = true;
     };
-  }, [selectedDate && selectedDate.month(), hostEmail]);
+  }, [selectedMonth, hostEmail]);
 
-  const eventDates = map(eventsByMonth, (event) => [
-    event.fromDate.toDate(),
-    event.toDate.toDate(),
+  const eventDates = map(dataSource, (event) => [
+    dayjs(event.fromDate.toDate()).startOf("day"),
+    dayjs(event.toDate.toDate()).startOf("day"),
   ]);
 
   return (
-    <Card hoverable={false}>
+    <Card className="events-calendar" hoverable={false}>
       <Card.Grid
-        className={"p-0" + (isEmpty(eventsByMonth) ? " d-flex" : "")}
+        className={"p-0" + (isEmpty(dataSource) ? " d-flex" : "")}
         style={{ width: "60%" }}
         hoverable={false}
       >
         <List
           className="w-100 m-auto"
-          dataSource={eventsByMonth}
+          dataSource={dataSource}
           renderItem={renderItem}
           loading={loading}
           locale={{
@@ -173,14 +177,10 @@ function EventCalendar({ params = {} }) {
           value={selectedDate}
           onChange={setSelectedDate}
           dateCellRender={(value) => {
+            value = value.startOf("day");
             const isEvent = eventDates.some((event) => {
               const [from, to] = event;
-              return (
-                (from.getMonth() === value.month() &&
-                  from.getDate() === value.date()) ||
-                (to.getMonth() === value.month() &&
-                  to.getDate() === value.date())
-              );
+              return value >= from && value <= to;
             });
 
             if (isEvent) {
@@ -201,11 +201,11 @@ function EventCalendar({ params = {} }) {
     title,
     toDate,
   }) {
-    const fromDateJs = fromDate && dayjs(fromDate.toDate());
-    const toDateJs = toDate && dayjs(toDate.toDate());
+    const fromDateJs = dayjs(fromDate.toDate());
+    const toDateJs = dayjs(toDate.toDate());
 
     const dateText = dateRangeString(fromDateJs, toDateJs);
-    const timeText = timeString(fromDateJs, toDateJs);
+    const timeText = timeRangeString(fromDateJs, toDateJs);
 
     const statusColor = get(
       EVENT_STATUSES,
@@ -261,3 +261,76 @@ function EventCalendar({ params = {} }) {
   }
 }
 
+function CardEventItem({ item }) {
+  const { title, location, fromDate, toDate } = item || {};
+
+  const fromDateJs = dayjs(fromDate.toDate());
+  const toDateJs = dayjs(toDate.toDate());
+
+  const timeText = timeRangeString(fromDateJs, toDateJs);
+  const isSameDay = fromDateJs.isSame(toDateJs);
+
+  return (
+    <Space className="w-100" size={20} align="baseline" wrap>
+      <div className="date-badge">
+        <div>
+          <h3 style={{ lineHeight: "3rem" }}>{fromDateJs.format("DD")}</h3>
+          <div className="font-12">{fromDateJs.format("MMM YYYY")}</div>
+        </div>
+
+        {!isSameDay && (
+          <>
+            <div className="font-12 mt-1">TO</div>
+
+            <div>
+              <h3 style={{ lineHeight: "3rem" }}>{toDateJs.format("DD")}</h3>
+              <div className="font-12">{toDateJs.format("MMM YYYY")}</div>
+            </div>
+          </>
+        )}
+      </div>
+
+      <Space
+        className="justify-content-around h-100"
+        direction="vertical"
+        align="baseline"
+        size={15}
+        wrap
+      >
+        <div>
+          <Typography.Title
+            className="mb-1"
+            level={3}
+            ellipsis={{ tooltip: title }}
+            style={{ width: 300 }}
+          >
+            {title}
+          </Typography.Title>
+
+          <Space size={5}>
+            <IconFont type="icon-location" className="font-16" />
+
+            <Typography.Text className="font-14" ellipsis>
+              {location}
+            </Typography.Text>
+          </Space>
+
+          <br />
+
+          <Space className="font-14">
+            <ClockCircleTwoTone twoToneColor={appTheme.colorPrimary} />
+            <span>{timeText}</span>
+          </Space>
+        </div>
+
+        <Space size={10} wrap>
+          <Button block>Cancel</Button>
+
+          <Button type="primary" block ghost>
+            Continue
+          </Button>
+        </Space>
+      </Space>
+    </Space>
+  );
+}

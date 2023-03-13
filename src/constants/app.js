@@ -54,12 +54,8 @@ export const EVENT_STATUSES = {
     text: "Processing",
     color: "cyan",
   },
-  open: {
-    text: "Open",
-    color: "green",
-  },
-  settled: {
-    text: "Settled",
+  booked: {
+    text: "Booked",
     color: "orange",
   },
   closed: {
@@ -72,7 +68,7 @@ export const EVENT_STATUSES = {
   },
 };
 
-export const VENDOR_INVITE_STATUSES = {
+export const INVITE_STATUSES = {
   pending: {
     text: "Pending",
     color: "orange",
@@ -85,7 +81,10 @@ export const VENDOR_INVITE_STATUSES = {
     text: "Declined",
     color: "red",
   },
+  paid: {
+    text: "Paid",
+    color: "black",
+  },
 };
 
-export const API_DATE_FORMAT = "DDMMYYY[T]HH:mm[Z]";
 export const DISPLAY_DATE_FORMAT = "MMMM DD, YYYY";

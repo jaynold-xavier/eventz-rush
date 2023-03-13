@@ -23,6 +23,7 @@ import {
   PageNotAuthorized,
   PageNotFound,
   EventCreateWizard,
+  EventDetails,
   HostDashboard,
   HostEvents,
   Register,
@@ -120,6 +121,11 @@ export default function App() {
               />
 
               <Route
+                path={processRouteUrl(appRoutes.account.events.details)}
+                element={<EventDetails user={user} />}
+              />
+
+              <Route
                 path={appRoutes.account.events.create}
                 element={
                   isVendor ? (
@@ -180,14 +186,14 @@ function AccountLayout({ isAuthenticated, user }) {
         collapsedWidth={50}
         collapsible={collapsible}
         collapsed={collapsed}
-        onMouseEnter={(e) => {
-          if (!collapsible) return;
-          setCollapsed((s) => !s);
-        }}
-        onMouseLeave={(e) => {
-          if (!collapsible) return;
-          setCollapsed(true);
-        }}
+        // onMouseEnter={(e) => {
+        //   if (!collapsible) return;
+        //   setCollapsed((s) => !s);
+        // }}
+        // onMouseLeave={(e) => {
+        //   if (!collapsible) return;
+        //   setCollapsed(true);
+        // }}
         trigger={null}
       >
         <HostNavbar user={user} collapsed={collapsed} />

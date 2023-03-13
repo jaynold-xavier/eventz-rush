@@ -1,11 +1,44 @@
 import { InboxOutlined } from "@ant-design/icons";
-import React from "react";
-import { Col, Form, Input, Row, Select, Upload } from "antd";
+import React, { useEffect, useState } from "react";
+import { Col, Form, Input, Row, Select, Upload, DatePicker } from "antd";
+import dayjs from "dayjs";
 
 import { eventTypesOptions } from "../../../../../../constants/dropdown";
-import LocationSelect from "../../../../../../components/locationSelect/Index";
+import { LocationSelect } from "../../../../../../components/fields";
+import { getEventsByMonth } from "../../../../../../services/database";
+import { isDateInRange } from "../../../../../../helpers/timestamp";
 
-export default function BasicInfoStep() {
+const { RangePicker } = DatePicker;
+
+export default function BasicInfoStep({ hostEmail }) {
+  const [events, setEvents] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(dayjs().add(1, "month"));
+
+  useEffect(() => {
+    let isCancel = false;
+
+    fetchDataSource(isCancel);
+
+    async function fetchDataSource(isCancel) {
+      if (isCancel) return;
+
+      let prevDate;
+      if (selectedDate.month() % 2) {
+        prevDate = selectedDate.clone().subtract(1, "month");
+      } else {
+        prevDate = selectedDate.clone().add(1, "month");
+      }
+
+      const leftMonth = await getEventsByMonth(hostEmail, prevDate);
+      const rightMonth = await getEventsByMonth(hostEmail, selectedDate);
+      setEvents([...leftMonth, ...rightMonth]);
+    }
+
+    return () => {
+      isCancel = true;
+    };
+  }, [selectedDate, hostEmail]);
+
   return (
     <>
       <Row gutter={[24, 24]}>
@@ -28,6 +61,52 @@ export default function BasicInfoStep() {
 
       <Form.Item name="description" label="Description">
         <Input.TextArea placeholder="Enter Event Description" size="large" />
+      </Form.Item>
+
+      <Form.Item
+        name="date"
+        label="Date"
+        wrapperCol={{ span: 12 }}
+        rules={[{ required: true }]}
+      >
+        <RangePicker
+          className="w-100"
+          size="large"
+          onPanelChange={(value, mode) => {
+            console.log({ value, mode });
+            setSelectedDate(value[0] || value[1]);
+          }}
+          disabledDate={(current) => {
+            return events.some((event) => {
+              return isDateInRange(
+                current,
+                event.fromDate.toDate(),
+                event.toDate.toDate()
+              );
+            });
+          }}
+          dateRender={(current) => {
+            const isEvent = events.some((event) => {
+              return isDateInRange(
+                current,
+                event.fromDate.toDate(),
+                event.toDate.toDate()
+              );
+            });
+
+            const style = {};
+            if (isEvent) {
+              style.backgroundColor = "red";
+              style.color = "#fff";
+            }
+
+            return (
+              <div className="ant-picker-cell-inner" style={style}>
+                {current.date()}
+              </div>
+            );
+          }}
+        />
       </Form.Item>
 
       <Form.Item name="location" label="Location" rules={[{ required: true }]}>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   collection,
   query,
@@ -8,7 +8,7 @@ import {
 } from "firebase/firestore";
 
 import { db } from "../assets/js/firebase";
-import { useRef } from "react";
+import { isEmpty } from "lodash";
 
 export default function usePaginatedData({
   table,
@@ -17,8 +17,10 @@ export default function usePaginatedData({
 }) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
 
   const docsRef = useRef([]);
+  const hasMoreRef = useRef(true);
 
   useEffect(() => {
     let isCancel = false;
@@ -35,6 +37,9 @@ export default function usePaginatedData({
 
       const initData = await getData(first);
       console.log("initData", initData);
+
+      hasMoreRef.current = !isEmpty(initData);
+      setPage(1);
       setData(initData);
     }
 
@@ -45,9 +50,13 @@ export default function usePaginatedData({
     };
   }, [table, constraints, pageSize]);
 
+  const loadPrev = () => {
+    setPage((s) => s - 1);
+  };
+
   const loadNext = async () => {
     // Get the last visible document
-    const lastVisible = data.docs[data.docs.length - 1];
+    const lastVisible = docsRef.current[docsRef.current.length - 1];
     console.log("last", lastVisible);
 
     // Construct a new query starting at this document,
@@ -61,13 +70,19 @@ export default function usePaginatedData({
 
     const nextData = await getData(next);
     console.log("nextData", nextData);
+
+    hasMoreRef.current = !isEmpty(nextData);
+    setPage((s) => s + 1);
     setData((s) => [...s, ...nextData]);
   };
 
   return {
     data,
+    loadPrev,
     loadNext,
     loading,
+    currentPage: page,
+    hasMore: hasMoreRef.current,
   };
 
   async function getData(query) {

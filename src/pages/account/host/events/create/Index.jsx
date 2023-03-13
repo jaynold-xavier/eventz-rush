@@ -1,18 +1,11 @@
 import { useSearchParams } from "react-router-dom";
-import { SearchOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
-import {
-  ConfigProvider,
-  Layout,
-  Affix,
-  Steps,
-  Space,
-  Button,
-  Form,
-} from "antd";
-import { findIndex } from "lodash";
+import { Layout, Affix, Steps, Space, Button, Form } from "antd";
+import { findIndex, get } from "lodash";
+
 import BasicInfoStep from "./basic/Index";
-import ScheduleStep from "./schedule/Index";
+import usePrompt from "../../../../../hooks/usePrompt";
+import SelectVendorsStep from "./selectVendors/Index";
 
 const { Header, Content, Footer } = Layout;
 
@@ -20,10 +13,6 @@ const steps = [
   {
     key: "basic",
     title: "Basic Info",
-  },
-  {
-    key: "schedule",
-    title: "Schedule",
   },
   {
     key: "selectVendors",
@@ -35,7 +24,7 @@ const steps = [
   },
 ];
 
-export default function EventsList() {
+export default function EventCreateUpdateWizard({ user }) {
   const [form] = Form.useForm();
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -44,6 +33,19 @@ export default function EventsList() {
   initStep = initStep || 0;
 
   const [currentStep, setCurrentStep] = useState(initStep);
+
+  // TODO: recheck, its not working
+  usePrompt({
+    when: true,
+    onOk: () => {
+      console.log("onOK");
+      return true;
+    },
+    onCancel: () => {
+      console.log("onCancel");
+      return true;
+    },
+  });
 
   useEffect(() => {
     setSearchParams((prev) => {
@@ -55,9 +57,9 @@ export default function EventsList() {
   const stepContent = () => {
     switch (currentStep) {
       case 0:
-        return <BasicInfoStep />;
+        return <BasicInfoStep hostEmail={get(user, "email")} />;
       case 1:
-        return <ScheduleStep />;
+        return <SelectVendorsStep form={form} />;
       default:
         break;
     }
@@ -83,8 +85,18 @@ export default function EventsList() {
         </Form>
       </Content>
 
-      <Footer prefixCls="event-create-footer" className="d-flex bg-white">
-        <Space className="ml-auto">
+      <Footer
+        prefixCls="event-create-footer"
+        className="d-flex justify-content-between flex-wrap bg-white"
+      >
+        <Space>
+          <Button type="primary" size="large">
+            Save Changes
+          </Button>
+          <Button size="large">Cancel</Button>
+        </Space>
+
+        <Space>
           <Button
             type="primary"
             size="large"
@@ -101,7 +113,6 @@ export default function EventsList() {
           >
             Next
           </Button>
-          <Button size="large">Cancel</Button>
         </Space>
       </Footer>
     </Layout>

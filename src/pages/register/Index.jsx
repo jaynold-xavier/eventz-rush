@@ -30,7 +30,7 @@ import RegisterImg from "../../assets/images/form/register.svg";
 import { appRoutes } from "../../constants/routes";
 import { appTheme } from "../../assets/js/theme";
 import { auth } from "../../assets/js/firebase";
-import { userRolesOptions, vendorOptions } from "../../constants/dropdown";
+import { userRolesOptions, vendorTypesOptions } from "../../constants/dropdown";
 import {
   authenticateWithFacebook,
   authenticateWithGoogle,
@@ -282,7 +282,7 @@ export default function Register() {
 
 function UserTypeSelector({ value, onChange, ...rest }) {
   const setVendorType = ({ key }) => {
-    const vendorType = find(vendorOptions, (opt) => opt.key === key);
+    const vendorType = find(vendorTypesOptions, (opt) => opt.key === key);
     if (vendorType) {
       onChange(vendorType.value);
     }
@@ -309,7 +309,7 @@ function UserTypeSelector({ value, onChange, ...rest }) {
             ) : (
               <Dropdown
                 menu={{
-                  items: vendorOptions,
+                  items: vendorTypesOptions,
                   selectable: true,
                   selectedKeys: [value],
                   onClick: setVendorType,

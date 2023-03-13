@@ -16,6 +16,7 @@ export const appRoutes = {
     get events() {
       return {
         list: this.root + "/events",
+        details: this.root + "/event/{id}",
         create: this.root + "/event/create",
       };
     },

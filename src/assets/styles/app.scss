@@ -442,6 +442,17 @@ $navbar-height: 100px;
 //#endregion
 
 //#region account screens
+.account-summary-popover {
+  .ant-popover-inner {
+    padding: 0;
+  }
+
+  .ant-btn {
+    text-align: left;
+    height: 3rem;
+  }
+}
+
 .account-layout {
   min-height: 100vh;
   $color-primary: #6252f1;
@@ -472,6 +483,7 @@ $navbar-height: 100px;
 
       &:first-child {
         height: auto;
+        padding: 0 !important;
 
         &:hover {
           background-color: initial !important;
@@ -536,16 +548,24 @@ $navbar-height: 100px;
       height: 3rem;
     }
 
-    .ant-picker-calendar {
-      .ant-picker-cell-inner {
-        .ant-picker-calendar-date-content {
-          position: absolute;
-          top: 0;
-          left: 0;
-          background: #ff4d4f;
-          color: #fff;
-          padding: 0 3px;
-          border-radius: 5px;
+    .events-calendar {
+      @media #{$small-screen}, #{$mobile-screen}, #{$tablet-screen} {
+        .ant-card-grid {
+          width: 100% !important;
+        }
+      }
+
+      .ant-picker-calendar {
+        .ant-picker-cell-inner {
+          .ant-picker-calendar-date-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: #ff4d4f;
+            color: #fff;
+            padding: 0 3px;
+            border-radius: 5px;
+          }
         }
       }
     }
@@ -555,8 +575,20 @@ $navbar-height: 100px;
     .host-events-header {
       display: flex;
       justify-content: space-between;
-      padding: 24px;
+      flex-wrap: wrap;
+      gap: 1rem;
+      padding: 1rem;
       background-color: #fafafa;
+    }
+
+    .events-list {
+      .events-list-item {
+        .ant-card-body {
+          @media #{$small-screen}, #{$mobile-screen}, #{$tablet-screen} {
+            flex-wrap: wrap;
+          }
+        }
+      }
     }
   }
 
@@ -574,6 +606,41 @@ $navbar-height: 100px;
       background-color: #fafafa;
       box-shadow: 0px 0px 10px 0px gainsboro;
       z-index: 10;
+    }
+  }
+
+  .event-details-layout {
+    .event-details-header {
+      .header-info {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
+        background: linear-gradient(45deg, #f3f2ff, transparent);
+        width: 100%;
+        padding: 1rem;
+      }
+
+      .banner-img,
+      .banner-img > img {
+        min-height: 100px;
+        max-height: 400px;
+      }
+
+      .banner-img + .header-info {
+        position: absolute;
+        bottom: 0;
+      }
+    }
+
+    .event-details-content {
+      .event-basic-info {
+        .ant-col {
+          padding: 1rem;
+          border: 1px solid #e6e6e6;
+          border-left: 0;
+        }
+      }
     }
   }
 }

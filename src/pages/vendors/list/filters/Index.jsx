@@ -5,7 +5,7 @@ import { Col, DatePicker, Row, Select, Input, Form, Card } from "antd";
 import { DISPLAY_DATE_FORMAT } from "../../../../constants/app";
 import useVoice from "../../../../hooks/useVoice";
 import { appTheme } from "../../../../assets/js/theme";
-import { vendorOptions } from "../../../../constants/dropdown";
+import { vendorTypesOptions } from "../../../../constants/dropdown";
 
 export default function Filters() {
   const [form] = Form.useForm();
@@ -65,7 +65,7 @@ export default function Filters() {
               <Select
                 className="w-100"
                 mode="tags"
-                options={vendorOptions}
+                options={vendorTypesOptions}
                 placeholder="Select Type"
                 allowClear
               />

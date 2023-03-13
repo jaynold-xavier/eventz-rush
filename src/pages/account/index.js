@@ -3,6 +3,7 @@ export {
   Dashboard as HostDashboard,
   EventsList as HostEvents,
   EventCreateWizard,
+  EventDetails,
 } from "./host";
 //#region
 

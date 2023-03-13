@@ -1,8 +1,9 @@
+import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import React from "react";
-import { Card, ConfigProvider, Image, Empty, Spin } from "antd";
-import { first, isEmpty } from "lodash";
+import { Card, ConfigProvider, Image, Empty, Spin, Button } from "antd";
+import { isEmpty } from "lodash";
 
-import { appTheme } from "../../../assets/js/theme";
+import { appTheme, navLinkTheme } from "../../../assets/js/theme";
 import BlobImg3 from "../../../assets/images/shapes/shape-3.svg";
 import usePaginatedData from "../../../hooks/usePaginatedData";
 
@@ -11,28 +12,38 @@ const emptyRender = (
 );
 
 export default function ScrollableCard({
-  title,
   resource,
   constraints,
   blobImg = BlobImg3,
-  hasMore,
   children,
   ...rest
 }) {
-  const { data, loadNext, loading } = usePaginatedData({
-    table: resource,
-    constraints,
-    pageSize: 1,
-  });
+  const { data, loadPrev, loadNext, loading, currentPage, hasMore } =
+    usePaginatedData({
+      table: resource,
+      constraints,
+      pageSize: 1,
+    });
+
+  const hasData = hasMore || !isEmpty(data);
 
   const render = () => {
     if (loading) {
-      return <Spin spinning={loading} />;
+      return (
+        <div className="text-center">
+          <Spin spinning={loading} />
+        </div>
+      );
     } else {
       if (isEmpty(data)) {
         return emptyRender;
       } else {
-        return children && children(first(data));
+        const currentData = data[currentPage - 1];
+        if (!isEmpty(currentData)) {
+          return children && children(data[currentPage - 1]);
+        } else {
+          return emptyRender;
+        }
       }
     }
   };
@@ -40,11 +51,25 @@ export default function ScrollableCard({
   return (
     <ConfigProvider
       theme={{
-        token: { colorBgContainer: appTheme.colorPrimary, colorText: "#fff" },
+        token: {
+          colorLink: "#fff",
+          colorBgContainer: appTheme.colorPrimary,
+          colorText: "#fff",
+          colorTextHeading: "#fff",
+          ...navLinkTheme,
+        },
       }}
     >
-      <Card className="scrollable-card" {...rest}>
-        <span className="title">{title}</span>
+      <Card className="scrollable-card" headStyle={{ border: 0 }} {...rest}>
+        {hasData && currentPage > 1 && (
+          <span className="prev-btn">
+            <Button
+              type="link"
+              icon={<LeftOutlined />}
+              onClick={(e) => loadPrev()}
+            />
+          </span>
+        )}
 
         {render()}
 
@@ -55,6 +80,16 @@ export default function ScrollableCard({
           preview={false}
           alt="blob"
         />
+
+        {hasData && currentPage >= 1 && (
+          <span className="next-btn">
+            <Button
+              type="link"
+              icon={<RightOutlined />}
+              onClick={(e) => loadNext()}
+            />
+          </span>
+        )}
       </Card>
     </ConfigProvider>
   );

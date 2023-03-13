@@ -9,7 +9,6 @@ import { Avatar, ConfigProvider, Image, Menu, Typography } from "antd";
 import { get } from "lodash";
 
 import AppLogo from "../../../../assets/images/logos/app.svg";
-import LogOutIcon from "../../../../assets/images/icons/LogOut";
 import DashboardIcon from "../../../../assets/images/icons/Dashboard";
 import EventsIcon from "../../../../assets/images/icons/Documents";
 
@@ -17,6 +16,7 @@ import { appRoutes } from "../../../../constants/routes";
 import { signOutOfApp } from "../../../../services/auth";
 import useAuth from "../../../../hooks/useAuth";
 import { getDisplayName } from "../../../../helpers/auth";
+import IconFont from "../../../icons/Index";
 
 export default function VendorNavbar({ user }) {
   const location = useLocation();
@@ -105,7 +105,7 @@ export default function VendorNavbar({ user }) {
     {
       key: appRoutes.home,
       label: "Logout",
-      icon: <LogOutIcon />,
+      icon: <IconFont type="icon-logout" className="font-20" />,
       onClick: logOut,
     },
   ];

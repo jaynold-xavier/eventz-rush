@@ -6,6 +6,7 @@ import {
   Avatar,
   Button,
   ConfigProvider,
+  Divider,
   Dropdown,
   Image,
   Menu,
@@ -24,6 +25,8 @@ import {
   navLinkTheme,
 } from "../../../assets/js/theme";
 import { signOutOfApp } from "../../../services/auth";
+import IconFont from "../../icons/Index";
+import { getDisplayName } from "../../../helpers/auth";
 
 export default function Navbar({ user }) {
   const location = useLocation();
@@ -80,6 +83,58 @@ export default function Navbar({ user }) {
     },
   ];
 
+  const content = (
+    <>
+      <Space
+        className="w-100 p-3"
+        size={20}
+        style={{
+          background: "linear-gradient(160deg, #e7e4ff, #ccffff)",
+          borderTopLeftRadius: "1rem",
+          borderTopRightRadius: "1rem",
+        }}
+      >
+        <Avatar
+          className="user-avatar"
+          src={get(user, "photoURL")}
+          icon={<UserOutlined />}
+          size={50}
+        />
+
+        <div>
+          <div>{getDisplayName(user)}</div>
+          <div>{get(user, "email")}</div>
+        </div>
+      </Space>
+
+      <Divider className="m-0" style={{ borderColor: "gainsboro" }} />
+
+      <Button
+        type="text"
+        icon={<IconFont type="icon-home" className="font-20 ml-3 mr-4" />}
+        onClick={(e) => {
+          goToPage(appRoutes.account.dashboard);
+        }}
+        block
+      >
+        Dashboard
+      </Button>
+
+      <Button
+        type="text"
+        icon={<IconFont type="icon-logout" className="font-20 ml-3 mr-4" />}
+        onClick={(e) => {
+          return signOutOfApp().then(() => {
+            navigate(0);
+          });
+        }}
+        block
+      >
+        Logout
+      </Button>
+    </>
+  );
+
   const authItems = [
     {
       key: "notifications",
@@ -107,45 +162,43 @@ export default function Navbar({ user }) {
     {
       key: "account",
       label: (
-        <DropdownMenu
-          menu={{
-            items: [
-              {
-                label: "Dashboard",
-                onClick: () => goToPage(appRoutes.account.dashboard),
-              },
-              {
-                label: "Log out",
-                onClick: () => {
-                  return signOutOfApp().then(() => {
-                    navigate(0);
-                  });
-                },
-              },
-            ],
+        <ConfigProvider
+          theme={{
+            token: {
+              colorText: appTheme.colorText,
+              colorBorder: appTheme.colorText,
+              colorPrimaryBorder: appTheme.colorText,
+            },
           }}
-          placement="bottomLeft"
-          trigger="click"
         >
-          <Tooltip
-            placement="bottomRight"
-            title={
-              <>
-                <div className="text-light-grey">Account Info</div>
-                <div>{get(user, "displayName")}</div>
-                <div>{get(user, "email")}</div>
-              </>
-            }
-            arrowPointAtCenter
+          <Popover
+            content={content}
+            placement="bottomLeft"
+            showArrow={false}
+            overlayClassName="account-summary-popover"
+            overlayInnerStyle={{ borderRadius: "1rem" }}
+            trigger="click"
           >
-            <Avatar
-              className="user-avatar"
-              src={get(user, "photoURL")}
-              icon={<UserOutlined />}
-              size={38}
-            />
-          </Tooltip>
-        </DropdownMenu>
+            <Tooltip
+              placement="bottomRight"
+              title={
+                <>
+                  <div className="text-light-grey">Account Info</div>
+                  <div>{get(user, "displayName")}</div>
+                  <div>{get(user, "email")}</div>
+                </>
+              }
+              arrowPointAtCenter
+            >
+              <Avatar
+                className="user-avatar"
+                src={get(user, "photoURL")}
+                icon={<UserOutlined />}
+                size={38}
+              />
+            </Tooltip>
+          </Popover>
+        </ConfigProvider>
       ),
     },
   ];

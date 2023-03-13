@@ -97,7 +97,7 @@ h6 {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px gainsboro;
+  box-shadow: inset 0 0 5px #dcdcdc;
   background: rgba(222, 222, 222, 0.75);
   border-radius: 10px;
 }
@@ -110,16 +110,16 @@ h6 {
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #2e0840;
+  background: #1bb6dd;
 }
 
 /* Selection */
 ::-moz-selection {
-  background: #6ce2ff;
+  background: #1bb6dd;
 }
 
 ::selection {
-  background: #6ce2ff;
+  background: #1bb6dd;
 }
 
 @import "./common.scss";

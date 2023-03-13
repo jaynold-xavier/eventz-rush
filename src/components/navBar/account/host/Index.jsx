@@ -5,7 +5,6 @@ import { Avatar, ConfigProvider, Image, Menu, Typography } from "antd";
 import { get } from "lodash";
 
 import AppLogo from "../../../../assets/images/logos/app.svg";
-import LogOutIcon from "../../../../assets/images/icons/LogOut";
 import DashboardIcon from "../../../../assets/images/icons/Dashboard";
 import EventsIcon from "../../../../assets/images/icons/Events";
 
@@ -15,6 +14,7 @@ import useAuth from "../../../../hooks/useAuth";
 
 import BlobImg3 from "../../../../assets/images/shapes/shape-2.svg";
 import { getDisplayName } from "../../../../helpers/auth";
+import IconFont from "../../../icons/Index";
 
 export default function HostNavbar({ user, collapsed }) {
   const location = useLocation();
@@ -91,7 +91,7 @@ export default function HostNavbar({ user, collapsed }) {
     {
       key: appRoutes.home,
       label: "Logout",
-      icon: <LogOutIcon />,
+      icon: <IconFont type="icon-logout" className="font-20" />,
       onClick: logOut,
     },
   ];

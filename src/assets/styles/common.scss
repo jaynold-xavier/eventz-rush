@@ -173,7 +173,7 @@
   gap: 1rem;
 
   @media #{$small-screen}, #{$mobile-screen}, #{$tablet-screen} {
-    flex-direction: column !important;
+    flex-wrap: wrap;
   }
 }
 
@@ -190,13 +190,31 @@
 
 .scrollable-card {
   overflow: hidden;
-  min-height: 15rem;
+
+  .ant-card-body {
+    min-height: 15rem;
+    padding: 12px 36px 24px 36px;
+  }
+
+  .next-btn,
+  .prev-btn {
+    position: absolute;
+    top: 40%;
+  }
+
+  .prev-btn {
+    left: 0;
+  }
+
+  .next-btn {
+    right: 0;
+  }
 
   .blob-img {
     position: absolute;
     bottom: -4rem;
     right: -4rem;
-    width: 10rem;
+    width: 12rem;
     opacity: 0.8;
   }
 }
@@ -295,9 +313,25 @@
   }
 }
 
+// badge
+.date-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0.5rem 1rem;
+  border: 2px solid #fff;
+  background-color: lighten($color: #6252f1, $amount: 10);
+
+  @media #{$small-screen}, #{$mobile-screen} {
+    flex-direction: row;
+    gap: 1rem;
+  }
+}
+
 // universal styles
 // font-size classes
-@for $i from 1 through 6 {
+@for $i from 1 through 9 {
   $fontSize: 8 + ($i * 2);
   .font-#{$fontSize} {
     font-size: #{$fontSize}px !important;
