@@ -1,25 +1,25 @@
-import { SearchOutlined } from "@ant-design/icons";
+import { CloseOutlined } from "@ant-design/icons";
 import {
   Button,
-  Checkbox,
   Col,
   ConfigProvider,
   Empty,
   Form,
-  Input,
   List,
   Row,
   Select,
   Spin,
-  Tag,
+  Tooltip,
 } from "antd";
 import { where } from "firebase/firestore";
-import { get, startCase } from "lodash";
-import React, { useEffect, useState } from "react";
+import { get, some } from "lodash";
+import React, { useEffect, useRef, useState } from "react";
+import SearchInput from "../../../../../../components/fields/search/Index";
 
 import { vendorTypesOptions } from "../../../../../../constants/dropdown";
-import { getDisplayName } from "../../../../../../helpers/auth";
 import { getAvailableVendors } from "../../../../../../services/database";
+import VendorItem from "../../../../../vendors/list/item/Index";
+import SelectServicesDrawer from "./selectServices/Index";
 
 const initFilters = {
   q: "",
@@ -32,6 +32,7 @@ const constructConstraints = (filters = initFilters) => {
 
   if (q) {
     constraints.push(where("title", "==", q));
+    constraints.push(where("userName", "==", q));
     constraints.push(where("email", "==", q));
   }
 
@@ -46,6 +47,10 @@ export default function SelectVendorsStep({ form }) {
   const [loading, setLoading] = useState(true);
   const [dataSource, setDataSource] = useState([]);
   const [filters, setFilters] = useState(initFilters);
+  const [showSelectServicesDrawer, setShowSelectServicesDrawer] =
+    useState(false);
+
+  const selectedVendorRef = useRef();
 
   useEffect(() => {
     let isCancel = false;
@@ -57,11 +62,11 @@ export default function SelectVendorsStep({ form }) {
 
       try {
         setLoading(true);
-        const constraints = constructConstraints(filters);
         const dateRange = form.getFieldValue("date");
         const fromDate = get(dateRange, "0");
-        const toDate = get(dateRange, "0");
-        console.log({ fromDate, toDate, dateRange, constraints, filters });
+        const toDate = get(dateRange, "1");
+        const constraints = constructConstraints(filters);
+
         const data = await getAvailableVendors(fromDate, toDate, constraints);
         setDataSource(data);
       } finally {
@@ -74,16 +79,20 @@ export default function SelectVendorsStep({ form }) {
     };
   }, [filters, form]);
 
+  const openSelectServicesDrawer = (data) => {
+    selectedVendorRef.current = data;
+    setShowSelectServicesDrawer(true);
+  };
+
   return (
     <Spin spinning={loading}>
       <Row gutter={[24, 24]}>
         <Col span={18}>
-          <Input
+          <SearchInput
             className="w-100"
             placeholder="Search Vendors"
             size="large"
-            prefix={<SearchOutlined />}
-            onChange={(e) => setFilters((s) => ({ ...s, q: e.target.value }))}
+            onChange={(value) => setFilters((s) => ({ ...s, q: value }))}
           />
         </Col>
 
@@ -111,57 +120,88 @@ export default function SelectVendorsStep({ form }) {
       <br />
 
       <Form.Item name="vendors">
-        <VendorsList dataSource={dataSource} />
+        <VendorsList
+          dataSource={dataSource}
+          onSelectServices={openSelectServicesDrawer}
+          selectServicesLayoutProps={{
+            data: selectedVendorRef.current,
+            visible: showSelectServicesDrawer,
+            onClose: (e) => setShowSelectServicesDrawer((s) => !s),
+          }}
+        />
       </Form.Item>
     </Spin>
   );
 }
 
-function VendorsList({ dataSource, value, onChange }) {
+function VendorsList({
+  dataSource,
+  value,
+  onChange,
+  onSelectServices,
+  selectServicesLayoutProps = {},
+}) {
+  const saveSelectedServices = async (data) => {
+    if (!data) return;
+
+    const currentData = value || [];
+    currentData.push(data);
+    onChange(currentData);
+  };
+
   return (
-    <List
-      className="available-vendors-list"
-      itemLayout="vertical"
-      dataSource={dataSource}
-      renderItem={renderItem}
-      locale={{ emptyText: <Empty description="No Vendors available" /> }}
-    />
+    <>
+      <List
+        className="vendors-list selectable-list"
+        dataSource={dataSource}
+        grid={{
+          gutter: 16,
+          xs: 1,
+          sm: 2,
+          md: 3,
+          lg: 5,
+          xl: 5,
+          xxl: 5,
+        }}
+        renderItem={renderItem}
+        locale={{ emptyText: <Empty description="No Vendors available" /> }}
+      />
+
+      <SelectServicesDrawer
+        {...selectServicesLayoutProps}
+        onSave={saveSelectedServices}
+      />
+    </>
   );
 
-  function renderItem(item, index) {
-    const { email, type, phoneNumber } = item;
-    return (
-      <List.Item className="w-100 bg-white">
-        <Row align="middle" justify="center">
-          <Col span={10}>
-            <List.Item.Meta
-              title={getDisplayName(item)}
-              description={
-                <Tag
-                  className="text-uppercase font-12 mr-0 mt-1"
-                  color="geekblue"
-                >
-                  {startCase(type)}
-                </Tag>
-              }
-            />
-          </Col>
+  function renderItem(item) {
+    const selected = some(value, (v) => v.id === item.id);
+    const actions = [
+      <Button
+        className="rounded-0"
+        size="large"
+        type="primary"
+        onClick={(e) => onSelectServices(item)}
+        block
+      >
+        Select Services
+      </Button>,
+    ];
 
-          <Col span={5}>
-            <Row>
-              <Col span={12}>Phone</Col>
-              <Col span={12}>{phoneNumber || "-"}</Col>
+    if (selected) {
+      actions.push(
+        <Tooltip title="Withdraw Invite">
+          <Button
+            className="rounded-0"
+            size="large"
+            type="primary"
+            icon={<CloseOutlined />}
+            danger
+          />
+        </Tooltip>
+      );
+    }
 
-              <Col span={12}>Email</Col>
-              <Col span={12}>{email}</Col>
-            </Row>
-          </Col>
-
-          <Col className="text-right" span={9}>
-            <Button type="primary">More Details</Button>
-          </Col>
-        </Row>
-      </List.Item>
-    );
+    return <VendorItem data={item} selected={selected} actions={actions} />;
   }
 }

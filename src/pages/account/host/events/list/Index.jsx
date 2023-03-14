@@ -5,7 +5,6 @@ import {
   AntDesignOutlined,
   ClockCircleTwoTone,
   FilterTwoTone,
-  SearchOutlined,
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import {
@@ -16,7 +15,6 @@ import {
   Card,
   Col,
   Empty,
-  Input,
   Layout,
   List,
   Radio,
@@ -28,7 +26,7 @@ import {
   Typography,
 } from "antd";
 import { where } from "firebase/firestore";
-import { startCase, get, isEmpty, map } from "lodash";
+import { startCase, get, isEmpty } from "lodash";
 import dayjs from "dayjs";
 
 import { getEvents } from "../../../../../services/database";
@@ -86,7 +84,6 @@ const constructConstraints = (filters = initFilters) => {
   }
 
   if (!isEmpty(status)) {
-    status = map(status, (s) => startCase(s));
     constraints.push(where("status", "in", status));
   }
 
@@ -279,10 +276,7 @@ export default function EventsList({ user = {} }) {
     const isDifferentToDate =
       fromDateJs.format("DD MM YYYY") !== toDateJs.format("DD MM YYYY");
 
-    const statusColor = get(
-      EVENT_STATUSES,
-      `${status && status.toLowerCase()}.color`
-    );
+    const statusObj = get(EVENT_STATUSES, status);
 
     return (
       <>
@@ -391,10 +385,14 @@ export default function EventsList({ user = {} }) {
               className="d-flex flex-column justify-content-between text-right w-100"
               style={{ gap: "1rem" }}
             >
-              <Badge
-                color={statusColor}
-                text={<span className="font-14">{status}</span>}
-              />
+              {statusObj && (
+                <Badge
+                  color={get(statusObj, "color")}
+                  text={
+                    <span className="font-14">{get(statusObj, "text")}</span>
+                  }
+                />
+              )}
 
               <div className="d-flex justify-content-between w-100">
                 <Avatar.Group

@@ -10,6 +10,7 @@ import {
   Button,
   Card,
   Col,
+  ConfigProvider,
   Empty,
   Layout,
   List,
@@ -17,7 +18,7 @@ import {
   Space,
   Typography,
 } from "antd";
-import { get, isEmpty, map } from "lodash";
+import { camelCase, get, isEmpty, map } from "lodash";
 import { orderBy, Timestamp, where } from "firebase/firestore";
 import dayjs from "dayjs";
 
@@ -30,11 +31,14 @@ import { getDisplayName } from "../../../../helpers/auth";
 import ScrollableCard from "../../../../components/card/scrollable/Index";
 import CalendarView from "../../../../components/calendar/view/Index";
 import { getEventsByMonth } from "../../../../services/database";
-import { appTheme } from "../../../../assets/js/theme";
+import { appTheme, buttonActionTheme } from "../../../../assets/js/theme";
 import { EVENT_STATUSES } from "../../../../constants/app";
 import IconFont from "../../../../components/icons/Index";
 import { appRoutes } from "../../../../constants/routes";
-import { dateRangeString, timeRangeString } from "../../../../helpers/timestamp";
+import {
+  dateRangeString,
+  timeRangeString,
+} from "../../../../helpers/timestamp";
 
 const { Header, Content } = Layout;
 
@@ -71,7 +75,7 @@ export default function Dashboard({ user }) {
               title="Upcoming Events"
               resource="events"
               constraints={[
-                where("status", "==", EVENT_STATUSES.booked.text),
+                where("status", "==", camelCase(EVENT_STATUSES.booked.text)),
                 where("fromDate", ">", Timestamp.fromDate(new Date())),
                 orderBy("fromDate"),
               ]}
@@ -88,7 +92,11 @@ export default function Dashboard({ user }) {
               title="Processing Events"
               resource="events"
               constraints={[
-                where("status", "==", EVENT_STATUSES.processing.text),
+                where(
+                  "status",
+                  "==",
+                  camelCase(EVENT_STATUSES.processing.text)
+                ),
                 orderBy("fromDate", "asc"),
               ]}
               blobImg={BlobImg2}
@@ -207,10 +215,7 @@ function EventCalendar({ params = {} }) {
     const dateText = dateRangeString(fromDateJs, toDateJs);
     const timeText = timeRangeString(fromDateJs, toDateJs);
 
-    const statusColor = get(
-      EVENT_STATUSES,
-      `${status && status.toLowerCase()}.color`
-    );
+    const statusObj = get(EVENT_STATUSES, status);
 
     return (
       <List.Item
@@ -250,12 +255,14 @@ function EventCalendar({ params = {} }) {
           }
         />
 
-        <Badge
-          className="position-absolute"
-          color={statusColor}
-          text={<span className="font-14">{status}</span>}
-          style={{ right: "1rem" }}
-        />
+        {statusObj && (
+          <Badge
+            className="position-absolute"
+            color={get(statusObj, "color")}
+            text={<span className="font-14">{get(statusObj, "text")}</span>}
+            style={{ right: "1rem" }}
+          />
+        )}
       </List.Item>
     );
   }
@@ -324,11 +331,17 @@ function CardEventItem({ item }) {
         </div>
 
         <Space size={10} wrap>
-          <Button block>Cancel</Button>
+          <ConfigProvider theme={{ token: buttonActionTheme }}>
+            <Button type="primary" block>
+              Continue
+            </Button>
+          </ConfigProvider>
 
-          <Button type="primary" block ghost>
-            Continue
-          </Button>
+          <ConfigProvider theme={{ token: { colorPrimary: "#858585" } }}>
+            <Button type="primary" block>
+              Cancel
+            </Button>
+          </ConfigProvider>
         </Space>
       </Space>
     </Space>

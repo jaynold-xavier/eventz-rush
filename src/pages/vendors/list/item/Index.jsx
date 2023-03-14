@@ -1,47 +1,44 @@
-import { PhoneFilled, MailFilled, InfoCircleOutlined } from "@ant-design/icons";
-import React from "react";
 import {
-  Avatar,
-  Button,
-  Card,
-  List,
-  Skeleton,
-  Space,
-  Tag,
-  Typography,
-} from "antd";
-import { Content } from "antd/es/layout/layout";
+  PhoneFilled,
+  MailFilled,
+  InfoCircleOutlined,
+  UserOutlined,
+  CheckCircleTwoTone,
+} from "@ant-design/icons";
+import React from "react";
+import { Avatar, Card, List, Skeleton, Space, Tag, Typography } from "antd";
+import { get } from "lodash";
 
 import { appTheme } from "../../../../assets/js/theme";
+import { getDisplayName } from "../../../../helpers/auth";
+import { VENDOR_TYPES } from "../../../../constants/app";
 
 const avatarProps = {
   shape: "circle",
   size: { xs: 80, sm: 80, md: 90, lg: 90, xl: 100, xxl: 100 },
 };
 
-export default function ListItem({ data, loading, goToDetails, ...rest }) {
-  const { id, email, title, type, description, phone, profilePicUrl } = data;
+export default function ListItem({
+  data,
+  loading = false,
+  selected = false,
+  ...rest
+}) {
+  const { email, type, description, phone, photoURL } = data;
 
   const descriptionRender = (
-    <div dangerouslySetInnerHTML={{ __html: description }} />
+    <div dangerouslySetInnerHTML={{ __html: description || "—" }} />
   );
 
+  const classNames = ["vendors-list-item pl-0 pr-0"];
+  if (selected) {
+    classNames.push("selected");
+  }
+
   return (
-    <List.Item className="vendors-list-item pl-0 pr-0" {...rest}>
-      <Card
-        actions={[
-          <Button
-            className="rounded-0"
-            size="large"
-            type="primary"
-            onClick={(e) => goToDetails(id)}
-            block
-          >
-            Explore Me
-          </Button>,
-        ]}
-      >
-        <Content className="vendor-item-content text-center">
+    <List.Item className={classNames.join(" ")}>
+      <Card {...rest}>
+        <div className="vendor-item-content text-center">
           <Skeleton
             avatar={avatarProps}
             title={false}
@@ -52,22 +49,23 @@ export default function ListItem({ data, loading, goToDetails, ...rest }) {
             <div className="d-inline-block position-relative">
               <Avatar
                 className="user-avatar"
-                src={profilePicUrl}
+                src={photoURL}
                 {...avatarProps}
+                icon={selected ? <CheckCircleTwoTone /> : <UserOutlined />}
               />
             </div>
           </Skeleton>
 
           <Skeleton paragraph={{ rows: 1 }} loading={loading} active>
             <Typography.Title className="mb-0 mt-1" level={5}>
-              {title}
+              {getDisplayName(data)}
             </Typography.Title>
 
             <Tag className="text-uppercase font-12 mr-0 mt-1" color="geekblue">
-              {type}
+              {get(VENDOR_TYPES[type], "text", type)}
             </Tag>
           </Skeleton>
-        </Content>
+        </div>
 
         <div className="shape-divider">
           <svg
@@ -83,11 +81,14 @@ export default function ListItem({ data, loading, goToDetails, ...rest }) {
           </svg>
         </div>
 
-        <Content className="vendor-item-content text-left font-14">
+        <div className="vendor-item-content text-left font-14">
           <Skeleton title loading={loading} active>
             <Space>
-              <InfoCircleOutlined style={{ color: appTheme.colorPrimary }} />
-              <strong>About</strong>
+              <InfoCircleOutlined
+                className="font-14"
+                style={{ color: appTheme.colorPrimary }}
+              />
+              <strong className="font-14">About</strong>
             </Space>
             <Typography.Paragraph
               className="vendor-item-description font-14"
@@ -97,14 +98,20 @@ export default function ListItem({ data, loading, goToDetails, ...rest }) {
             </Typography.Paragraph>
 
             <Space>
-              <PhoneFilled style={{ color: appTheme.colorPrimary }} />
-              <strong>Phone</strong>
+              <PhoneFilled
+                className="font-14"
+                style={{ color: appTheme.colorPrimary }}
+              />
+              <strong className="font-14">Phone</strong>
             </Space>
-            <div className="font-14">{phone}</div>
+            <div className="font-14">{phone || "—"}</div>
 
             <Space className="mt-3">
-              <MailFilled style={{ color: appTheme.colorPrimary }} />
-              <strong>Email</strong>
+              <MailFilled
+                className="font-14"
+                style={{ color: appTheme.colorPrimary }}
+              />
+              <strong className="font-14">Email</strong>
             </Space>
 
             <Typography.Text
@@ -115,7 +122,7 @@ export default function ListItem({ data, loading, goToDetails, ...rest }) {
               <a href={`mailto:${email}`}>{email}</a>
             </Typography.Text>
           </Skeleton>
-        </Content>
+        </div>
       </Card>
     </List.Item>
   );

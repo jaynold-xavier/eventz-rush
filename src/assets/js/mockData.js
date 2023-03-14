@@ -15,7 +15,7 @@ export const vendors = [
     services:
       "<p>Sit aute exercitation commodo ullamco fugiat dolor aliquip pariatur aute nostrud Lorem nostrud veniam magna.</p>",
     phone: "7448290434",
-    profilePicUrl: "https://randomuser.me/api/portraits/men/79.jpg",
+    photoURL: "https://randomuser.me/api/portraits/men/79.jpg",
     experience: 5,
     website: "https://google.com",
   },
@@ -28,7 +28,7 @@ export const vendors = [
     description:
       "<p>Sit aute exercitation commodo ullamco fugiat dolor aliquip pariatur aute nostrud Lorem nostrud veniam magna.</p>",
     phone: "7448290434",
-    profilePicUrl: "https://randomuser.me/api/portraits/men/59.jpg",
+    photoURL: "https://randomuser.me/api/portraits/men/59.jpg",
   },
   {
     id: random(),
@@ -39,7 +39,7 @@ export const vendors = [
     description:
       "<p>Sit aute exercitation commodo ullamco fugiat dolor aliquip pariatur aute nostrud Lorem nostrud veniam magna.</p>",
     phone: "7448290434",
-    profilePicUrl: "https://randomuser.me/api/portraits/men/29.jpg",
+    photoURL: "https://randomuser.me/api/portraits/men/29.jpg",
   },
   {
     id: random(),
@@ -50,6 +50,6 @@ export const vendors = [
     description:
       "<p>Sit aute exercitation commodo ullamco fugiat dolor aliquip pariatur aute nostrud Lorem nostrud veniam magna.</p>",
     phone: "7448290434",
-    profilePicUrl: "https://randomuser.me/api/portraits/men/19.jpg",
+    photoURL: "https://randomuser.me/api/portraits/men/19.jpg",
   },
 ];

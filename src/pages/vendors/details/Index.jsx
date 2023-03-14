@@ -39,142 +39,82 @@ export default function VendorDetails() {
   const vendor = find(vendors, (v) => v.id === id) || vendors[0];
 
   return (
-    <Layout className="vendor-details-layout">
-      <Header prefixCls="vendor-general-info" className="container">
-        <ConfigProvider
-          theme={{
-            token: {
-              colorLink: "#fff",
-              ...navLinkTheme,
-            },
-          }}
-        >
-          <Button
-            className="p-0"
-            type="link"
-            icon={<ArrowLeftOutlined />}
-            onClick={(e) => navigate(-1)}
-          >
-            Back
-          </Button>
-        </ConfigProvider>
+    <Layout className="vendor-details-layout rounded container mt-5 mb-5">
+      <Header prefixCls="vendor-general-info">
+        <Row align="middle" gutter={[24, 24]}>
+          <Col xs={24} sm={6} lg={4} md={4} xl={3} xxl={3}>
+            <Skeleton
+              avatar={avatarProps}
+              title={false}
+              paragraph={false}
+              loading={false}
+              active
+            >
+              <div className="d-inline-block position-relative">
+                <Avatar
+                  className="user-avatar"
+                  src={vendor.photoURL}
+                  {...avatarProps}
+                />
+              </div>
+            </Skeleton>
+          </Col>
 
-        <br />
-        <br />
+          <Col xs={24} sm={18} lg={20} md={20} xl={8} xxl={8}>
+            <Typography.Title
+              className="user-name mb-0"
+              level={2}
+              ellipsis={{ tooltip: vendor.title }}
+            >
+              {vendor.title}
+            </Typography.Title>
 
-        <ConfigProvider
-          theme={{
-            token: {
-              colorPrimary: "#ed7802",
-            },
-          }}
-        >
-          <Card bordered={false}>
-            <Row align="middle" gutter={[24, 24]}>
-              <Col xs={24} sm={6} lg={4} md={4} xl={3} xxl={3}>
-                <Skeleton
-                  avatar={avatarProps}
-                  title={false}
-                  paragraph={false}
-                  loading={false}
-                  active
-                >
-                  <div className="d-inline-block position-relative">
-                    <Avatar
-                      className="user-avatar"
-                      src={vendor.profilePicUrl}
-                      {...avatarProps}
-                    />
-                  </div>
-                </Skeleton>
-              </Col>
+            <Tag className="text-uppercase font-12 mr-0 mt-1" color="geekblue">
+              {vendor.type}
+            </Tag>
+          </Col>
 
-              <Col xs={24} sm={18} lg={20} md={20} xl={8} xxl={8}>
-                <Typography.Title
-                  className="user-name mb-0"
-                  level={2}
-                  ellipsis={{ tooltip: vendor.title }}
-                >
-                  {vendor.title}
-                </Typography.Title>
+          <Col xs={24} sm={15} lg={15} md={15} xl={9} xxl={9}>
+            <Row>
+              <Col span={12}>
+                <Space direction="vertical" size={12}>
+                  <strong>Phone</strong>
 
-                <Tag
-                  className="text-uppercase font-12 mr-0 mt-1"
-                  color="geekblue"
-                >
-                  {vendor.type}
-                </Tag>
-              </Col>
+                  <strong>Email</strong>
 
-              <Col xs={24} sm={15} lg={15} md={15} xl={9} xxl={9}>
-                <Row>
-                  <Col span={12}>
-                    <Space direction="vertical" size={12}>
-                      <strong>Phone</strong>
+                  <strong>Years of Experience</strong>
 
-                      <strong>Email</strong>
-
-                      <strong>Years of Experience</strong>
-
-                      <strong>Website</strong>
-                    </Space>
-                  </Col>
-
-                  <Col span={12}>
-                    <Space direction="vertical" size={12}>
-                      <div>{vendor.phone}</div>
-
-                      <a className="d-block" href={`mailto:${vendor.email}`}>
-                        {vendor.email}
-                      </a>
-
-                      <div>{vendor.experience}</div>
-
-                      <div>{vendor.website}</div>
-                    </Space>
-                  </Col>
-                </Row>
-              </Col>
-
-              <Col
-                className="d-flex"
-                xs={24}
-                sm={9}
-                lg={9}
-                md={9}
-                xl={3}
-                xxl={3}
-              >
-                <Space
-                  direction="vertical"
-                  className="user-actions w-100"
-                  size={12}
-                >
-                  <Button type="primary" size="large" block>
-                    Contact
-                  </Button>
-
-                  <Button type="primary" size="large" ghost block>
-                    Contact
-                  </Button>
+                  <strong>Website</strong>
                 </Space>
               </Col>
 
-              <Col span={24}>
-                <strong>About</strong>
-                <div dangerouslySetInnerHTML={{ __html: vendor.description }} />
+              <Col span={12}>
+                <Space direction="vertical" size={12}>
+                  <div>{vendor.phone}</div>
+
+                  <a className="d-block" href={`mailto:${vendor.email}`}>
+                    {vendor.email}
+                  </a>
+
+                  <div>{vendor.experience}</div>
+
+                  <div>{vendor.website}</div>
+                </Space>
               </Col>
             </Row>
-          </Card>
-        </ConfigProvider>
+          </Col>
+        </Row>
       </Header>
 
       <br />
       <br />
-      <br />
 
       <Content className="vendor-details-content">
-        <Tabs className="tabs-container" size="large">
+        <Tabs size="large">
+          <Tabs.TabPane key="about" tab="About">
+            <div dangerouslySetInnerHTML={{ __html: vendor.description }} />
+          </Tabs.TabPane>
+
           <Tabs.TabPane key="services" tab="Services">
             <Services />
           </Tabs.TabPane>

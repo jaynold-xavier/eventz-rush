@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import React from "react";
-import { Avatar, Empty, List, Skeleton } from "antd";
+import { Avatar, Empty, List, Button } from "antd";
 
 import { vendors } from "../../../assets/js/mockData";
 import { appRoutes } from "../../../constants/routes";
@@ -39,11 +39,17 @@ export default function VendorsList({ ...rest }) {
       <ListItem
         data={item}
         loading={loading}
-        goToDetails={goToDetails}
-        // actions={[
-        //   <a key="list-loadmore-edit">edit</a>,
-        //   <a key="list-loadmore-more">more</a>,
-        // ]}
+        actions={[
+          <Button
+            className="rounded-0"
+            size="large"
+            type="primary"
+            onClick={(e) => goToDetails(item.id)}
+            block
+          >
+            Explore Me
+          </Button>,
+        ]}
       />
     );
   }

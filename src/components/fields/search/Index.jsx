@@ -1,7 +1,7 @@
 import { SearchOutlined } from "@ant-design/icons";
+import React from "react";
 import { Input } from "antd";
 import { debounce } from "lodash";
-import React from "react";
 
 import { appTheme } from "../../../assets/js/theme";
 
@@ -17,7 +17,6 @@ export default function SearchInput({ onChange, ...rest }) {
       placeholder="Search"
       size="large"
       prefix={<SearchOutlined style={{ color: appTheme.colorPrimary }} />}
-      style={{ maxWidth: 300 }}
       {...rest}
       onChange={debounce(change, 500)}
     />

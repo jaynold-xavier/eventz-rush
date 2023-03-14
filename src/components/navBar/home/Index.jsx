@@ -89,7 +89,7 @@ export default function Navbar({ user }) {
         className="w-100 p-3"
         size={20}
         style={{
-          background: "linear-gradient(160deg, #e7e4ff, #ccffff)",
+          background: "linear-gradient(160deg, #e7e4ff 30%, #ccffff)",
           borderTopLeftRadius: "1rem",
           borderTopRightRadius: "1rem",
         }}

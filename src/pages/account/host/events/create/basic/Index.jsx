@@ -10,6 +10,8 @@ import { isDateInRange } from "../../../../../../helpers/timestamp";
 
 const { RangePicker } = DatePicker;
 
+const initStartDate = dayjs().set("hour", 18).set("minute", 0).set("second", 0);
+
 export default function BasicInfoStep({ hostEmail }) {
   const [events, setEvents] = useState([]);
   const [selectedDate, setSelectedDate] = useState(dayjs().add(1, "month"));
@@ -68,6 +70,10 @@ export default function BasicInfoStep({ hostEmail }) {
         label="Date"
         wrapperCol={{ span: 12 }}
         rules={[{ required: true }]}
+        initialValue={[
+          initStartDate,
+          initStartDate.clone().add(1, "day").set("hour", 0),
+        ]}
       >
         <RangePicker
           className="w-100"
@@ -106,6 +112,9 @@ export default function BasicInfoStep({ hostEmail }) {
               </div>
             );
           }}
+          showSecond={false}
+          minuteStep={30}
+          showTime
         />
       </Form.Item>
 

@@ -12,10 +12,11 @@ import {
   Tag,
   Typography,
 } from "antd";
-import { getEvent } from "../../../../../services/database";
-import { appTheme } from "../../../../../assets/js/theme";
 import dayjs from "dayjs";
 import { get } from "lodash";
+
+import { getEvent } from "../../../../../services/database";
+import { appTheme } from "../../../../../assets/js/theme";
 import { EVENT_STATUSES } from "../../../../../constants/app";
 
 const { Header, Content } = Layout;
@@ -73,10 +74,7 @@ export default function EventDetails() {
 
   const toDateString = toDate && dayjs(toDate.toDate()).format(dateString);
 
-  const statusColor = get(
-    EVENT_STATUSES,
-    `${status && status.toLowerCase()}.color`
-  );
+  const statusObj = get(EVENT_STATUSES, status);
 
   return (
     <Layout prefixCls="event-details-layout">
@@ -104,10 +102,12 @@ export default function EventDetails() {
 
               <Space>
                 <Tag color={appTheme.colorPrimary}>{type}</Tag>
-                {status && (
+                {statusObj && (
                   <Badge
-                    color={statusColor}
-                    text={<span className="font-14">{status}</span>}
+                    color={get(statusObj, "color")}
+                    text={
+                      <span className="font-14">{get(statusObj, "text")}</span>
+                    }
                   />
                 )}
               </Space>

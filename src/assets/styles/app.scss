@@ -4,7 +4,7 @@ $navbar-height: 100px;
 .main-nav-bar-affix-container {
   .ant-affix {
     background: linear-gradient(174deg, #9164ff, #7e5bff, #7f66ff);
-    box-shadow: 0px 0px 11px 0px #7f66ff;
+    box-shadow: 1px 1px 10px 1px #9d85ff;
     height: auto !important;
 
     .main-nav-bar {
@@ -314,54 +314,62 @@ $navbar-height: 100px;
     .ant-card.vendors-list-filters {
       @include card-glow(#5d4ee6);
     }
+  }
+}
 
-    .vendors-list {
-      position: relative;
+.vendors-list {
+  position: relative;
 
-      .vendors-list-item {
-        .ant-card {
-          .ant-card-body {
-            min-height: 28rem;
-            padding: 0;
+  .vendors-list-item {
+    .ant-card {
+      .ant-card-body {
+        min-height: 28rem;
+        padding: 0;
 
-            .ant-avatar {
-              border: 2px solid var(--color-primary);
-            }
+        .ant-avatar {
+          border: 2px solid var(--color-primary);
+        }
 
-            .shape-divider {
-              width: 100%;
+        .shape-divider {
+          width: 100%;
 
-              svg {
-                position: relative;
-                display: block;
-                width: calc(100% + 1.3px);
-                height: 22px;
-              }
-
-              .shape-fill {
-                fill: lighten(#6252f1, 33%);
-              }
-            }
-
-            .vendor-item-content {
-              padding: 1rem;
-
-              &:first-child {
-                background-color: lighten(#6252f1, 33%);
-              }
-
-              .vendor-item-description {
-                p {
-                  margin: 0;
-                }
-              }
-            }
+          svg {
+            position: relative;
+            display: block;
+            width: calc(100% + 1.3px);
+            height: 22px;
           }
 
-          .ant-card-actions {
-            li {
+          .shape-fill {
+            fill: lighten(#6252f1, 33%);
+          }
+        }
+
+        .vendor-item-content {
+          padding: 1rem;
+
+          &:first-child {
+            background-color: lighten(#6252f1, 33%);
+          }
+
+          .vendor-item-description {
+            p {
               margin: 0;
             }
+          }
+        }
+      }
+
+      .ant-card-actions {
+        li {
+          margin: 0;
+
+          &:first-child {
+            width: 100% !important;
+          }
+
+          &:nth-child(2) {
+            width: auto !important;
           }
         }
       }
@@ -370,32 +378,13 @@ $navbar-height: 100px;
 }
 
 .vendor-details-layout {
-  .vendor-general-info {
-    .ant-card {
-      .user-actions {
-        button {
-          height: 3rem;
-        }
-      }
-    }
-  }
+  background-color: $fore-color;
+  min-height: 45rem;
 
   .vendor-details-content {
     .ant-tabs {
-      .ant-tabs-nav {
-        margin: 0;
-
-        .ant-tabs-tab {
-          color: $fore-color;
-
-          &:hover {
-            color: #e1ddff;
-          }
-        }
-      }
-
       .ant-tabs-content-holder {
-        background-color: $fore-color;
+        margin-top: 1rem;
       }
     }
   }
