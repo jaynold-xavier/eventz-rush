@@ -57,14 +57,14 @@ export default function EventDetails() {
   }, [id]);
 
   const {
-    bannerUrl,
+    bannerURL,
     description,
     fromDate,
     location,
     status,
     title,
     toDate,
-    totalCost,
+    amount,
     type,
     vendors,
   } = data || {};
@@ -80,10 +80,10 @@ export default function EventDetails() {
     <Layout prefixCls="event-details-layout">
       <Spin spinning={loading}>
         <Header prefixCls="event-details-header position-relative">
-          {bannerUrl && (
+          {bannerURL && (
             <Image
               rootClassName="banner-img"
-              src={bannerUrl}
+              src={bannerURL}
               width="100%"
               preview={false}
               alt="event-banner"
@@ -151,10 +151,10 @@ export default function EventDetails() {
               </Col>
             )}
 
-            {totalCost && (
+            {amount && (
               <Col className="text-right" span={6}>
                 <strong>Total Cost</strong>
-                <div className="font-18 mt-3">{totalCost}</div>
+                <div className="font-18 mt-3">{amount}</div>
               </Col>
             )}
           </Row>

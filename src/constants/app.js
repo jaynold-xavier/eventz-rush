@@ -29,23 +29,38 @@ export const VENDOR_TYPES = {
 };
 
 export const EVENT_TYPES = {
-  prom: {
-    text: "Prom",
-  },
-  engagement: {
-    text: "Engagement",
-  },
   birthday: {
     text: "Birthday",
   },
-  wedding: {
-    text: "Wedding",
+  christening: {
+    text: "Christening",
+  },
+  conference: {
+    text: "Conference",
+  },
+  charity: {
+    text: "Charity",
+  },
+  companyParty: {
+    text: "Company Party",
   },
   christmasParty: {
     text: "Christmas Party",
   },
-  christening: {
-    text: "Christening",
+  engagement: {
+    text: "Engagement",
+  },
+  fashionShow: {
+    text: "Fashion Show",
+  },
+  prom: {
+    text: "Prom",
+  },
+  tradeShow: {
+    text: "Trade Show",
+  },
+  wedding: {
+    text: "Wedding",
   },
 };
 
@@ -88,3 +103,8 @@ export const INVITE_STATUSES = {
 };
 
 export const DISPLAY_DATE_FORMAT = "MMMM DD, YYYY";
+export const commonPopConfirmProp = {
+  okText: "Yes",
+  cancelText: "No",
+  cancelButtonProps: { style: { float: "right" } },
+};

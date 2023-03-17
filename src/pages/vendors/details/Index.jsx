@@ -90,7 +90,7 @@ export default function VendorDetails() {
 
               <Col span={12}>
                 <Space direction="vertical" size={12}>
-                  <div>{vendor.phone}</div>
+                  <div>{vendor.phoneNumber}</div>
 
                   <a className="d-block" href={`mailto:${vendor.email}`}>
                     {vendor.email}

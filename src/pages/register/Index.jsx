@@ -20,7 +20,7 @@ import {
   Progress,
   Radio,
 } from "antd";
-import { find, map } from "lodash";
+import { find, map, startCase } from "lodash";
 
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
@@ -266,7 +266,8 @@ export default function Register() {
     const { userName = null, type } = form.getFieldsValue();
     const data = {
       email: user.email,
-      photoURL: user.photoURL,
+      photoURL: user.photoURL || "",
+      phoneNumber: user.phoneNumber || "",
       userName,
     };
 
@@ -288,9 +289,13 @@ function UserTypeSelector({ value, onChange, ...rest }) {
     }
   };
 
+  const isHostSelected = value === userRolesOptions[0].value;
+  const vendorSelectText =
+    value === userRolesOptions[1].value ? "Select Vendor" : startCase(value);
+
   return (
     <Radio.Group
-      className="w-100"
+      className="type-field w-100"
       buttonStyle="solid"
       value={transformValue(value)}
       onChange={onChange}
@@ -314,8 +319,13 @@ function UserTypeSelector({ value, onChange, ...rest }) {
                   selectedKeys: [value],
                   onClick: setVendorType,
                 }}
+                open={isHostSelected ? false : undefined}
               >
-                <div>{`${option.label} ▼`}</div>
+                {isHostSelected ? (
+                  <span>{option.label}</span>
+                ) : (
+                  <div>{`${vendorSelectText} ▼`}</div>
+                )}
               </Dropdown>
             )}
           </Radio.Button>

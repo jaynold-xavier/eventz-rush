@@ -14,7 +14,7 @@ export const vendors = [
       "<p>Sit aute exercitation commodo ullamco fugiat dolor aliquip pariatur aute nostrud Lorem nostrud veniam magna.</p>",
     services:
       "<p>Sit aute exercitation commodo ullamco fugiat dolor aliquip pariatur aute nostrud Lorem nostrud veniam magna.</p>",
-    phone: "7448290434",
+    phoneNumber: "7448290434",
     photoURL: "https://randomuser.me/api/portraits/men/79.jpg",
     experience: 5,
     website: "https://google.com",
@@ -27,7 +27,7 @@ export const vendors = [
     type: VENDOR_TYPES.musicians.text,
     description:
       "<p>Sit aute exercitation commodo ullamco fugiat dolor aliquip pariatur aute nostrud Lorem nostrud veniam magna.</p>",
-    phone: "7448290434",
+    phoneNumber: "7448290434",
     photoURL: "https://randomuser.me/api/portraits/men/59.jpg",
   },
   {
@@ -38,7 +38,7 @@ export const vendors = [
     type: VENDOR_TYPES.media.text,
     description:
       "<p>Sit aute exercitation commodo ullamco fugiat dolor aliquip pariatur aute nostrud Lorem nostrud veniam magna.</p>",
-    phone: "7448290434",
+    phoneNumber: "7448290434",
     photoURL: "https://randomuser.me/api/portraits/men/29.jpg",
   },
   {
@@ -49,7 +49,7 @@ export const vendors = [
     type: VENDOR_TYPES.venueProviders.text,
     description:
       "<p>Sit aute exercitation commodo ullamco fugiat dolor aliquip pariatur aute nostrud Lorem nostrud veniam magna.</p>",
-    phone: "7448290434",
+    phoneNumber: "7448290434",
     photoURL: "https://randomuser.me/api/portraits/men/19.jpg",
   },
 ];

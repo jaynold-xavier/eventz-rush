@@ -1,11 +1,14 @@
 import { auth, db } from "../assets/js/firebase";
 import {
+  addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
   query,
   setDoc,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import { get, isEmpty, map } from "lodash";
@@ -69,6 +72,16 @@ export async function addUser(data, type) {
 //#region
 
 //#region events
+export async function createEvent(data) {
+  const eventData = await addDoc(collection(db, "events"), data);
+  return eventData.id;
+}
+
+export async function updateEvent(id, data) {
+  const ref = doc(db, "events", id);
+  await updateDoc(ref, data);
+}
+
 export async function getEvent(id) {
   if (!id) return null;
 
@@ -91,13 +104,14 @@ export async function getEvents(hostId, constraints = []) {
   }
 }
 
-export async function getEventsByMonth(hostId, date) {
+export async function getEventsByMonth(hostId, monthString) {
   if (!hostId) return [];
 
-  const dtString = date.format("YYYY-MM");
   const range = [
-    new Date(dtString),
-    new Date(new Date(dtString).setMonth(new Date(dtString).getMonth() + 1)),
+    new Date(monthString),
+    new Date(
+      new Date(monthString).setMonth(new Date(monthString).getMonth() + 1)
+    ),
   ];
 
   const events = await getRecords("events", [
@@ -114,7 +128,12 @@ export async function getEventsByMonth(hostId, date) {
 //#region
 
 //#region vendors
-export async function getAvailableVendors(fromDate, toDate, constraints = []) {
+export async function getAvailableVendors(
+  fromDate,
+  toDate,
+  currentEventId,
+  constraints = []
+) {
   let invitees = await getRecords("invitees", [
     where("type", "==", USER_ROLES.vendor.text),
     where("status", "not-in", [
@@ -122,7 +141,9 @@ export async function getAvailableVendors(fromDate, toDate, constraints = []) {
       INVITE_STATUSES.declined.text,
     ]),
   ]);
-  invitees = invitees.map((i) => i.record);
+  invitees = invitees
+    .filter((i) => i.eventId !== currentEventId)
+    .map((i) => i.record);
 
   let eventData = await Promise.all(
     invitees.map(async (invitee) => {
@@ -161,5 +182,14 @@ export async function getAvailableVendors(fromDate, toDate, constraints = []) {
   } else {
     return [];
   }
+}
+
+export async function inviteVendor(data) {
+  const inviteeData = await addDoc(collection(db, "invitees"), data);
+  return inviteeData.id;
+}
+
+export async function unInviteVendor(id) {
+  await deleteDoc(doc(db, "invitees", id));
 }
 //#region

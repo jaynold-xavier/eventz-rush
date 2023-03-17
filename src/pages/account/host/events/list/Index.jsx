@@ -39,7 +39,7 @@ import {
   eventStatusesOptions,
   eventTypesOptions,
 } from "../../../../../constants/dropdown";
-import SearchInput from "../../../../../components/fields/search/Index";
+import { SearchInput } from "../../../../../components/fields";
 
 const { Header, Content } = Layout;
 
@@ -248,7 +248,7 @@ export default function EventsList({ user = {} }) {
   function renderItem(item, index) {
     const {
       id,
-      bannerUrl,
+      bannerURL,
       description,
       fromDate,
       location,

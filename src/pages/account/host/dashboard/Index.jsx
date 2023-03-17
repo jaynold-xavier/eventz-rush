@@ -14,11 +14,12 @@ import {
   Empty,
   Layout,
   List,
+  Popconfirm,
   Row,
   Space,
   Typography,
 } from "antd";
-import { camelCase, get, isEmpty, map } from "lodash";
+import { get, isEmpty, map } from "lodash";
 import { orderBy, Timestamp, where } from "firebase/firestore";
 import dayjs from "dayjs";
 
@@ -30,9 +31,12 @@ import BlobImg4 from "../../../../assets/images/shapes/shape-4.svg";
 import { getDisplayName } from "../../../../helpers/auth";
 import ScrollableCard from "../../../../components/card/scrollable/Index";
 import CalendarView from "../../../../components/calendar/view/Index";
-import { getEventsByMonth } from "../../../../services/database";
+import { getEventsByMonth, updateEvent } from "../../../../services/database";
 import { appTheme, buttonActionTheme } from "../../../../assets/js/theme";
-import { EVENT_STATUSES } from "../../../../constants/app";
+import {
+  commonPopConfirmProp,
+  EVENT_STATUSES,
+} from "../../../../constants/app";
 import IconFont from "../../../../components/icons/Index";
 import { appRoutes } from "../../../../constants/routes";
 import {
@@ -75,14 +79,19 @@ export default function Dashboard({ user }) {
               title="Upcoming Events"
               resource="events"
               constraints={[
-                where("status", "==", camelCase(EVENT_STATUSES.booked.text)),
+                where("status", "==", EVENT_STATUSES.booked.text),
                 where("fromDate", ">", Timestamp.fromDate(new Date())),
                 orderBy("fromDate"),
               ]}
               blobImg={BlobImg3}
             >
               {(item) => {
-                return <CardEventItem item={item} />;
+                return (
+                  <CardEventItem
+                    id={get(item, "id")}
+                    item={get(item, "record")}
+                  />
+                );
               }}
             </ScrollableCard>
           </Col>
@@ -92,17 +101,26 @@ export default function Dashboard({ user }) {
               title="Processing Events"
               resource="events"
               constraints={[
-                where(
-                  "status",
-                  "==",
-                  camelCase(EVENT_STATUSES.processing.text)
-                ),
+                where("status", "==", EVENT_STATUSES.processing.text),
                 orderBy("fromDate", "asc"),
               ]}
               blobImg={BlobImg2}
             >
               {(item) => {
-                return <CardEventItem item={item} />;
+                return (
+                  <CardEventItem
+                    id={get(item, "id")}
+                    item={get(item, "record")}
+                    continueEvent={(e) =>
+                      navigate(
+                        appRoutes.account.events.update.replace(
+                          "{id}",
+                          get(item, "id")
+                        )
+                      )
+                    }
+                  />
+                );
               }}
             </ScrollableCard>
           </Col>
@@ -127,7 +145,7 @@ function EventCalendar({ params = {} }) {
   const [loading, setLoading] = useState(true);
 
   const hostEmail = get(params, "email");
-  const selectedMonth = selectedDate && selectedDate.format("YYYY-MM");
+  const monthString = selectedDate && selectedDate.format("YYYY-MM");
 
   useEffect(() => {
     let isCancel = false;
@@ -139,7 +157,7 @@ function EventCalendar({ params = {} }) {
 
       try {
         setLoading(true);
-        const data = await getEventsByMonth(hostEmail, selectedDate);
+        const data = await getEventsByMonth(hostEmail, monthString);
         setDataSource(data);
       } finally {
         setLoading(false);
@@ -149,7 +167,7 @@ function EventCalendar({ params = {} }) {
     return () => {
       isCancel = true;
     };
-  }, [selectedMonth, hostEmail]);
+  }, [monthString, hostEmail]);
 
   const eventDates = map(dataSource, (event) => [
     dayjs(event.fromDate.toDate()).startOf("day"),
@@ -201,7 +219,7 @@ function EventCalendar({ params = {} }) {
   );
 
   function renderItem({
-    bannerUrl,
+    bannerURL,
     description,
     fromDate,
     location,
@@ -233,7 +251,11 @@ function EventCalendar({ params = {} }) {
                   style={{ color: appTheme.colorPrimary }}
                 />
 
-                <Typography.Text className="font-14 text-grey" ellipsis>
+                <Typography.Text
+                  className="font-14 text-grey"
+                  style={{ maxWidth: 300 }}
+                  ellipsis={{ tooltip: location }}
+                >
                   {location}
                 </Typography.Text>
               </Space>
@@ -268,7 +290,7 @@ function EventCalendar({ params = {} }) {
   }
 }
 
-function CardEventItem({ item }) {
+function CardEventItem({ id, item, continueEvent }) {
   const { title, location, fromDate, toDate } = item || {};
 
   const fromDateJs = dayjs(fromDate.toDate());
@@ -276,6 +298,11 @@ function CardEventItem({ item }) {
 
   const timeText = timeRangeString(fromDateJs, toDateJs);
   const isSameDay = fromDateJs.isSame(toDateJs);
+
+  const cancelEvent = async () => {
+    item.status = EVENT_STATUSES.cancelled.text;
+    await updateEvent(id, item);
+  };
 
   return (
     <Space className="w-100" size={20} align="baseline" wrap>
@@ -317,7 +344,11 @@ function CardEventItem({ item }) {
           <Space size={5}>
             <IconFont type="icon-location" className="font-16" />
 
-            <Typography.Text className="font-14" ellipsis>
+            <Typography.Text
+              className="font-14"
+              style={{ maxWidth: 300 }}
+              ellipsis={{ tooltip: location }}
+            >
               {location}
             </Typography.Text>
           </Space>
@@ -332,15 +363,29 @@ function CardEventItem({ item }) {
 
         <Space size={10} wrap>
           <ConfigProvider theme={{ token: buttonActionTheme }}>
-            <Button type="primary" block>
+            <Button type="primary" onClick={(e) => continueEvent()} block>
               Continue
             </Button>
           </ConfigProvider>
 
-          <ConfigProvider theme={{ token: { colorPrimary: "#858585" } }}>
-            <Button type="primary" block>
-              Cancel
-            </Button>
+          <ConfigProvider
+            theme={{
+              token: {
+                ...appTheme,
+                colorPrimary: "#858585",
+                colorBgContainer: undefined,
+              },
+            }}
+          >
+            <Popconfirm
+              title="Are you sure you want to cancel this event?"
+              onConfirm={(e) => cancelEvent()}
+              {...commonPopConfirmProp}
+            >
+              <Button type="primary" block>
+                Cancel
+              </Button>
+            </Popconfirm>
           </ConfigProvider>
         </Space>
       </Space>

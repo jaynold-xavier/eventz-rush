@@ -3,7 +3,7 @@ import {
   MailFilled,
   InfoCircleOutlined,
   UserOutlined,
-  CheckCircleTwoTone,
+  CheckOutlined,
 } from "@ant-design/icons";
 import React from "react";
 import { Avatar, Card, List, Skeleton, Space, Tag, Typography } from "antd";
@@ -24,7 +24,7 @@ export default function ListItem({
   selected = false,
   ...rest
 }) {
-  const { email, type, description, phone, photoURL } = data;
+  const { email, type, description, phoneNumber, photoURL } = data;
 
   const descriptionRender = (
     <div dangerouslySetInnerHTML={{ __html: description || "—" }} />
@@ -49,9 +49,9 @@ export default function ListItem({
             <div className="d-inline-block position-relative">
               <Avatar
                 className="user-avatar"
-                src={photoURL}
+                src={selected ? undefined : photoURL}
                 {...avatarProps}
-                icon={selected ? <CheckCircleTwoTone /> : <UserOutlined />}
+                icon={selected ? <CheckOutlined /> : <UserOutlined />}
               />
             </div>
           </Skeleton>
@@ -104,7 +104,7 @@ export default function ListItem({
               />
               <strong className="font-14">Phone</strong>
             </Space>
-            <div className="font-14">{phone || "—"}</div>
+            <div className="font-14">{phoneNumber || "—"}</div>
 
             <Space className="mt-3">
               <MailFilled

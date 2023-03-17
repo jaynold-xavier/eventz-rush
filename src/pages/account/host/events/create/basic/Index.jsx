@@ -1,12 +1,24 @@
 import { InboxOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
-import { Col, Form, Input, Row, Select, Upload, DatePicker } from "antd";
+import {
+  Col,
+  Form,
+  Input,
+  Row,
+  Select,
+  Upload,
+  DatePicker,
+  Tooltip,
+  Tag,
+} from "antd";
 import dayjs from "dayjs";
+import { get } from "lodash";
 
 import { eventTypesOptions } from "../../../../../../constants/dropdown";
 import { LocationSelect } from "../../../../../../components/fields";
 import { getEventsByMonth } from "../../../../../../services/database";
 import { isDateInRange } from "../../../../../../helpers/timestamp";
+import { appTheme } from "../../../../../../assets/js/theme";
 
 const { RangePicker } = DatePicker;
 
@@ -14,7 +26,9 @@ const initStartDate = dayjs().set("hour", 18).set("minute", 0).set("second", 0);
 
 export default function BasicInfoStep({ hostEmail }) {
   const [events, setEvents] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(dayjs().add(1, "month"));
+  const [selectedDate, setSelectedDate] = useState(dayjs());
+
+  const monthString = selectedDate && selectedDate.format("YYYY-MM");
 
   useEffect(() => {
     let isCancel = false;
@@ -24,22 +38,14 @@ export default function BasicInfoStep({ hostEmail }) {
     async function fetchDataSource(isCancel) {
       if (isCancel) return;
 
-      let prevDate;
-      if (selectedDate.month() % 2) {
-        prevDate = selectedDate.clone().subtract(1, "month");
-      } else {
-        prevDate = selectedDate.clone().add(1, "month");
-      }
-
-      const leftMonth = await getEventsByMonth(hostEmail, prevDate);
-      const rightMonth = await getEventsByMonth(hostEmail, selectedDate);
-      setEvents([...leftMonth, ...rightMonth]);
+      const eventsByMonth = await getEventsByMonth(hostEmail, monthString);
+      setEvents(eventsByMonth);
     }
 
     return () => {
       isCancel = true;
     };
-  }, [selectedDate, hostEmail]);
+  }, [monthString, hostEmail]);
 
   return (
     <>
@@ -69,10 +75,46 @@ export default function BasicInfoStep({ hostEmail }) {
         name="date"
         label="Date"
         wrapperCol={{ span: 12 }}
-        rules={[{ required: true }]}
         initialValue={[
           initStartDate,
           initStartDate.clone().add(1, "day").set("hour", 0),
+        ]}
+        rules={[
+          { required: true },
+          {
+            validator: (rule, value) => {
+              const [from, to] = value || [];
+
+              if (!(from && to)) {
+                return Promise.resolve();
+              }
+
+              const event = events.find((e) => {
+                return (
+                  isDateInRange(
+                    dayjs(e.fromDate.toDate()),
+                    from.toDate(),
+                    to.toDate()
+                  ) ||
+                  isDateInRange(
+                    dayjs(e.toDate.toDate()),
+                    from.toDate(),
+                    to.toDate()
+                  )
+                );
+              });
+
+              if (event) {
+                return Promise.reject(
+                  new Error(
+                    "You already have an event during this period. Please select another period"
+                  )
+                );
+              }
+
+              return Promise.resolve();
+            },
+          },
         ]}
       >
         <RangePicker
@@ -82,17 +124,11 @@ export default function BasicInfoStep({ hostEmail }) {
             console.log({ value, mode });
             setSelectedDate(value[0] || value[1]);
           }}
-          disabledDate={(current) => {
-            return events.some((event) => {
-              return isDateInRange(
-                current,
-                event.fromDate.toDate(),
-                event.toDate.toDate()
-              );
-            });
+          renderExtraFooter={(mode) => {
+            return <Tag color="red">Event</Tag>;
           }}
           dateRender={(current) => {
-            const isEvent = events.some((event) => {
+            const event = events.find((event) => {
               return isDateInRange(
                 current,
                 event.fromDate.toDate(),
@@ -101,15 +137,29 @@ export default function BasicInfoStep({ hostEmail }) {
             });
 
             const style = {};
-            if (isEvent) {
-              style.backgroundColor = "red";
+            if (event) {
+              style.backgroundColor = "#cf1322";
+              style.fontSize = 14;
               style.color = "#fff";
             }
 
             return (
-              <div className="ant-picker-cell-inner" style={style}>
-                {current.date()}
-              </div>
+              <Tooltip
+                title={
+                  event && (
+                    <>
+                      <div>{get(event, "title")}</div>
+                      <Tag className="font-12" color={appTheme.colorPrimary}>
+                        {get(event, "type")}
+                      </Tag>
+                    </>
+                  )
+                }
+              >
+                <div className="ant-picker-cell-inner" style={style}>
+                  {current.date()}
+                </div>
+              </Tooltip>
             );
           }}
           showSecond={false}
@@ -122,7 +172,7 @@ export default function BasicInfoStep({ hostEmail }) {
         <LocationSelect />
       </Form.Item>
 
-      <Form.Item name="bannerUrl" label="Banner">
+      <Form.Item name="bannerURL" label="Banner">
         <Upload.Dragger>
           <p className="ant-upload-drag-icon">
             <InboxOutlined />

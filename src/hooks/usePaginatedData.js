@@ -94,7 +94,10 @@ export default function usePaginatedData({
       const data = [];
       querySnapshot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
-        data.push(doc.data());
+        data.push({
+          id: doc.id,
+          record: doc.data(),
+        });
       });
 
       return data;

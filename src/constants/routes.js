@@ -18,6 +18,7 @@ export const appRoutes = {
         list: this.root + "/events",
         details: this.root + "/event/{id}",
         create: this.root + "/event/create",
+        update: this.root + "/event/{id}/update",
       };
     },
     get photos() {

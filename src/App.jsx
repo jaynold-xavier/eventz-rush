@@ -23,6 +23,7 @@ import {
   PageNotAuthorized,
   PageNotFound,
   EventCreateWizard,
+  EventUpdateWizard,
   EventDetails,
   HostDashboard,
   HostEvents,
@@ -132,6 +133,17 @@ export default function App() {
                     <PageNotAuthorized />
                   ) : (
                     <EventCreateWizard user={user} />
+                  )
+                }
+              />
+
+              <Route
+                path={processRouteUrl(appRoutes.account.events.update)}
+                element={
+                  isVendor ? (
+                    <PageNotAuthorized />
+                  ) : (
+                    <EventUpdateWizard user={user} />
                   )
                 }
               />

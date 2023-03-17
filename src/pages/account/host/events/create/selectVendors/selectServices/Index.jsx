@@ -1,17 +1,18 @@
 import { UserOutlined } from "@ant-design/icons";
+import React, { useState } from "react";
 import {
-  Alert,
   Avatar,
   Button,
+  Checkbox,
   Divider,
   Drawer,
   Empty,
+  message,
   Space,
   Tag,
   Typography,
 } from "antd";
-import { get, isEmpty } from "lodash";
-import React from "react";
+import { get, isEmpty, map } from "lodash";
 
 import { VENDOR_TYPES } from "../../../../../../../constants/app";
 
@@ -28,6 +29,8 @@ export default function SelectServicesDrawer({
   onSave,
   ...rest
 }) {
+  const [selectedServices, setSelectedServices] = useState([]);
+
   const { type, photoURL } = data || {};
 
   const services = isEmpty(get(data, "services"))
@@ -35,7 +38,11 @@ export default function SelectServicesDrawer({
     : get(data, "services");
 
   const save = async () => {
-    await onSave();
+    await onSave({
+      email: data.email,
+      services: selectedServices,
+    });
+    message.success("Services selected and Invite sent!");
     rest.onClose();
   };
 
@@ -45,15 +52,9 @@ export default function SelectServicesDrawer({
       width={600}
       title={"Select Services"}
       footer={
-        isEmpty(services) ? (
-          <Button type="primary" onClick={save} block>
-            Request Services
-          </Button>
-        ) : (
-          <Button type="primary" onClick={save} block>
-            Select Services and Invite Vendor
-          </Button>
-        )
+        <Button type="primary" onClick={save} block>
+          Select Services and Invite Vendor
+        </Button>
       }
       {...rest}
     >
@@ -76,12 +77,22 @@ export default function SelectServicesDrawer({
 
       <Divider />
 
-      {isEmpty(services) && (
-        <Alert
-          type="warning"
-          message="The vendor has either hidden their services or has not yet made it
-          available. Please contact the vendor to make it available here."
-        />
+      <h6>Services</h6>
+      <p>Please select your required services of this vendor.</p>
+
+      {isEmpty(services) ? (
+        <Empty description="No services available" />
+      ) : (
+        <Checkbox.Group onChange={setSelectedServices}>
+          {map(services, (s) => {
+            return (
+              <Checkbox>
+                <Space>{s.description}</Space>
+                <Space>{s.price}</Space>
+              </Checkbox>
+            );
+          })}
+        </Checkbox.Group>
       )}
     </Drawer>
   );

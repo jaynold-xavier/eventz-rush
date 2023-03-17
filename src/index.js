@@ -25,6 +25,8 @@ root.render(
       theme={{
         token: appTheme,
       }}
+      dropdownMatchSelectWidth
+      virtual={false}
     >
       <App />
     </ConfigProvider>

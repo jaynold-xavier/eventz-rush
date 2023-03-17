@@ -13,6 +13,7 @@ export default function LocationSelect({ value, onChange }) {
   const mapContainer = useRef(null);
   const map = useRef(null);
   const marker = useRef(null);
+  const searchBar = useRef(null);
 
   const [lng, setLng] = useState(74.06);
   const [lat, setLat] = useState(15.34);
@@ -79,7 +80,15 @@ export default function LocationSelect({ value, onChange }) {
 
       map.current.addControl(geoCoder);
     }
+
+    searchBar.current = geoCoder;
   });
+
+  useEffect(() => {
+    if (searchBar.current && value) {
+      searchBar.current.setInput(value);
+    }
+  }, [value]);
 
   return (
     <div ref={mapContainer} className="map-container" style={{ height: 200 }} />

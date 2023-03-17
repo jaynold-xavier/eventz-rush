@@ -101,7 +101,7 @@ export default function Login() {
           >
             <Form.Item name="email" label="Email" rules={[{ required: true }]}>
               <Input
-                placeholder="Email/Username"
+                placeholder="Email"
                 size="large"
                 prefix={
                   <UserOutlined style={{ color: appTheme.colorPrimary }} />

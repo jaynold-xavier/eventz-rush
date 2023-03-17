@@ -1,4 +1,5 @@
 import { CloseOutlined } from "@ant-design/icons";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Button,
   Col,
@@ -6,20 +7,30 @@ import {
   Empty,
   Form,
   List,
+  message,
+  Popconfirm,
   Row,
   Select,
   Spin,
   Tooltip,
 } from "antd";
 import { where } from "firebase/firestore";
-import { get, some } from "lodash";
-import React, { useEffect, useRef, useState } from "react";
-import SearchInput from "../../../../../../components/fields/search/Index";
+import { find, get, isEmpty, reduce, remove, size, some } from "lodash";
 
+import { SearchInput } from "../../../../../../components/fields";
+import {
+  commonPopConfirmProp,
+  USER_ROLES,
+} from "../../../../../../constants/app";
 import { vendorTypesOptions } from "../../../../../../constants/dropdown";
-import { getAvailableVendors } from "../../../../../../services/database";
+import {
+  getAvailableVendors,
+  inviteVendor,
+  unInviteVendor,
+} from "../../../../../../services/database";
 import VendorItem from "../../../../../vendors/list/item/Index";
 import SelectServicesDrawer from "./selectServices/Index";
+import { INVITE_STATUSES } from "../../../../../../constants/app";
 
 const initFilters = {
   q: "",
@@ -43,7 +54,7 @@ const constructConstraints = (filters = initFilters) => {
   return constraints;
 };
 
-export default function SelectVendorsStep({ form }) {
+export default function SelectVendorsStep({ form, eventId }) {
   const [loading, setLoading] = useState(true);
   const [dataSource, setDataSource] = useState([]);
   const [filters, setFilters] = useState(initFilters);
@@ -67,7 +78,12 @@ export default function SelectVendorsStep({ form }) {
         const toDate = get(dateRange, "1");
         const constraints = constructConstraints(filters);
 
-        const data = await getAvailableVendors(fromDate, toDate, constraints);
+        const data = await getAvailableVendors(
+          fromDate,
+          toDate,
+          eventId,
+          constraints
+        );
         setDataSource(data);
       } finally {
         setLoading(false);
@@ -77,7 +93,7 @@ export default function SelectVendorsStep({ form }) {
     return () => {
       isCancel = true;
     };
-  }, [filters, form]);
+  }, [filters, eventId, form]);
 
   const openSelectServicesDrawer = (data) => {
     selectedVendorRef.current = data;
@@ -119,13 +135,28 @@ export default function SelectVendorsStep({ form }) {
 
       <br />
 
-      <Form.Item name="vendors">
+      <Form.Item
+        name="vendors"
+        rules={[
+          {
+            validator: (rule, value) => {
+              if (size(value) < 1) {
+                message.error("Please select at least one vendor");
+                return Promise.reject();
+              }
+
+              return Promise.resolve();
+            },
+          },
+        ]}
+      >
         <VendorsList
+          eventId={eventId}
           dataSource={dataSource}
           onSelectServices={openSelectServicesDrawer}
           selectServicesLayoutProps={{
             data: selectedVendorRef.current,
-            visible: showSelectServicesDrawer,
+            open: showSelectServicesDrawer,
             onClose: (e) => setShowSelectServicesDrawer((s) => !s),
           }}
         />
@@ -135,18 +166,62 @@ export default function SelectVendorsStep({ form }) {
 }
 
 function VendorsList({
+  eventId,
   dataSource,
   value,
   onChange,
   onSelectServices,
   selectServicesLayoutProps = {},
 }) {
+  const requestServices = async (data) => {
+    if (!data) return;
+
+    const inviteeId = await inviteVendor({
+      eventId,
+      inviteeId: data.email,
+      status: INVITE_STATUSES.pending.text,
+      type: USER_ROLES.vendor.text,
+    });
+
+    data.inviteeId = inviteeId;
+
+    const currentData = value || [];
+    currentData.push(data);
+    onChange([...currentData]);
+
+    message.success("Services requested! Vendor will be in touch.");
+  };
+
   const saveSelectedServices = async (data) => {
     if (!data) return;
+
+    const inviteeId = await inviteVendor({
+      eventId,
+      inviteeId: data.email,
+      services: data.services,
+      amount: reduce(
+        data.services,
+        (prev = 0, curr = 0) => prev.price + curr.price
+      ),
+      status: INVITE_STATUSES.pending.text,
+      type: USER_ROLES.vendor.text,
+    });
+
+    data.inviteeId = inviteeId;
 
     const currentData = value || [];
     currentData.push(data);
     onChange(currentData);
+  };
+
+  const unselectVendor = async (inviteeId) => {
+    if (!inviteeId) return;
+
+    await unInviteVendor(inviteeId);
+
+    const currentData = value || [];
+    remove(currentData, (data) => data.inviteeId === inviteeId);
+    onChange([...currentData]);
   };
 
   return (
@@ -175,30 +250,65 @@ function VendorsList({
   );
 
   function renderItem(item) {
-    const selected = some(value, (v) => v.id === item.id);
-    const actions = [
-      <Button
-        className="rounded-0"
-        size="large"
-        type="primary"
-        onClick={(e) => onSelectServices(item)}
-        block
-      >
-        Select Services
-      </Button>,
-    ];
+    const actions = [];
 
-    if (selected) {
+    const selected = some(value, (v) => v.email === item.email);
+    const hasServices = !isEmpty(get(item, "services"));
+    if (hasServices) {
       actions.push(
-        <Tooltip title="Withdraw Invite">
+        <Button
+          className="rounded-0"
+          size="large"
+          type="primary"
+          onClick={(e) => onSelectServices(item)}
+          block
+        >
+          Select Services
+        </Button>
+      );
+    } else {
+      actions.push(
+        <Popconfirm
+          title="Are you sure you want to request services from this vendor?"
+          onConfirm={(e) => requestServices(item)}
+          disabled={selected}
+          {...commonPopConfirmProp}
+        >
           <Button
             className="rounded-0"
             size="large"
             type="primary"
-            icon={<CloseOutlined />}
-            danger
-          />
-        </Tooltip>
+            disabled={selected}
+            block
+          >
+            Request Services
+          </Button>
+        </Popconfirm>
+      );
+    }
+
+    if (selected) {
+      actions.push(
+        <Popconfirm
+          title="Are you sure you want to withdraw invite from this vendor?"
+          onConfirm={(e) => {
+            const vendor = find(value, (v) => v.email === item.email);
+            if (vendor) {
+              return unselectVendor(vendor.inviteeId);
+            }
+          }}
+          {...commonPopConfirmProp}
+        >
+          <Tooltip title="Withdraw Invite">
+            <Button
+              className="rounded-0"
+              size="large"
+              type="primary"
+              icon={<CloseOutlined />}
+              danger
+            />
+          </Tooltip>
+        </Popconfirm>
       );
     }
 

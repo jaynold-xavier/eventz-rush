@@ -45,8 +45,8 @@ class Event {
     fromDate,
     toDate,
     vendors,
-    bannerUrl,
-    totalCost,
+    bannerURL,
+    amount,
     hostEmail
   ) {
     this.id = id;
@@ -60,8 +60,30 @@ class Event {
     this.status = status;
     this.fromDate = fromDate;
     this.toDate = toDate;
-    this.bannerUrl = bannerUrl;
-    this.totalCost = totalCost;
+    this.bannerURL = bannerURL;
+    this.amount = amount;
+  }
+}
+
+class Invitee {
+  constructor({ inviteeId, hostEmail, status, services, amount, type }) {
+    this.hostEmail = hostEmail;
+    this.inviteeId = inviteeId;
+    this.services = services;
+    this.status = status;
+    this.amount = amount;
+    this.type = type;
+    this.respondedOn = new Date();
+  }
+}
+
+class Payment {
+  constructor({ id, eventId, status, part, amount }) {
+    this.id = id;
+    this.eventId = eventId;
+    this.part = part;
+    this.status = status;
+    this.amount = amount;
   }
 }
 
@@ -73,4 +95,4 @@ class Event {
 //   constructor() {}
 // }
 
-export { Vendor, Host, Event };
+export { Vendor, Host, Event, Invitee, Payment };

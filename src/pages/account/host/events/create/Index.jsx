@@ -1,13 +1,21 @@
-import { useNavigate, useSearchParams } from "react-router-dom";
-import React, { useEffect, useState } from "react";
-import { Layout, Affix, Steps, Space, Button, Form, Popconfirm } from "antd";
-import { findIndex, get } from "lodash";
+import { useNavigate, useParams } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
+import { Layout, Affix, Steps, Space, Button, Form, message } from "antd";
+import { get } from "lodash";
 
-import BasicInfoStep from "./basic/Index";
 import usePrompt from "../../../../../hooks/usePrompt";
-import SelectVendorsStep from "./selectVendors/Index";
 import confirmChanges from "../../../../../helpers/prompt";
 import { appRoutes } from "../../../../../constants/routes";
+import { EVENT_STATUSES } from "../../../../../constants/app";
+import {
+  createEvent,
+  getEvent,
+  updateEvent,
+} from "../../../../../services/database";
+import BasicInfoStep from "./basic/Index";
+import SelectVendorsStep from "./selectVendors/Index";
+import PaymentStep from "./payment/Index";
+import dayjs from "dayjs";
 
 const { Header, Content, Footer } = Layout;
 
@@ -28,41 +36,58 @@ const steps = [
 
 export default function EventCreateUpdateWizard({ user }) {
   const [form] = Form.useForm();
-  const [searchParams, setSearchParams] = useSearchParams();
+
+  const { id } = useParams();
   const navigate = useNavigate();
 
-  let initStep = searchParams.get("step") || steps[0].key;
-  initStep = findIndex(steps, (step) => step.key === initStep);
-  initStep = initStep || 0;
+  const [title, setTitle] = useState("New Event");
+  const [currentStep, setCurrentStep] = useState(0);
+  const eventIdRef = useRef(id);
 
-  const [currentStep, setCurrentStep] = useState(initStep);
+  usePrompt((event) => {
+    console.log("unchanged");
+    if (form.isFieldsTouched()) {
+      console.log("changed");
+      event.returnValue = "You have unfinished changes!";
+    }
 
-  // TODO: recheck, its not working
-  usePrompt({
-    when: true,
-    onOk: () => {
-      console.log("onOK");
-      return true;
-    },
-    onCancel: () => {
-      console.log("onCancel");
-      return true;
-    },
+    return event.returnValue;
   });
 
   useEffect(() => {
-    setSearchParams((prev) => {
-      prev.set("step", steps[currentStep].key);
-      return prev;
-    });
-  }, [currentStep, setSearchParams]);
+    let isCancel = false;
+
+    async function loadEvent(isCancel) {
+      if (isCancel || !id) return;
+
+      const event = await getEvent(id);
+      if (event) {
+        event.date = [
+          dayjs(event.fromDate.toDate()),
+          dayjs(event.toDate.toDate()),
+        ];
+        delete event.fromDate;
+        delete event.toDate;
+
+        form.setFieldsValue(event);
+      }
+    }
+
+    loadEvent(isCancel);
+
+    return () => {
+      isCancel = true;
+    };
+  }, [id]);
 
   const stepContent = () => {
     switch (currentStep) {
       case 0:
         return <BasicInfoStep hostEmail={get(user, "email")} />;
       case 1:
-        return <SelectVendorsStep form={form} />;
+        return <SelectVendorsStep form={form} eventId={eventIdRef.current} />;
+      case 2:
+        return <PaymentStep form={form} />;
       default:
         break;
     }
@@ -73,7 +98,7 @@ export default function EventCreateUpdateWizard({ user }) {
     switch (currentStep) {
       case 0:
         data = await form.validateFields([
-          "bannerUrl",
+          "bannerURL",
           "date",
           "description",
           "location",
@@ -92,9 +117,37 @@ export default function EventCreateUpdateWizard({ user }) {
     return data;
   };
 
+  const onValuesChange = (value, values) => {
+    setTitle(get(values, "title") || "New Event");
+  };
+
   const saveChanges = async () => {
-    const data = await validateSection();
+    let data = await validateSection();
     console.log({ data });
+    switch (currentStep) {
+      case 0:
+        data.bannerURL = data.bannerURL || "";
+        data.fromDate = data.date[0].toDate();
+        data.toDate = data.date[1].toDate();
+        delete data.date;
+
+        if (eventIdRef.current) {
+          await updateEvent(eventIdRef.current, data);
+
+          message.success("Event Updated!");
+        } else {
+          data.createdOn = new Date();
+          data.status = EVENT_STATUSES.processing.text;
+          data.hostEmail = get(user, "email");
+
+          eventIdRef.current = await createEvent(data);
+
+          message.success("Event Created!");
+        }
+        break;
+      default:
+        break;
+    }
   };
 
   const cancelChanges = async () => {
@@ -106,13 +159,9 @@ export default function EventCreateUpdateWizard({ user }) {
     <Layout prefixCls="event-create-layout">
       <Affix style={{ boxShadow: "-1px -1px 11px 1px gainsboro" }}>
         <Header prefixCls="event-create-header p-3">
-          <div className="text-center mb-3">NEW EVENT</div>
+          <div className="text-center mb-3">{title}</div>
 
-          <Steps
-            items={steps}
-            current={currentStep}
-            // onChange={setCurrentStep}
-          />
+          <Steps items={steps} current={currentStep} />
         </Header>
       </Affix>
 
@@ -120,7 +169,13 @@ export default function EventCreateUpdateWizard({ user }) {
         <Form
           form={form}
           layout="vertical"
+          onValuesChange={onValuesChange}
           validateMessages={{ required: "${label} is required" }}
+          scrollToFirstError={{
+            behavior: "smooth",
+            block: "center",
+            inline: "center",
+          }}
         >
           {stepContent()}
         </Form>
@@ -130,22 +185,7 @@ export default function EventCreateUpdateWizard({ user }) {
         prefixCls="event-create-footer"
         className="d-flex justify-content-between flex-wrap bg-white"
       >
-        <Space>
-          <Popconfirm
-            title="Are you sure you want to save changes?"
-            onConfirm={saveChanges}
-          >
-            <Button type="primary" size="large">
-              Save Changes
-            </Button>
-          </Popconfirm>
-
-          <Button size="large" onClick={cancelChanges}>
-            Cancel
-          </Button>
-        </Space>
-
-        <Space>
+        <Space className="ml-auto" size={12}>
           <Button
             type="primary"
             size="large"
@@ -156,16 +196,21 @@ export default function EventCreateUpdateWizard({ user }) {
           >
             Prev
           </Button>
+
           <Button
             type="primary"
             size="large"
             onClick={async (e) => {
-              await validateSection();
+              await saveChanges();
               setCurrentStep((s) => s + 1);
             }}
             disabled={currentStep === steps.length - 1}
           >
-            Next
+            Save and Continue
+          </Button>
+
+          <Button size="large" onClick={cancelChanges}>
+            Cancel
           </Button>
         </Space>
       </Footer>

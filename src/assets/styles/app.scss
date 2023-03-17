@@ -282,6 +282,23 @@ $navbar-height: 100px;
           }
         }
 
+        .type-field {
+          .ant-radio-button-wrapper:nth-child(2) {
+            &.ant-radio-button-wrapper-checked::after {
+              content: "Vendor";
+              position: absolute;
+              top: -12px;
+              color: #453bcc;
+              background: #e9e8ff;
+              left: 35%;
+              font-size: 11px;
+              line-height: 16px;
+              padding: 0 10px;
+              font-weight: 600;
+            }
+          }
+        }
+
         .save-btn {
           width: calc($form-width / 2);
           @include multi-gradient-button(
@@ -371,6 +388,25 @@ $navbar-height: 100px;
           &:nth-child(2) {
             width: auto !important;
           }
+        }
+      }
+    }
+
+    &.selected {
+      .ant-avatar {
+        border: 2px solid darken(turquoise, 33%) !important;
+        background-color: turquoise;
+      }
+
+      .shape-divider {
+        .shape-fill {
+          fill: lighten(turquoise, 33%) !important;
+        }
+      }
+
+      .vendor-item-content {
+        &:first-child {
+          background-color: lighten(turquoise, 33%) !important;
         }
       }
     }

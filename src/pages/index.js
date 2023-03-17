@@ -19,6 +19,7 @@ export { default as Register } from "./register/Index";
 // account pages
 export {
   EventCreateWizard,
+  EventCreateWizard as EventUpdateWizard,
   EventDetails,
   HostDashboard,
   HostEvents,
