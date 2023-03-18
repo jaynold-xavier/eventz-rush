@@ -17,6 +17,7 @@ import {
   Popconfirm,
   Row,
   Space,
+  Statistic,
   Typography,
 } from "antd";
 import { get, isEmpty, map } from "lodash";
@@ -41,6 +42,7 @@ import IconFont from "../../../../components/icons/Index";
 import { appRoutes } from "../../../../constants/routes";
 import {
   dateRangeString,
+  isDateInRange,
   timeRangeString,
 } from "../../../../helpers/timestamp";
 
@@ -74,7 +76,7 @@ export default function Dashboard({ user }) {
         <br />
 
         <Row gutter={[24, 24]}>
-          <Col xxl={10} xl={12} lg={12} md={12} sm={24} xs={24}>
+          <Col xxl={10} xl={12} lg={24} md={24} sm={24} xs={24}>
             <ScrollableCard
               title="Upcoming Events"
               resource="events"
@@ -96,7 +98,7 @@ export default function Dashboard({ user }) {
             </ScrollableCard>
           </Col>
 
-          <Col xxl={10} xl={12} lg={12} md={12} sm={24} xs={24}>
+          <Col xxl={10} xl={12} lg={24} md={24} sm={24} xs={24}>
             <ScrollableCard
               title="Processing Events"
               resource="events"
@@ -130,7 +132,7 @@ export default function Dashboard({ user }) {
         <br />
 
         <Row gutter={[24, 24]}>
-          <Col xl={20} lg={20} md={24} sm={24} xs={24}>
+          <Col xl={20} lg={24} md={24} sm={24} xs={24}>
             <EventCalendar params={{ email: get(user, "email") }} />
           </Col>
         </Row>
@@ -169,13 +171,12 @@ function EventCalendar({ params = {} }) {
     };
   }, [monthString, hostEmail]);
 
-  const eventDates = map(dataSource, (event) => [
-    dayjs(event.fromDate.toDate()).startOf("day"),
-    dayjs(event.toDate.toDate()).startOf("day"),
-  ]);
-
   return (
-    <Card className="events-calendar" hoverable={false}>
+    <Card
+      title={`Events of the month (${selectedDate.format("MMMM YYYY")})`}
+      className="events-calendar"
+      hoverable={false}
+    >
       <Card.Grid
         className={"p-0" + (isEmpty(dataSource) ? " d-flex" : "")}
         style={{ width: "60%" }}
@@ -194,7 +195,7 @@ function EventCalendar({ params = {} }) {
               />
             ),
           }}
-          style={{ maxHeight: 400 }}
+          style={{ maxHeight: 400, overflow: "auto" }}
         />
       </Card.Grid>
 
@@ -204,9 +205,12 @@ function EventCalendar({ params = {} }) {
           onChange={setSelectedDate}
           dateCellRender={(value) => {
             value = value.startOf("day");
-            const isEvent = eventDates.some((event) => {
-              const [from, to] = event;
-              return value >= from && value <= to;
+            const isEvent = dataSource.some((event) => {
+              return isDateInRange(
+                value,
+                event.fromDate.toDate(),
+                event.toDate.toDate()
+              );
             });
 
             if (isEvent) {
@@ -291,13 +295,13 @@ function EventCalendar({ params = {} }) {
 }
 
 function CardEventItem({ id, item, continueEvent }) {
-  const { title, location, fromDate, toDate } = item || {};
+  const { title, location, fromDate, toDate, status } = item || {};
 
   const fromDateJs = dayjs(fromDate.toDate());
   const toDateJs = dayjs(toDate.toDate());
 
   const timeText = timeRangeString(fromDateJs, toDateJs);
-  const isSameDay = fromDateJs.isSame(toDateJs);
+  const isSameDay = fromDateJs.isSame(toDateJs, "day");
 
   const cancelEvent = async () => {
     item.status = EVENT_STATUSES.cancelled.text;
@@ -305,7 +309,7 @@ function CardEventItem({ id, item, continueEvent }) {
   };
 
   return (
-    <Space className="w-100" size={20} align="baseline" wrap>
+    <Space className="w-100" size={20} align="start" wrap>
       <div className="date-badge">
         <div>
           <h3 style={{ lineHeight: "3rem" }}>{fromDateJs.format("DD")}</h3>
@@ -336,7 +340,7 @@ function CardEventItem({ id, item, continueEvent }) {
             className="mb-1"
             level={3}
             ellipsis={{ tooltip: title }}
-            style={{ width: 300 }}
+            style={{ width: 400 }}
           >
             {title}
           </Typography.Title>
@@ -346,7 +350,7 @@ function CardEventItem({ id, item, continueEvent }) {
 
             <Typography.Text
               className="font-14"
-              style={{ maxWidth: 300 }}
+              style={{ maxWidth: 400 }}
               ellipsis={{ tooltip: location }}
             >
               {location}
@@ -361,33 +365,53 @@ function CardEventItem({ id, item, continueEvent }) {
           </Space>
         </div>
 
-        <Space size={10} wrap>
-          <ConfigProvider theme={{ token: buttonActionTheme }}>
-            <Button type="primary" onClick={(e) => continueEvent()} block>
-              Continue
-            </Button>
-          </ConfigProvider>
-
-          <ConfigProvider
-            theme={{
-              token: {
-                ...appTheme,
-                colorPrimary: "#858585",
-                colorBgContainer: undefined,
-              },
-            }}
-          >
-            <Popconfirm
-              title="Are you sure you want to cancel this event?"
-              onConfirm={(e) => cancelEvent()}
-              {...commonPopConfirmProp}
-            >
-              <Button type="primary" block>
-                Cancel
+        {status === EVENT_STATUSES.processing.text ? (
+          <Space size={10} wrap>
+            <ConfigProvider theme={{ token: buttonActionTheme }}>
+              <Button type="primary" onClick={(e) => continueEvent()} block>
+                Continue
               </Button>
-            </Popconfirm>
-          </ConfigProvider>
-        </Space>
+            </ConfigProvider>
+
+            <ConfigProvider
+              theme={{
+                token: {
+                  ...appTheme,
+                  colorPrimary: "#858585",
+                  colorBgContainer: undefined,
+                },
+              }}
+            >
+              <Popconfirm
+                title="Are you sure you want to cancel this event?"
+                onConfirm={(e) => cancelEvent()}
+                {...commonPopConfirmProp}
+              >
+                <Button type="primary" block>
+                  Cancel
+                </Button>
+              </Popconfirm>
+            </ConfigProvider>
+          </Space>
+        ) : (
+          <div>
+            <Statistic.Countdown
+              format="DD : HH : mm : ss"
+              value={fromDateJs}
+              style={{ lineHeight: "1rem" }}
+            />
+            <Space
+              className="text-light-grey font-10 font-weight-bold"
+              size={30}
+              style={{ marginLeft: 5 }}
+            >
+              <span>Days</span>
+              <span>Hours</span>
+              <span>Mins</span>
+              <span>Secs</span>
+            </Space>
+          </div>
+        )}
       </Space>
     </Space>
   );

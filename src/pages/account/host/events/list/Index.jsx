@@ -26,7 +26,7 @@ import {
   Typography,
 } from "antd";
 import { where } from "firebase/firestore";
-import { startCase, get, isEmpty } from "lodash";
+import { get, isEmpty } from "lodash";
 import dayjs from "dayjs";
 
 import { getEvents } from "../../../../../services/database";
@@ -79,7 +79,6 @@ const constructConstraints = (filters = initFilters) => {
   }
 
   if (type) {
-    type = startCase(type);
     constraints.push(where("type", "==", type));
   }
 

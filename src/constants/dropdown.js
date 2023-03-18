@@ -20,9 +20,8 @@ export const vendorTypesOptions = map(VENDOR_TYPES, (obj, key) => {
 
 export const eventTypesOptions = map(EVENT_TYPES, (obj, key) => {
   return {
-    key,
     label: obj.text,
-    value: key,
+    value: obj.text,
   };
 });
 

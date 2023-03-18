@@ -126,7 +126,10 @@ export default function EventDetails() {
             {description && (
               <Col span={24}>
                 <strong>Description</strong>
-                <div className="font-18 mt-3">{description}</div>
+                <div
+                  className="font-18 mt-3"
+                  dangerouslySetInnerHTML={{ __html: description }}
+                />
               </Col>
             )}
 

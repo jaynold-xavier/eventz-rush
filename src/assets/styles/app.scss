@@ -574,7 +574,7 @@ $navbar-height: 100px;
     }
 
     .events-calendar {
-      @media #{$small-screen}, #{$mobile-screen}, #{$tablet-screen} {
+      @media #{$small-screen}, #{$mobile-screen}, #{$tablet-screen}, #{$laptop-screen} {
         .ant-card-grid {
           width: 100% !important;
         }
@@ -622,6 +622,14 @@ $navbar-height: 100px;
       padding: 24px;
       background-color: #fafafa;
       box-shadow: 0px 0px 10px 0px gainsboro;
+    }
+
+    .ant-upload-wrapper {
+      .ant-upload.ant-upload-select {
+        width: 100%;
+        max-width: 500px;
+        height: 200px;
+      }
     }
 
     .event-create-footer {

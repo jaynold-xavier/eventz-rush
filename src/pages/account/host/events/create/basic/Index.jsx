@@ -1,4 +1,4 @@
-import { InboxOutlined } from "@ant-design/icons";
+import { PlusOutlined, LoadingOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import {
   Col,
@@ -10,6 +10,7 @@ import {
   DatePicker,
   Tooltip,
   Tag,
+  message,
 } from "antd";
 import dayjs from "dayjs";
 import { get } from "lodash";
@@ -19,10 +20,34 @@ import { LocationSelect } from "../../../../../../components/fields";
 import { getEventsByMonth } from "../../../../../../services/database";
 import { isDateInRange } from "../../../../../../helpers/timestamp";
 import { appTheme } from "../../../../../../assets/js/theme";
+import { uploadResource } from "../../../../../../services/storage";
+import { RichTextEditor } from "../../../../../../components/fields";
 
 const { RangePicker } = DatePicker;
 
 const initStartDate = dayjs().set("hour", 18).set("minute", 0).set("second", 0);
+
+const getBase64 = (img, callback) => {
+  console.log({ img, callback });
+  const reader = new FileReader();
+  reader.addEventListener("load", () => callback(reader.result));
+  reader.readAsDataURL(img);
+};
+
+const beforeUpload = (file) => {
+  console.log({ file });
+  const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
+  if (!isJpgOrPng) {
+    message.error("You can only upload JPG/PNG file!");
+  }
+
+  const isLt2M = file.size / 1024 / 1024 < 2;
+  if (!isLt2M) {
+    message.error("Image must be smaller than 2MB!");
+  }
+
+  return isJpgOrPng && isLt2M;
+};
 
 export default function BasicInfoStep({ hostEmail }) {
   const [events, setEvents] = useState([]);
@@ -68,7 +93,7 @@ export default function BasicInfoStep({ hostEmail }) {
       </Row>
 
       <Form.Item name="description" label="Description">
-        <Input.TextArea placeholder="Enter Event Description" size="large" />
+        <RichTextEditor />
       </Form.Item>
 
       <Form.Item
@@ -173,18 +198,57 @@ export default function BasicInfoStep({ hostEmail }) {
       </Form.Item>
 
       <Form.Item name="bannerURL" label="Banner">
-        <Upload.Dragger>
-          <p className="ant-upload-drag-icon">
-            <InboxOutlined />
-          </p>
-          <p className="ant-upload-text">
-            Click or drag file to this area to upload
-          </p>
-          <p className="ant-upload-hint">
-            Upload a banner image to display on your event details
-          </p>
-        </Upload.Dragger>
+        <BannerUploader />
       </Form.Item>
     </>
+  );
+}
+
+function BannerUploader({ value, onChange, ...rest }) {
+  const [loading, setLoading] = useState(false);
+
+  const uploadImage = async (options) => {
+    const { onSuccess, onError, file, onProgress } = options;
+
+    try {
+      setLoading(true);
+      const res = await uploadResource(file);
+      if (res) {
+        onChange(res);
+      }
+
+      onSuccess("Ok");
+      console.log("server res: ", res);
+    } catch (err) {
+      console.log("Error upload banner: ", err);
+      onError({ err });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const uploadButton = (
+    <div>
+      {loading ? <LoadingOutlined /> : <PlusOutlined />}
+      <div style={{ marginTop: 8 }}>Upload</div>
+    </div>
+  );
+
+  return (
+    <Upload
+      listType="picture-card"
+      className="avatar-uploader"
+      showUploadList={false}
+      beforeUpload={beforeUpload}
+      customRequest={uploadImage}
+      style={{ width: "100%" }}
+      {...rest}
+    >
+      {value ? (
+        <img className="w-100 h-100" src={value} alt="banner" />
+      ) : (
+        uploadButton
+      )}
+    </Upload>
   );
 }
