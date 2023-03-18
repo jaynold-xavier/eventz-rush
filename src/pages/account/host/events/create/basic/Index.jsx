@@ -22,6 +22,7 @@ import { isDateInRange } from "../../../../../../helpers/timestamp";
 import { appTheme } from "../../../../../../assets/js/theme";
 import { uploadResource } from "../../../../../../services/storage";
 import { RichTextEditor } from "../../../../../../components/fields";
+import { maxAdvanceBookingPeriod } from "../../../../../../constants/app";
 
 const { RangePicker } = DatePicker;
 
@@ -112,6 +113,20 @@ export default function BasicInfoStep({ hostEmail }) {
 
               if (!(from && to)) {
                 return Promise.resolve();
+              }
+
+              const maxBookingPeriodParts = maxAdvanceBookingPeriod.split(" ");
+              const minBookingDate = from.subtract(
+                maxBookingPeriodParts[0],
+                maxBookingPeriodParts[1]
+              );
+
+              if (minBookingDate.isAfter(dayjs())) {
+                return Promise.reject(
+                  new Error(
+                    `Sorry, cannot book an event within ${maxAdvanceBookingPeriod} of the start of the event`
+                  )
+                );
               }
 
               const event = events.find((e) => {

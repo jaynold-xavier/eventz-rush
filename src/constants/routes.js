@@ -24,6 +24,9 @@ export const appRoutes = {
     get photos() {
       return this.root + "/photos";
     },
+    get profile() {
+      return this.root + "/profile";
+    },
     get documents() {
       return this.root + "/documents";
     },

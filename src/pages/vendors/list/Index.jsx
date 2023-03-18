@@ -5,7 +5,7 @@ import { HomePageHeader } from "../../../components/page/index";
 import Filters from "./filters/Index";
 import List from "./List";
 
-const { Header, Content } = Layout;
+const { Content } = Layout;
 
 export default function VendorsList() {
   return (

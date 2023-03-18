@@ -8,5 +8,11 @@ export {
 //#region
 
 //#region vendor screens
-export { VendorDashboard } from "./vendor";
+export {
+  VendorDashboard,
+  VendorEvents,
+  VendorPhotos,
+  VendorProfile,
+  VendorSettings,
+} from "./vendor";
 //#region

@@ -1,47 +1,45 @@
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@ant-design/icons";
 import React from "react";
-import { Header } from "antd/es/layout/layout";
-import { Button, Calendar } from "antd";
+import { Button, Calendar, Layout } from "antd";
 
-export default function CalendarView({ title, ...rest }) {
+const { Header } = Layout;
+
+export default function CalendarView(props) {
   return (
-    <Calendar
-      {...rest}
-      headerRender={({ value, onChange }) => {
-        console.log("calender props", { value });
+    <Calendar {...props} headerRender={CalendarHeader} fullscreen={false} />
+  );
+}
 
-        return (
-          <Header prefixCls="p-3">
-            {title && <h5>{title}</h5>}
+function CalendarHeader({ value, onChange }) {
+  console.log("calender header props", { value });
 
-            <div className="d-flex align-items-center justify-content-between">
-              <Button
-                type="link"
-                icon={<ArrowLeftOutlined />}
-                onClick={() => {
-                  let now = value.clone().month(value.month() - 1);
-                  onChange(now);
-                }}
-              />
+  return (
+    <Header
+      className="align-items-center justify-content-between p-3"
+      prefixCls="d-flex"
+    >
+      <Button
+        type="link"
+        icon={<ArrowLeftOutlined />}
+        onClick={() => {
+          let now = value.clone().month(value.month() - 1);
+          onChange(now);
+        }}
+      />
 
-              <div className="text-center">
-                <h6>{value.format("MMMM")}</h6>
-                <div className="font-12 text-grey">{value.year()}</div>
-              </div>
+      <div className="text-center">
+        <h6>{value.format("MMMM")}</h6>
+        <div className="font-12 text-grey">{value.year()}</div>
+      </div>
 
-              <Button
-                type="link"
-                icon={<ArrowRightOutlined />}
-                onClick={() => {
-                  let now = value.clone().month(value.month() + 1);
-                  onChange(now);
-                }}
-              />
-            </div>
-          </Header>
-        );
-      }}
-      fullscreen={false}
-    />
+      <Button
+        type="link"
+        icon={<ArrowRightOutlined />}
+        onClick={() => {
+          let now = value.clone().month(value.month() + 1);
+          onChange(now);
+        }}
+      />
+    </Header>
   );
 }

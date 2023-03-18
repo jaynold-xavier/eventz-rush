@@ -65,8 +65,8 @@ export const EVENT_TYPES = {
 };
 
 export const EVENT_STATUSES = {
-  processing: {
-    text: "Processing",
+  ongoing: {
+    text: "Ongoing",
     color: "cyan",
   },
   booked: {
@@ -102,9 +102,20 @@ export const INVITE_STATUSES = {
   },
 };
 
+//#region date constants
 export const DISPLAY_DATE_FORMAT = "MMMM DD, YYYY";
+//#region
+
+//#region antd props
 export const commonPopConfirmProp = {
   okText: "Yes",
   cancelText: "No",
   cancelButtonProps: { style: { float: "right" } },
 };
+//#region
+
+//#region app policies
+export const maxAdvanceBookingPeriod = "30 days";
+export const bookingPaymentPeriod = "24 hours";
+export const finalPaymentPeriod = "14 days";
+//#region

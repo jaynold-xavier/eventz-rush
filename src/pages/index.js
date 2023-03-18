@@ -24,4 +24,8 @@ export {
   HostDashboard,
   HostEvents,
   VendorDashboard,
+  VendorEvents,
+  VendorPhotos,
+  VendorProfile,
+  VendorSettings,
 } from "./account";

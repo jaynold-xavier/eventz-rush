@@ -559,7 +559,9 @@ $navbar-height: 100px;
     }
   }
 
+  .vendor-dashboard-layout,
   .host-dashboard-layout {
+    .vendor-dashboard-header,
     .host-dashboard-header {
       padding: 1rem;
     }

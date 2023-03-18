@@ -289,7 +289,7 @@ function UserTypeSelector({ value, onChange, ...rest }) {
     }
   };
 
-  const isHostSelected = value === userRolesOptions[0].value;
+  const isHostSelected = !value || value === userRolesOptions[0].value;
   const vendorSelectText =
     value === userRolesOptions[1].value ? "Select Vendor" : startCase(value);
 

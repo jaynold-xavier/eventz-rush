@@ -14,23 +14,27 @@ import { get, isEmpty } from "lodash";
 import { appRoutes } from "./constants/routes";
 
 import { HomeFooter } from "./components/page";
-import { HomeNavBar, HostNavbar } from "./components/navBar";
+import { HomeNavBar, HostNavbar, VendorNavbar } from "./components/navBar";
 
 import {
   FAQ,
   Home,
   Login,
-  PageNotAuthorized,
-  PageNotFound,
+  Register,
+  HostDashboard,
+  HostEvents,
   EventCreateWizard,
   EventUpdateWizard,
   EventDetails,
-  HostDashboard,
-  HostEvents,
-  Register,
   VendorDashboard,
+  VendorEvents,
+  VendorPhotos,
+  VendorProfile,
+  VendorSettings,
   VendorDetails,
   VendorsList,
+  PageNotAuthorized,
+  PageNotFound,
 } from "./pages";
 import { getInBetweenCharsRegex } from "./helpers/regex";
 import { UserContext } from "./contexts";
@@ -96,7 +100,11 @@ export default function App() {
             <Route
               path={appRoutes.account.root}
               element={
-                <AccountLayout isAuthenticated={isAuthenticated} user={user} />
+                <AccountLayout
+                  isAuthenticated={isAuthenticated}
+                  user={user}
+                  isVendor={isVendor}
+                />
               }
             >
               <Route
@@ -114,7 +122,7 @@ export default function App() {
                 path={appRoutes.account.events.list}
                 element={
                   isVendor ? (
-                    <HostEvents user={user} />
+                    <VendorEvents user={user} />
                   ) : (
                     <HostEvents user={user} />
                   )
@@ -144,6 +152,39 @@ export default function App() {
                     <PageNotAuthorized />
                   ) : (
                     <EventUpdateWizard user={user} />
+                  )
+                }
+              />
+
+              <Route
+                path={appRoutes.account.profile}
+                element={
+                  isVendor ? (
+                    <VendorProfile user={user} />
+                  ) : (
+                    <PageNotAuthorized />
+                  )
+                }
+              />
+
+              <Route
+                path={appRoutes.account.photos}
+                element={
+                  isVendor ? (
+                    <VendorPhotos user={user} />
+                  ) : (
+                    <PageNotAuthorized />
+                  )
+                }
+              />
+
+              <Route
+                path={appRoutes.account.settings}
+                element={
+                  isVendor ? (
+                    <VendorSettings user={user} />
+                  ) : (
+                    <PageNotAuthorized />
                   )
                 }
               />
@@ -178,9 +219,11 @@ function HomeLayout({ user }) {
   );
 }
 
-function AccountLayout({ isAuthenticated, user }) {
+function AccountLayout({ isAuthenticated, user, isVendor }) {
   const collapsible = window.innerWidth < 1024;
   const [collapsed, setCollapsed] = useState(collapsible);
+
+  const Navbar = isVendor ? VendorNavbar : HostNavbar;
 
   useBackground("#f5f6fa");
   // useBackground("linear-gradient(313deg, #eeecff, #f7f6ff, #fff)");
@@ -208,7 +251,7 @@ function AccountLayout({ isAuthenticated, user }) {
         // }}
         trigger={null}
       >
-        <HostNavbar user={user} collapsed={collapsed} />
+        <Navbar user={user} collapsed={collapsed} />
       </Sider>
 
       <Outlet />

@@ -137,7 +137,7 @@ export default function EventCreateUpdateWizard({ user }) {
           message.success("Event Updated!");
         } else {
           data.createdOn = new Date();
-          data.status = EVENT_STATUSES.processing.text;
+          data.status = EVENT_STATUSES.ongoing.text;
           data.hostEmail = get(user, "email");
 
           eventIdRef.current = await createEvent(data);

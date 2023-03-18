@@ -81,6 +81,7 @@ export default function Dashboard({ user }) {
               title="Upcoming Events"
               resource="events"
               constraints={[
+                where("hostEmail", "==", get(user, "email")),
                 where("status", "==", EVENT_STATUSES.booked.text),
                 where("fromDate", ">", Timestamp.fromDate(new Date())),
                 orderBy("fromDate"),
@@ -100,10 +101,11 @@ export default function Dashboard({ user }) {
 
           <Col xxl={10} xl={12} lg={24} md={24} sm={24} xs={24}>
             <ScrollableCard
-              title="Processing Events"
+              title="Ongoing Events"
               resource="events"
               constraints={[
-                where("status", "==", EVENT_STATUSES.processing.text),
+                where("hostEmail", "==", get(user, "email")),
+                where("status", "==", EVENT_STATUSES.ongoing.text),
                 orderBy("fromDate", "asc"),
               ]}
               blobImg={BlobImg2}
@@ -365,7 +367,7 @@ function CardEventItem({ id, item, continueEvent }) {
           </Space>
         </div>
 
-        {status === EVENT_STATUSES.processing.text ? (
+        {status === EVENT_STATUSES.ongoing.text ? (
           <Space size={10} wrap>
             <ConfigProvider theme={{ token: buttonActionTheme }}>
               <Button type="primary" onClick={(e) => continueEvent()} block>
