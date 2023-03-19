@@ -45,9 +45,7 @@ export default function EventCreateUpdateWizard({ user }) {
   const eventIdRef = useRef(id);
 
   usePrompt((event) => {
-    console.log("unchanged");
     if (form.isFieldsTouched()) {
-      console.log("changed");
       event.returnValue = "You have unfinished changes!";
     }
 
@@ -86,7 +84,7 @@ export default function EventCreateUpdateWizard({ user }) {
     return () => {
       isCancel = true;
     };
-  }, [id]);
+  }, [id, form]);
 
   const stepContent = () => {
     switch (currentStep) {
@@ -130,8 +128,9 @@ export default function EventCreateUpdateWizard({ user }) {
   };
 
   const saveChanges = async () => {
-    let data = await validateSection();
-    console.log({ data });
+    const data = await validateSection();
+    console.log({ validatedData: data });
+
     switch (currentStep) {
       case 0:
         data.bannerURL = get(data.bannerURL, "0.thumbUrl", "");

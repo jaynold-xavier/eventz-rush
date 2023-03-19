@@ -39,8 +39,6 @@ export default function EventDetails() {
         setLoading(true);
 
         const event = await getEvent(id);
-        console.log({ event });
-
         if (event) {
           setData(event);
         }

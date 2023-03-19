@@ -19,13 +19,11 @@ export default function InlineEditor({
   }, [value]);
 
   const saveChanges = () => {
-    console.log("saveChanges");
     onChange(updatedValue);
     setEditMode(false);
   };
 
   const cancelChanges = (e) => {
-    console.log("cancelChanges");
     if (e) {
       e.preventDefault();
       e.stopPropagation();
@@ -53,15 +51,15 @@ export default function InlineEditor({
     <div
       className={classNames.join(" ")}
       onClick={(e) => {
-        console.log("onclick");
         if (editMode) return;
+
         e.preventDefault();
         e.stopPropagation();
         setEditMode(true);
       }}
       onBlur={(e) => {
-        console.log("onblur", e.target, e.currentTarget, e.relatedTarget);
         if (e.relatedTarget && e.relatedTarget.tagName !== "INPUT") return;
+
         e.preventDefault();
         e.stopPropagation();
         setUpdatedValue(value);

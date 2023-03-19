@@ -1,19 +1,7 @@
-import { PlusOutlined, LoadingOutlined } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
-import {
-  Col,
-  Form,
-  Input,
-  Row,
-  Select,
-  Upload,
-  DatePicker,
-  Tooltip,
-  Tag,
-  message,
-} from "antd";
-import dayjs from "dayjs";
+import { Col, Form, Input, Row, Select, DatePicker, Tooltip, Tag } from "antd";
 import { get } from "lodash";
+import dayjs from "dayjs";
 
 import { eventTypesOptions } from "../../../../../../constants/dropdown";
 import {
@@ -23,35 +11,12 @@ import {
 import { getEventsByMonth } from "../../../../../../services/database";
 import { isDateInRange } from "../../../../../../helpers/timestamp";
 import { appTheme } from "../../../../../../assets/js/theme";
-import { uploadResource } from "../../../../../../services/storage";
 import { RichTextEditor } from "../../../../../../components/fields";
 import { maxAdvanceBookingPeriod } from "../../../../../../constants/app";
 
 const { RangePicker } = DatePicker;
 
 const initStartDate = dayjs().set("hour", 18).set("minute", 0).set("second", 0);
-
-const getBase64 = (img, callback) => {
-  console.log({ img, callback });
-  const reader = new FileReader();
-  reader.addEventListener("load", () => callback(reader.result));
-  reader.readAsDataURL(img);
-};
-
-const beforeUpload = (file) => {
-  console.log({ file });
-  const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
-  if (!isJpgOrPng) {
-    message.error("You can only upload JPG/PNG file!");
-  }
-
-  const isLt2M = file.size / 1024 / 1024 < 2;
-  if (!isLt2M) {
-    message.error("Image must be smaller than 2MB!");
-  }
-
-  return isJpgOrPng && isLt2M;
-};
 
 export default function BasicInfoStep({ hostEmail }) {
   const [events, setEvents] = useState([]);
@@ -119,12 +84,11 @@ export default function BasicInfoStep({ hostEmail }) {
               }
 
               const maxBookingPeriodParts = maxAdvanceBookingPeriod.split(" ");
-              const minBookingDate = from.subtract(
-                maxBookingPeriodParts[0],
-                maxBookingPeriodParts[1]
-              );
+              const minBookingDate = from
+                .clone()
+                .subtract(maxBookingPeriodParts[0], maxBookingPeriodParts[1]);
 
-              if (minBookingDate.isAfter(dayjs())) {
+              if (dayjs().isAfter(minBookingDate)) {
                 return Promise.reject(
                   new Error(
                     `Sorry, cannot book an event within ${maxAdvanceBookingPeriod} of the start of the event`
@@ -164,7 +128,6 @@ export default function BasicInfoStep({ hostEmail }) {
           className="w-100"
           size="large"
           onPanelChange={(value, mode) => {
-            console.log({ value, mode });
             setSelectedDate(value[0] || value[1]);
           }}
           renderExtraFooter={(mode) => {
@@ -231,13 +194,6 @@ function BannerUploader({ value, onChange, ...rest }) {
     onChange(fileList);
   };
 
-  const uploadButton = (
-    <div>
-      <PlusOutlined />
-      <div style={{ marginTop: 8 }}>Upload</div>
-    </div>
-  );
-
   return (
     <ImageUploader
       className="banner-uploader"
@@ -247,8 +203,6 @@ function BannerUploader({ value, onChange, ...rest }) {
       value={value}
       onChange={handleOnChange}
       {...rest}
-    >
-      {uploadButton}
-    </ImageUploader>
+    />
   );
 }

@@ -62,7 +62,6 @@ export default function Register() {
 
       await postRegister(response._tokenResponse.refreshToken, response.user);
     } catch (error) {
-      console.log({ error });
       if (error.code === "auth/email-already-in-use") {
         message.error("Email already registered");
       }

@@ -15,8 +15,8 @@ import {
 import { get, isEmpty, map } from "lodash";
 
 import { VENDOR_TYPES } from "../../../../../../../constants/app";
-
 import { getDisplayName } from "../../../../../../../helpers/auth";
+import { formatAsCurrency } from "../../../../../../../helpers/number";
 
 const avatarProps = {
   shape: "circle",
@@ -78,17 +78,19 @@ export default function SelectServicesDrawer({
       <Divider />
 
       <h6>Services</h6>
-      <p>Please select your required services of this vendor.</p>
+      <p>Please select the services you require from this vendor.</p>
 
       {isEmpty(services) ? (
         <Empty description="No services available" />
       ) : (
-        <Checkbox.Group onChange={setSelectedServices}>
+        <Checkbox.Group className="w-100" onChange={setSelectedServices}>
           {map(services, (s) => {
             return (
-              <Checkbox>
-                <Space>{s.description}</Space>
-                <Space>{s.price}</Space>
+              <Checkbox key={s.id} className="w-100" value={s.id}>
+                <Space className="justify-content-between">
+                  <div dangerouslySetInnerHTML={{ __html: s.description }} />
+                  <strong>{formatAsCurrency(s.amount)}</strong>
+                </Space>
               </Checkbox>
             );
           })}

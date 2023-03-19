@@ -136,7 +136,7 @@ function EventCalendar({ params = {} }) {
   const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const hostEmail = get(params, "email");
+  const vendorEmail = get(params, "email");
   const monthString = selectedDate && selectedDate.format("YYYY-MM");
 
   useEffect(() => {
@@ -149,7 +149,7 @@ function EventCalendar({ params = {} }) {
 
       try {
         setLoading(true);
-        const data = await getEventsByMonth(hostEmail, monthString);
+        const data = await getEventsByMonth(vendorEmail, monthString);
         setDataSource(data);
       } finally {
         setLoading(false);
@@ -159,7 +159,7 @@ function EventCalendar({ params = {} }) {
     return () => {
       isCancel = true;
     };
-  }, [monthString, hostEmail]);
+  }, [monthString, vendorEmail]);
 
   return (
     <Card

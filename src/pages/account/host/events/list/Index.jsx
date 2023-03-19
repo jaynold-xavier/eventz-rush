@@ -110,7 +110,6 @@ export default function EventsList({ user = {} }) {
       try {
         setLoading(true);
         const constraints = constructConstraints(filters);
-        console.log({ constraints, filters });
         const data = await getEvents(hostEmail, constraints);
         setDataSource(data);
       } finally {

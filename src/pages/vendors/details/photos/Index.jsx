@@ -8,9 +8,11 @@ export default function Photos() {
     <div className="gallery">
       {new Array(40).fill(null).map((val, i) => {
         return (
-          <div className="pb-3">
+          <div key={i} className="pb-3">
             <Image
-              src={`https://picsum.photos/1200/${1200 - cols[i % 3]}?random=${i}`}
+              src={`https://picsum.photos/1200/${
+                1200 - cols[i % 3]
+              }?random=${i}`}
               width="100%"
               alt="test"
             />

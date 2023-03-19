@@ -5,15 +5,7 @@ import { get } from "lodash";
 
 import { uploadResource } from "../../../services/storage";
 
-// const getBase64 = (img, callback) => {
-//   console.log({ img, callback });
-//   const reader = new FileReader();
-//   reader.addEventListener("load", () => callback(reader.result));
-//   reader.readAsDataURL(img);
-// };
-
 const beforeUpload = (file) => {
-  console.log({ file });
   const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
   if (!isJpgOrPng) {
     message.error("You can only upload JPG/PNG file!");
@@ -61,7 +53,7 @@ export function ImageUploader({
     </div>
   );
 
-  if (children === undefined) {
+  if (children !== undefined) {
     if (typeof children === "function") {
       uploadButton = children(loading, value);
     } else {

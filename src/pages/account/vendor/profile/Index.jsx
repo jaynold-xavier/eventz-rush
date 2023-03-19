@@ -25,6 +25,7 @@ import { getUser, updateVendor } from "../../../../services/database";
 import InlineEditor from "../../../../components/fields/inlineEditor/Index";
 import RichTextEditor from "../../../../components/fields/richTextEditor/Index";
 import { formatAsCurrency } from "../../../../helpers/number";
+import { downloadResource } from "../../../../services/storage";
 
 const { Header, Content } = Layout;
 
@@ -41,6 +42,18 @@ const getBase64 = (img, callback) => {
   });
   reader.readAsArrayBuffer(img);
   return reader;
+};
+
+const beforeUpload = (file) => {
+  const isExcel =
+    file.type === "application/vnd.ms-excel" ||
+    file.type === "application/vnd.oasis.opendocument.spreadsheet";
+
+  if (!isExcel) {
+    message.error("You can only upload XLS/XLSX/ODS file!");
+  }
+
+  return isExcel;
 };
 
 export default function VendorProfile({ user }) {
@@ -72,7 +85,6 @@ export default function VendorProfile({ user }) {
   }, [hostEmail]);
 
   const updateData = (updatedData) => {
-    console.log({ data, updatedData });
     setData((s) => {
       s = s || {};
       Object.assign(s, updatedData);
@@ -275,21 +287,34 @@ export default function VendorProfile({ user }) {
             <Card
               title="Services"
               loading={loading}
-              extra={
+              extra={[
+                <Button
+                  onClick={(e) => {
+                    downloadResource("services-template.ods");
+                  }}
+                >
+                  Download Template
+                </Button>,
                 <Upload
                   onChange={onImportExcel}
                   customRequest={({ onSuccess, file }) => {
                     onSuccess("OK");
                   }}
+                  beforeUpload={beforeUpload}
                   showUploadList={false}
                 >
-                  <Button type="primary">Import</Button>
-                </Upload>
-              }
+                  <Button className="ml-2" type="primary">
+                    Import
+                  </Button>
+                </Upload>,
+              ]}
             >
               <ServicesWizard
                 data={get(data, "services")}
-                saveChanges={updateData}
+                saveChanges={(services) => {
+                  Object.assign(data, { services });
+                  return updateVendor(data.email, data);
+                }}
               />
             </Card>
           </Col>
@@ -323,7 +348,7 @@ export default function VendorProfile({ user }) {
                     onChange={(value) => {
                       const showContactInfo = get(
                         data,
-                        "configurations.showServices"
+                        "configurations.showContactInfo"
                       );
                       updateData({
                         configurations: {
@@ -348,7 +373,7 @@ function ServicesWizard({ data, saveChanges }) {
 
   useEffect(() => {
     if (!isEmpty(data)) {
-      setServices((s) => [...s, ...data]);
+      setServices(data);
     }
   }, [data]);
 
@@ -381,7 +406,12 @@ function ServicesWizard({ data, saveChanges }) {
   };
 
   const onSave = async (e) => {
-    await saveChanges(services);
+    await saveChanges(
+      services.map((s, i) => {
+        s.id = i.toString();
+        return s;
+      })
+    );
     message.success("Services saved!");
   };
 

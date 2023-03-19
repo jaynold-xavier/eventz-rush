@@ -180,8 +180,6 @@ export async function getAvailableVendors(
     })
     .map((invitee) => invitee.inviteeId);
 
-  console.log({ eventData, invitees });
-
   if (!isEmpty(invitees)) {
     constraints.push(where("email", "not-in", invitees));
   }
