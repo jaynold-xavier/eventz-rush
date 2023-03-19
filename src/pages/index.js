@@ -27,5 +27,4 @@ export {
   VendorEvents,
   VendorPhotos,
   VendorProfile,
-  VendorSettings,
 } from "./account";

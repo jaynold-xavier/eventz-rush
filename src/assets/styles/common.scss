@@ -219,6 +219,30 @@
   }
 }
 
+// editors
+.inline-editor {
+  position: relative;
+  padding: 1px 5px;
+  margin-left: -5px;
+
+  &.has-placeholder {
+    & > * {
+      color: #858585;
+    }
+  }
+
+  &:not(.edit-mode):hover {
+    cursor: pointer;
+    background: #f5f5f5;
+  }
+
+  .inline-editor-actions {
+    position: absolute;
+    right: 0;
+    bottom: -23px;
+  }
+}
+
 // buttons
 .icon-animated-button {
   span[role="img"] {

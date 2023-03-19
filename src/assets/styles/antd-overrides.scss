@@ -46,6 +46,13 @@
   }
 }
 
+// date field
+.ant-picker-dropdown {
+  .ant-picker-footer-extra {
+    padding: 0 1rem;
+  }
+}
+
 // collapse
 .ant-collapse {
   border: none;
@@ -109,8 +116,8 @@
       }
     }
 
-    .ant-tabs-ink-bar  {
-      display: none
+    .ant-tabs-ink-bar {
+      display: none;
     }
   }
 

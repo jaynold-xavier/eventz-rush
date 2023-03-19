@@ -42,6 +42,9 @@ export const appTheme = {
   colorTextSecondary: "#2dc3d9",
   colorBgContainer: "#fafafa",
   colorTextBase: "#120f45",
+  padding: 16,
+  paddingContentHorizontal: 16,
+  paddingContentVertical: 16,
 };
 
 export const navLinkTheme = {

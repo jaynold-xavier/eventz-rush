@@ -16,7 +16,10 @@ import dayjs from "dayjs";
 import { get } from "lodash";
 
 import { eventTypesOptions } from "../../../../../../constants/dropdown";
-import { LocationSelect } from "../../../../../../components/fields";
+import {
+  ImageUploader,
+  LocationSelect,
+} from "../../../../../../components/fields";
 import { getEventsByMonth } from "../../../../../../services/database";
 import { isDateInRange } from "../../../../../../helpers/timestamp";
 import { appTheme } from "../../../../../../assets/js/theme";
@@ -213,57 +216,39 @@ export default function BasicInfoStep({ hostEmail }) {
       </Form.Item>
 
       <Form.Item name="bannerURL" label="Banner">
-        <BannerUploader />
+        <BannerUploader
+          className="banner-uploader"
+          listType="picture-card"
+          accept="image/*"
+        />
       </Form.Item>
     </>
   );
 }
 
 function BannerUploader({ value, onChange, ...rest }) {
-  const [loading, setLoading] = useState(false);
-
-  const uploadImage = async (options) => {
-    const { onSuccess, onError, file, onProgress } = options;
-
-    try {
-      setLoading(true);
-      const res = await uploadResource(file);
-      if (res) {
-        onChange(res);
-      }
-
-      onSuccess("Ok");
-      console.log("server res: ", res);
-    } catch (err) {
-      console.log("Error upload banner: ", err);
-      onError({ err });
-    } finally {
-      setLoading(false);
-    }
+  const handleOnChange = ({ fileList }) => {
+    onChange(fileList);
   };
 
   const uploadButton = (
     <div>
-      {loading ? <LoadingOutlined /> : <PlusOutlined />}
+      <PlusOutlined />
       <div style={{ marginTop: 8 }}>Upload</div>
     </div>
   );
 
   return (
-    <Upload
+    <ImageUploader
+      className="banner-uploader"
       listType="picture-card"
-      className="avatar-uploader"
-      showUploadList={false}
-      beforeUpload={beforeUpload}
-      customRequest={uploadImage}
-      style={{ width: "100%" }}
+      accept="image/*"
+      maxCount={1}
+      value={value}
+      onChange={handleOnChange}
       {...rest}
     >
-      {value ? (
-        <img className="w-100 h-100" src={value} alt="banner" />
-      ) : (
-        uploadButton
-      )}
-    </Upload>
+      {uploadButton}
+    </ImageUploader>
   );
 }

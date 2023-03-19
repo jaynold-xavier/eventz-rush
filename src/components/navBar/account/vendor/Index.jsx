@@ -57,7 +57,11 @@ export default function HostNavbar({ user, collapsed }) {
       className: "user-item mt-5 pt-2 pb-2",
       label: (
         <div className="d-flex flex-column align-items-center">
-          <Typography.Text className="mt-1">
+          <Typography.Text
+            className="mt-1"
+            ellipsis={{ tooltip: getDisplayName(user) }}
+            style={{ maxWidth: 200 }}
+          >
             {getDisplayName(user)}
           </Typography.Text>
           <Typography.Text className="font-12 text-grey mb-0">
@@ -101,13 +105,6 @@ export default function HostNavbar({ user, collapsed }) {
       icon: <PictureOutlined />,
       label: "Photos",
       onClick: (e) => goToPage(appRoutes.account.photos),
-    },
-    {
-      key: appRoutes.account.settings,
-      className: "link-item",
-      icon: <SettingOutlined />,
-      label: "Settings",
-      onClick: (e) => goToPage(appRoutes.account.settings),
     },
   ];
 

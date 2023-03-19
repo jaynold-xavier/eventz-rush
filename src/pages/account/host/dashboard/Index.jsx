@@ -53,9 +53,11 @@ export default function Dashboard({ user }) {
 
   return (
     <Layout prefixCls="host-dashboard-layout">
-      <Header prefixCls="host-dashboard-header">
-        <span className="font-12">WELCOME</span>
-        <h5>{getDisplayName(user)}</h5>
+      <Header prefixCls="account-header" className="dashboard-header">
+        <div>
+          <span className="font-12">WELCOME</span>
+          <h5>{getDisplayName(user)}</h5>
+        </div>
       </Header>
 
       <Content>

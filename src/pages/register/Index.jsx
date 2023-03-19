@@ -20,7 +20,7 @@ import {
   Progress,
   Radio,
 } from "antd";
-import { find, map, startCase } from "lodash";
+import { find, get, map } from "lodash";
 
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
@@ -37,6 +37,7 @@ import {
 } from "../../services/auth";
 import useAuth from "../../hooks/useAuth";
 import { addUser } from "../../services/database";
+import { VENDOR_TYPES } from "../../constants/app";
 
 const { Content } = Layout;
 
@@ -272,7 +273,7 @@ export default function Register() {
     };
 
     if (type !== "host") {
-      data.title = user.displayName || "";
+      data.title = user.displayName || userName || "";
       data.type = type;
     }
 
@@ -290,8 +291,13 @@ function UserTypeSelector({ value, onChange, ...rest }) {
   };
 
   const isHostSelected = !value || value === userRolesOptions[0].value;
-  const vendorSelectText =
-    value === userRolesOptions[1].value ? "Select Vendor" : startCase(value);
+  let vendorSelectText;
+  if (!isHostSelected) {
+    vendorSelectText =
+      value === userRolesOptions[1].value
+        ? "Select Vendor"
+        : get(VENDOR_TYPES[value], "text");
+  }
 
   return (
     <Radio.Group

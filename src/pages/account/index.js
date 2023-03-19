@@ -13,6 +13,5 @@ export {
   VendorEvents,
   VendorPhotos,
   VendorProfile,
-  VendorSettings,
 } from "./vendor";
 //#region

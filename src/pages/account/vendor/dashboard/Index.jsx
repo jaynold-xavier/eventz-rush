@@ -54,10 +54,7 @@ export default function Dashboard({ user }) {
 
   return (
     <Layout prefixCls="vendor-dashboard-layout">
-      <Header
-        className="d-flex justify-content-between"
-        prefixCls="vendor-dashboard-header"
-      >
+      <Header prefixCls="account-header" className="dashboard-header">
         <div>
           <span className="font-12">WELCOME</span>
           <h5>{getDisplayName(user)}</h5>

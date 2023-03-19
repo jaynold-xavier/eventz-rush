@@ -1,10 +1,16 @@
 import React from "react";
-import { Content } from "antd/es/layout/layout";
+import { Layout } from "antd";
+
+const { Header, Content } = Layout;
 
 export default function VendorPhotos() {
   return (
-    <Content className="p-3">
-      <h5>Photos</h5>
-    </Content>
+    <Layout prefixCls="vendor-dashboard-layout">
+      <Header prefixCls="account-header" className="dashboard-header">
+        <h5>My Photos</h5>
+      </Header>
+
+      <Content></Content>
+    </Layout>
   );
 }

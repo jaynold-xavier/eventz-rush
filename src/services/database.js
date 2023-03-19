@@ -69,6 +69,16 @@ export async function addUser(data, type) {
   const ref = doc(db, collection, data.email);
   await setDoc(ref, data, { merge: true });
 }
+
+export async function updateVendor(id, data) {
+  const ref = doc(db, "vendors", id);
+  await updateDoc(ref, data);
+}
+
+export async function updateHost(id, data) {
+  const ref = doc(db, "hosts", id);
+  await updateDoc(ref, data);
+}
 //#region
 
 //#region events

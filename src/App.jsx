@@ -30,7 +30,6 @@ import {
   VendorEvents,
   VendorPhotos,
   VendorProfile,
-  VendorSettings,
   VendorDetails,
   VendorsList,
   PageNotAuthorized,
@@ -172,17 +171,6 @@ export default function App() {
                 element={
                   isVendor ? (
                     <VendorPhotos user={user} />
-                  ) : (
-                    <PageNotAuthorized />
-                  )
-                }
-              />
-
-              <Route
-                path={appRoutes.account.settings}
-                element={
-                  isVendor ? (
-                    <VendorSettings user={user} />
                   ) : (
                     <PageNotAuthorized />
                   )

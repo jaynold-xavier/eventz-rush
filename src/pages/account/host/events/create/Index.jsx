@@ -66,6 +66,14 @@ export default function EventCreateUpdateWizard({ user }) {
           dayjs(event.fromDate.toDate()),
           dayjs(event.toDate.toDate()),
         ];
+        if (event.bannerURL) {
+          const file = {};
+          file.uid = "1";
+          file.name = "banner";
+          file.thumbUrl = event.bannerURL;
+
+          event.bannerURL = [file];
+        }
         delete event.fromDate;
         delete event.toDate;
 
@@ -126,7 +134,7 @@ export default function EventCreateUpdateWizard({ user }) {
     console.log({ data });
     switch (currentStep) {
       case 0:
-        data.bannerURL = data.bannerURL || "";
+        data.bannerURL = get(data.bannerURL, "0.thumbUrl", "");
         data.fromDate = data.date[0].toDate();
         data.toDate = data.date[1].toDate();
         delete data.date;

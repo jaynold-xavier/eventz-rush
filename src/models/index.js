@@ -22,14 +22,14 @@ class Vendor extends User {
     services,
     title,
     userName,
-    website,
+    websiteURL,
   }) {
     super({ userName, email, photoUrl });
     this.description = description;
     this.phoneNumber = phoneNumber;
     this.services = services;
     this.title = title;
-    this.website = website;
+    this.websiteURL = websiteURL;
   }
 }
 

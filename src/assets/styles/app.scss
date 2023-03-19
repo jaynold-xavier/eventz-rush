@@ -66,6 +66,17 @@ $navbar-height: 100px;
   }
 }
 
+.account-summary-popover {
+  .ant-popover-inner {
+    padding: 0;
+  }
+
+  .ant-btn {
+    text-align: left;
+    height: 3rem;
+  }
+}
+
 .home-layout {
   @media #{$small-screen}, #{$mobile-screen}, #{$tablet-screen} {
     margin-top: 4rem;
@@ -467,20 +478,8 @@ $navbar-height: 100px;
 //#endregion
 
 //#region account screens
-.account-summary-popover {
-  .ant-popover-inner {
-    padding: 0;
-  }
-
-  .ant-btn {
-    text-align: left;
-    height: 3rem;
-  }
-}
-
 .account-layout {
   min-height: 100vh;
-  $color-primary: #6252f1;
 
   .ant-layout-sider {
     height: 100%;
@@ -559,13 +558,19 @@ $navbar-height: 100px;
     }
   }
 
-  .vendor-dashboard-layout,
-  .host-dashboard-layout {
-    .vendor-dashboard-header,
-    .host-dashboard-header {
+  .account-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+
+    & + .ant-layout-content {
       padding: 1rem;
     }
+  }
 
+  .vendor-dashboard-layout,
+  .host-dashboard-layout {
     main {
       padding: 1rem;
     }
@@ -588,7 +593,7 @@ $navbar-height: 100px;
             position: absolute;
             top: 0;
             left: 0;
-            background: #ff4d4f;
+            background: #cf1322;
             color: #fff;
             padding: 0 3px;
             border-radius: 5px;
@@ -627,10 +632,11 @@ $navbar-height: 100px;
     }
 
     .ant-upload-wrapper {
-      .ant-upload.ant-upload-select {
-        width: 100%;
+      .ant-upload.ant-upload-select,
+      .ant-upload-list-item-container {
         max-width: 500px;
-        height: 200px;
+        width: 100% !important;
+        max-height: 200px;
       }
     }
 

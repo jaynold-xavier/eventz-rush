@@ -30,8 +30,5 @@ export const appRoutes = {
     get documents() {
       return this.root + "/documents";
     },
-    get settings() {
-      return this.root + "/settings";
-    },
   },
 };

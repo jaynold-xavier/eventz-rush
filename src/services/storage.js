@@ -3,7 +3,6 @@ import { storage } from "../assets/js/firebase";
 
 export async function uploadResource(file) {
   const storageRef = ref(storage, file.name);
-  console.log({ file });
 
   // 'file' comes from the Blob or File API
   return uploadBytes(storageRef, file)
@@ -16,7 +15,7 @@ export async function uploadResource(file) {
     });
 }
 
-export async function getResource(url) {
+export async function downloadResource(url) {
   // Create a reference from an HTTPS URL
   // Note that in the URL, characters are URL escaped!
   const storageRef = ref(storage, url);
