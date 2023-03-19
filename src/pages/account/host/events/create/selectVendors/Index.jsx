@@ -1,6 +1,7 @@
-import { CloseOutlined } from "@ant-design/icons";
+import { CloseOutlined, UserOutlined } from "@ant-design/icons";
 import React, { useEffect, useRef, useState } from "react";
 import {
+  Avatar,
   Button,
   Col,
   ConfigProvider,
@@ -11,11 +12,12 @@ import {
   Popconfirm,
   Row,
   Select,
+  Space,
   Spin,
   Tooltip,
 } from "antd";
 import { where } from "firebase/firestore";
-import { find, get, isEmpty, reduce, remove, size, some } from "lodash";
+import { find, get, isEmpty, map, remove, size, some } from "lodash";
 
 import { SearchInput } from "../../../../../../components/fields";
 import {
@@ -25,12 +27,16 @@ import {
 import { vendorTypesOptions } from "../../../../../../constants/dropdown";
 import {
   getAvailableVendors,
-  inviteVendor,
+  getInvitees,
+  addInvitee,
   unInviteVendor,
+  updateInvitee,
 } from "../../../../../../services/database";
 import VendorItem from "../../../../../vendors/list/item/Index";
 import SelectServicesDrawer from "./selectServices/Index";
 import { INVITE_STATUSES } from "../../../../../../constants/app";
+import { appTheme } from "../../../../../../assets/js/theme";
+import { formatAsCurrency } from "../../../../../../helpers/number.js";
 
 const initFilters = {
   q: "",
@@ -95,10 +101,38 @@ export default function SelectVendorsStep({ form, eventId }) {
     };
   }, [filters, eventId, form]);
 
+  useEffect(() => {
+    let isCancel = false;
+
+    setInvitees(isCancel);
+
+    async function setInvitees(isCancel) {
+      if (isCancel || !eventId) return;
+
+      try {
+        const data = await getInvitees(eventId);
+        console.log({ eventId, data });
+
+        form.setFieldValue("vendors", data);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    return () => {
+      isCancel = true;
+    };
+  }, [eventId, form]);
+
   const openSelectServicesDrawer = (data) => {
     selectedVendorRef.current = data;
     setShowSelectServicesDrawer(true);
   };
+
+  const netAmount = map(form.getFieldValue("vendors"), (v) => v.amount).reduce(
+    (prev, curr) => prev + curr,
+    0
+  );
 
   return (
     <Spin spinning={loading}>
@@ -145,6 +179,15 @@ export default function SelectVendorsStep({ form, eventId }) {
                 return Promise.reject();
               }
 
+              if (
+                some(value, (v) => v.status === INVITE_STATUSES.pending.text)
+              ) {
+                message.error(
+                  "All the vendors have not yet accepted your invite"
+                );
+                return Promise.reject();
+              }
+
               return Promise.resolve();
             },
           },
@@ -155,12 +198,60 @@ export default function SelectVendorsStep({ form, eventId }) {
           dataSource={dataSource}
           onSelectServices={openSelectServicesDrawer}
           selectServicesLayoutProps={{
-            data: selectedVendorRef.current,
+            vendorInfo: selectedVendorRef.current,
             open: showSelectServicesDrawer,
             onClose: (e) => setShowSelectServicesDrawer((s) => !s),
           }}
         />
       </Form.Item>
+
+      <Space className="selected-vendors" align="end">
+        <div>
+          <div className="font-12 text-uppercase">Selected Vendors</div>
+
+          <Avatar.Group
+            maxStyle={{
+              color: appTheme.colorPrimary,
+              backgroundColor: "#fde3cf",
+            }}
+          >
+            {map(form.getFieldValue("vendors"), (v) => {
+              const vendor = find(dataSource, (d) => d.email === v.inviteeId);
+              const statusInfo = find(
+                INVITE_STATUSES,
+                (val, key) => key === get(v, "status")
+              );
+
+              if (!vendor) return null;
+              return (
+                <Tooltip
+                  title={
+                    <>
+                      <div>{vendor.title}</div>
+                      <div
+                        className="font-12"
+                        style={{ color: get(statusInfo, "color") }}
+                      >
+                        {vendor.status}
+                      </div>
+                    </>
+                  }
+                >
+                  <Avatar
+                    src={vendor.photoUrl}
+                    icon={<UserOutlined />}
+                    style={{ backgroundColor: appTheme.colorPrimary }}
+                  >
+                    {vendor.title}
+                  </Avatar>
+                </Tooltip>
+              );
+            })}
+          </Avatar.Group>
+        </div>
+
+        {netAmount && <h5>{formatAsCurrency(netAmount)}</h5>}
+      </Space>
     </Spin>
   );
 }
@@ -173,54 +264,47 @@ function VendorsList({
   onSelectServices,
   selectServicesLayoutProps = {},
 }) {
-  const requestServices = async (data) => {
+  const invite = async (data) => {
     if (!data) return;
 
-    const inviteeId = await inviteVendor({
+    const inviteeInfo = {
       eventId,
-      inviteeId: data.email,
+      inviteeId: data.inviteeId,
+      services: data.services,
+      amount: data.amount,
       status: INVITE_STATUSES.pending.text,
       type: USER_ROLES.vendor.text,
-    });
-
-    data.inviteeId = inviteeId;
+    };
 
     const currentData = value || [];
-    currentData.push(data);
+    const existing = currentData.find((v) => v.inviteeId === data.inviteeId);
+    if (existing) {
+      await updateInvitee(eventId, data.inviteeId, inviteeInfo);
+      Object.assign(existing, inviteeInfo);
+    } else {
+      await addInvitee(inviteeInfo);
+      currentData.push(inviteeInfo);
+    }
     onChange([...currentData]);
+  };
+
+  const requestServices = async (data) => {
+    await invite(data);
 
     message.success("Services requested! Vendor will be in touch.");
   };
 
   const saveSelectedServices = async (data) => {
-    if (!data) return;
-
-    const inviteeId = await inviteVendor({
-      eventId,
-      inviteeId: data.email,
-      services: data.services,
-      amount: reduce(
-        data.services,
-        (prev = 0, curr = 0) => prev.price + curr.price
-      ),
-      status: INVITE_STATUSES.pending.text,
-      type: USER_ROLES.vendor.text,
-    });
-
-    data.inviteeId = inviteeId;
-
-    const currentData = value || [];
-    currentData.push(data);
-    onChange(currentData);
+    await invite(data);
   };
 
   const unselectVendor = async (inviteeId) => {
     if (!inviteeId) return;
 
-    await unInviteVendor(inviteeId);
+    await unInviteVendor(eventId, inviteeId);
 
     const currentData = value || [];
-    remove(currentData, (data) => data.inviteeId === inviteeId);
+    remove(currentData, (v) => v.inviteeId === inviteeId);
     onChange([...currentData]);
   };
 
@@ -232,11 +316,12 @@ function VendorsList({
         grid={{
           gutter: 16,
           xs: 1,
-          sm: 2,
-          md: 3,
-          lg: 5,
-          xl: 5,
-          xxl: 5,
+          sm: 1,
+          md: 1,
+          lg: 2,
+          xl: 3,
+          xxl: 4,
+          column: 3,
         }}
         renderItem={renderItem}
         locale={{ emptyText: <Empty description="No Vendors available" /> }}
@@ -252,7 +337,9 @@ function VendorsList({
   function renderItem(item) {
     const actions = [];
 
-    const selected = some(value, (v) => v.email === item.email);
+    const inviteInfo = find(value, (v) => v.inviteeId === item.email);
+    const selected = !!inviteInfo;
+
     const hasServices = !isEmpty(get(item, "services"));
     if (hasServices) {
       actions.push(
@@ -260,7 +347,12 @@ function VendorsList({
           className="rounded-0"
           size="large"
           type="primary"
-          onClick={(e) => onSelectServices(item)}
+          onClick={(e) => {
+            onSelectServices({
+              ...item,
+              selectedServices: get(inviteInfo, "services"),
+            });
+          }}
           block
         >
           Select Services
@@ -292,10 +384,7 @@ function VendorsList({
         <Popconfirm
           title="Are you sure you want to withdraw invite from this vendor?"
           onConfirm={(e) => {
-            const vendor = find(value, (v) => v.email === item.email);
-            if (vendor) {
-              return unselectVendor(vendor.inviteeId);
-            }
+            return unselectVendor(item.email);
           }}
           {...commonPopConfirmProp}
         >
@@ -312,6 +401,26 @@ function VendorsList({
       );
     }
 
-    return <VendorItem data={item} selected={selected} actions={actions} />;
+    let inviteStatus = get(inviteInfo, "status");
+    if (inviteStatus) {
+      if (!hasServices) {
+        inviteStatus = "Awaiting Info !";
+      } else if (inviteStatus === INVITE_STATUSES.pending.text) {
+        inviteStatus = "Invite pending !";
+      } else if (inviteStatus === INVITE_STATUSES.accepted.text) {
+        inviteStatus = "Invite accepted !";
+      } else if (inviteStatus === INVITE_STATUSES.declined.text) {
+        inviteStatus = "Invite declined !";
+      }
+    }
+
+    return (
+      <VendorItem
+        data={item}
+        selected={selected}
+        actions={actions}
+        inviteStatus={inviteStatus}
+      />
+    );
   }
 }

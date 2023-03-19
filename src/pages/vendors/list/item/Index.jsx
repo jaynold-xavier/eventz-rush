@@ -22,6 +22,7 @@ export default function ListItem({
   data,
   loading = false,
   selected = false,
+  inviteStatus,
   ...rest
 }) {
   const { email, type, description, phoneNumber, photoURL } = data;
@@ -66,6 +67,12 @@ export default function ListItem({
             </Tag>
           </Skeleton>
         </div>
+
+        {selected && (
+          <div className="font-14 text-center text-red text-uppercase">
+            {inviteStatus}
+          </div>
+        )}
 
         <div className="shape-divider">
           <svg

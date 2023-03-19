@@ -350,6 +350,8 @@ $navbar-height: 100px;
 
   .vendors-list-item {
     .ant-card {
+      background-color: lighten(#6252f1, 33%);
+
       .ant-card-body {
         min-height: 28rem;
         padding: 0;
@@ -360,6 +362,7 @@ $navbar-height: 100px;
 
         .shape-divider {
           width: 100%;
+          background-color: #fff;
 
           svg {
             position: relative;
@@ -376,8 +379,8 @@ $navbar-height: 100px;
         .vendor-item-content {
           padding: 1rem;
 
-          &:first-child {
-            background-color: lighten(#6252f1, 33%);
+          &:last-child {
+            background-color: #fff;
           }
 
           .vendor-item-description {
@@ -404,6 +407,10 @@ $navbar-height: 100px;
     }
 
     &.selected {
+      .ant-card {
+        background-color: lighten(turquoise, 33%) !important;
+      }
+
       .ant-avatar {
         border: 2px solid darken(turquoise, 33%) !important;
         background-color: turquoise;
@@ -412,12 +419,6 @@ $navbar-height: 100px;
       .shape-divider {
         .shape-fill {
           fill: lighten(turquoise, 33%) !important;
-        }
-      }
-
-      .vendor-item-content {
-        &:first-child {
-          background-color: lighten(turquoise, 33%) !important;
         }
       }
     }
@@ -638,6 +639,12 @@ $navbar-height: 100px;
         width: 100% !important;
         max-height: 200px;
       }
+    }
+
+    .selected-vendors {
+      position: fixed;
+      z-index: 15;
+      bottom: 12px;
     }
 
     .event-create-footer {

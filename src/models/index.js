@@ -3,7 +3,6 @@ class User {
     this.userName = userName;
     this.email = email;
     this.photoUrl = photoUrl;
-    // this.password = password;
   }
 }
 
@@ -73,17 +72,16 @@ class Invitee {
     this.status = status;
     this.amount = amount;
     this.type = type;
-    this.respondedOn = new Date();
   }
 }
 
 class Payment {
-  constructor({ id, eventId, status, part, amount }) {
-    this.id = id;
+  constructor({ eventId, status, amount }) {
     this.eventId = eventId;
-    this.part = part;
+    this.type = "card";
     this.status = status;
     this.amount = amount;
+    this.createdOn = new Date();
   }
 }
 

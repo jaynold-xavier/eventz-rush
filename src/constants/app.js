@@ -116,6 +116,6 @@ export const commonPopConfirmProp = {
 
 //#region app policies
 export const maxAdvanceBookingPeriod = "30 days";
-export const bookingPaymentPeriod = "24 hours";
+export const bookingPaymentPeriod = "2 days";
 export const finalPaymentPeriod = "14 days";
 //#region

@@ -4,17 +4,13 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
-import { Button, Col, Divider, message, Row, Space } from "antd";
-
-import { DISPLAY_DATE_FORMAT } from "../../../constants/app";
-import { formatAsCurrency } from "../../../helpers/number";
+import { Button, Col, message, Row } from "antd";
 
 const paymentElementOptions = {
   layout: "tabs",
 };
 
 export default function PaymentField({
-  info,
   value,
   onChange,
   clientSecret,
@@ -22,8 +18,6 @@ export default function PaymentField({
 }) {
   const stripe = useStripe();
   const elements = useElements();
-
-  const { amount, dueDate } = info || {};
 
   useEffect(() => {
     if (!stripe) {
@@ -88,24 +82,6 @@ export default function PaymentField({
 
   return (
     <Row gutter={[12, 24]}>
-      <Col span={12}>
-        <div className="font-weight-bold mb-1">Due Date</div>
-        {dueDate && dueDate.format(DISPLAY_DATE_FORMAT + " " + "hh:mm A")}
-      </Col>
-
-      <Col span={12}>
-        <Space size={0}>
-          <div className="font-weight-bold mb-1">Amount</div>
-          <Button type="link" className="font-12">
-            View Details
-          </Button>
-        </Space>
-        <br />
-        {formatAsCurrency(amount)}
-      </Col>
-
-      <Divider />
-
       <Col span={24}>
         <div className="font-weight-bold mb-3">Payment Details</div>
         <PaymentElement

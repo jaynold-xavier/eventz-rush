@@ -24,25 +24,32 @@ const avatarProps = {
 };
 
 export default function SelectServicesDrawer({
-  data,
+  vendorInfo,
   requestedServices = [],
   onSave,
   ...rest
 }) {
   const [selectedServices, setSelectedServices] = useState([]);
 
-  const { type, photoURL } = data || {};
+  const { type, photoURL } = vendorInfo || {};
 
-  const services = isEmpty(get(data, "services"))
+  const services = isEmpty(get(vendorInfo, "services"))
     ? requestedServices
-    : get(data, "services");
+    : get(vendorInfo, "services");
 
   const save = async () => {
-    await onSave({
-      email: data.email,
-      services: selectedServices,
+    const prices = selectedServices.map((id) => {
+      const service = services.find((s) => s.id === id);
+      return service.amount;
     });
-    message.success("Services selected and Invite sent!");
+
+    await onSave({
+      inviteeId: vendorInfo.email,
+      services: selectedServices,
+      amount: prices.reduce((prev = 0, curr = 0) => prev + curr),
+    });
+
+    message.success("Services selected and Vendor notified!");
     rest.onClose();
   };
 
@@ -51,9 +58,14 @@ export default function SelectServicesDrawer({
       className="select-services-layout"
       width={600}
       title={"Select Services"}
+      afterOpenChange={(open) => {
+        if (open) {
+          setSelectedServices(get(vendorInfo, "selectedServices"));
+        }
+      }}
       footer={
         <Button type="primary" onClick={save} block>
-          Select Services and Invite Vendor
+          Save and Notify Vendor
         </Button>
       }
       {...rest}
@@ -67,7 +79,9 @@ export default function SelectServicesDrawer({
         />
 
         <div>
-          <Typography.Title level={5}>{getDisplayName(data)}</Typography.Title>
+          <Typography.Title level={5}>
+            {getDisplayName(vendorInfo)}
+          </Typography.Title>
 
           <Tag className="text-uppercase font-12" color="geekblue">
             {get(VENDOR_TYPES[type], "text", type)}
@@ -77,13 +91,16 @@ export default function SelectServicesDrawer({
 
       <Divider />
 
-      <h6>Services</h6>
       <p>Please select the services you require from this vendor.</p>
 
       {isEmpty(services) ? (
         <Empty description="No services available" />
       ) : (
-        <Checkbox.Group className="w-100" onChange={setSelectedServices}>
+        <Checkbox.Group
+          className="w-100"
+          value={selectedServices}
+          onChange={setSelectedServices}
+        >
           {map(services, (s) => {
             return (
               <Checkbox key={s.id} className="w-100" value={s.id}>

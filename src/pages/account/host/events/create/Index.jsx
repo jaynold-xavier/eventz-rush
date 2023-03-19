@@ -93,7 +93,12 @@ export default function EventCreateUpdateWizard({ user }) {
       case 1:
         return <SelectVendorsStep form={form} eventId={eventIdRef.current} />;
       case 2:
-        return <PaymentStep form={form} />;
+        return (
+          <PaymentStep
+            eventCreatedOn={form.getFieldValue("createdOn")}
+            vendors={form.getFieldValue("vendors")}
+          />
+        );
       default:
         break;
     }
@@ -140,8 +145,6 @@ export default function EventCreateUpdateWizard({ user }) {
 
         if (eventIdRef.current) {
           await updateEvent(eventIdRef.current, data);
-
-          message.success("Event Updated!");
         } else {
           data.createdOn = new Date();
           data.status = EVENT_STATUSES.ongoing.text;

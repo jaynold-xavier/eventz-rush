@@ -28,7 +28,7 @@ import { where } from "firebase/firestore";
 import { get, isEmpty } from "lodash";
 import dayjs from "dayjs";
 
-import { getEvents } from "../../../../services/database";
+import { getEvents, getEventsInvitedTo } from "../../../../services/database";
 import { EVENT_STATUSES } from "../../../../constants/app";
 import { appRoutes } from "../../../../constants/routes";
 import IconFont from "../../../../components/icons/Index";
@@ -109,7 +109,7 @@ export default function VendorsEventsList({ user = {} }) {
       try {
         setLoading(true);
         const constraints = constructConstraints(filters);
-        const data = await getEvents(vendorEmail, constraints);
+        const data = await getEventsInvitedTo(vendorEmail, constraints);
         setDataSource(data);
       } finally {
         setLoading(false);

@@ -191,13 +191,69 @@ export async function getAvailableVendors(
     return [];
   }
 }
+//#region
 
-export async function inviteVendor(data) {
-  const inviteeData = await addDoc(collection(db, "invitees"), data);
-  return inviteeData.id;
+//#region invitees
+export async function getInvitees(eventId) {
+  const invitees = await getRecords("invitees", [
+    where("eventId", "==", eventId),
+  ]);
+
+  if (invitees) {
+    return map(invitees, (e) => e.record);
+  } else {
+    return [];
+  }
 }
 
-export async function unInviteVendor(id) {
-  await deleteDoc(doc(db, "invitees", id));
+export async function addInvitee(data) {
+  return await addDoc(collection(db, "invitees"), data);
+}
+
+export async function updateInvitee(eventId, inviteeId, data) {
+  let invitee = await getRecords("invitees", [
+    where("eventId", "==", eventId),
+    where("inviteeId", "==", inviteeId),
+  ]);
+  invitee = get(invitee, "0");
+
+  if (invitee) {
+    const ref = doc(db, "invitees", get(invitee, "id"));
+    await updateDoc(ref, data);
+  }
+}
+
+export async function unInviteVendor(eventId, inviteeId) {
+  let invitee = await getRecords("invitees", [
+    where("eventId", "==", eventId),
+    where("inviteeId", "==", inviteeId),
+  ]);
+  invitee = get(invitee, "0");
+
+  if (invitee) {
+    const ref = doc(db, "invitees", get(invitee, "id"));
+    await deleteDoc(ref);
+  }
+}
+
+export async function getEventsInvitedTo(inviteeId, constraints = []) {
+  const invitees = await getRecords("invitees", [
+    where("inviteeId", "==", inviteeId),
+  ]);
+
+  const events = await getRecords("events", [
+    where(
+      "Document ID",
+      "in",
+      invitees.map((data) => data.record.eventId)
+    ),
+    ...constraints,
+  ]);
+
+  if (events) {
+    return map(events, (e) => e.record);
+  } else {
+    return [];
+  }
 }
 //#region
