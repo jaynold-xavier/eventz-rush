@@ -1,2 +1,2 @@
-export { default as CalendarInput } from "./select/Index";
-export { default as CalendarView } from "./view/Index";
+export { default as CalendarView } from "./viewer/Index";
+export { default as EventsListCalendar } from "./list/Index";

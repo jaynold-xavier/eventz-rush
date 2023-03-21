@@ -76,11 +76,12 @@ class Invitee {
 }
 
 class Payment {
-  constructor({ eventId, status, amount }) {
+  constructor({ eventId, status, category, amount }) {
     this.eventId = eventId;
     this.type = "card";
     this.status = status;
     this.amount = amount;
+    this.category = category;
     this.createdOn = new Date();
   }
 }

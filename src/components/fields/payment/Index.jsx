@@ -10,12 +10,7 @@ const paymentElementOptions = {
   layout: "tabs",
 };
 
-export default function PaymentField({
-  value,
-  onChange,
-  clientSecret,
-  ...rest
-}) {
+export default function PaymentField({ payNow, clientSecret, ...rest }) {
   const stripe = useStripe();
   const elements = useElements();
 
@@ -48,7 +43,7 @@ export default function PaymentField({
     });
   }, [stripe, clientSecret]);
 
-  const makePayment = async (e) => {
+  const onPayNow = async (e) => {
     e.preventDefault();
 
     if (!stripe || !elements) {
@@ -64,6 +59,14 @@ export default function PaymentField({
 
     if (!error) {
       console.log({ paymentIntent });
+
+      payNow({
+        id: paymentIntent.id,
+        status: paymentIntent.status,
+        amount: paymentIntent.amount,
+        type: "card",
+      });
+
       message.success("Payment succeeded!");
       return;
     }
@@ -92,8 +95,8 @@ export default function PaymentField({
       </Col>
 
       <Col span={24}>
-        <Button type="primary" onClick={makePayment} block>
-          Pay
+        <Button type="primary" onClick={onPayNow} block>
+          Pay Now
         </Button>
       </Col>
     </Row>

@@ -1,21 +1,14 @@
 import { Image } from "antd";
 import React from "react";
+import { map } from "lodash";
 
-const cols = [100, 200, 300];
-
-export default function Photos() {
+export default function Photos({ data }) {
   return (
     <div className="gallery">
-      {new Array(40).fill(null).map((val, i) => {
+      {map(data, (url, i) => {
         return (
           <div key={i} className="pb-3">
-            <Image
-              src={`https://picsum.photos/1200/${
-                1200 - cols[i % 3]
-              }?random=${i}`}
-              width="100%"
-              alt="test"
-            />
+            <Image src={url} width="100%" alt="test" />
           </div>
         );
       })}

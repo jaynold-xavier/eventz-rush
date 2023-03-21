@@ -144,7 +144,7 @@ export default function VendorProfile({ user }) {
               <div className="d-inline-block position-relative">
                 <Avatar
                   className="user-avatar"
-                  src={get(data, "photoURL")}
+                  src={get(data, "photoURL") || undefined}
                   {...avatarProps}
                 />
               </div>
@@ -225,8 +225,9 @@ export default function VendorProfile({ user }) {
                         <div>{value || placeholder}</div>
                       )}
                       editorTemplate={(props) => (
-                        <Input
+                        <InputNumber
                           {...props}
+                          max={50}
                           onChange={(e) => props.onChange(e.target.value)}
                           autoFocus
                         />

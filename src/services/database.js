@@ -4,6 +4,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  documentId,
   getDoc,
   getDocs,
   query,
@@ -114,15 +115,15 @@ export async function getEvents(hostId, constraints = []) {
   }
 }
 
-export async function getEventsByMonth(hostId, monthString) {
-  if (!hostId) return [];
+export async function getEventsByMonth(hostId, selectedDate) {
+  if (!(hostId && selectedDate)) return [];
 
-  const range = [
-    new Date(monthString),
-    new Date(
-      new Date(monthString).setMonth(new Date(monthString).getMonth() + 1)
-    ),
-  ];
+  const initDate = selectedDate
+    .startOf("month")
+    .set("hour", 0)
+    .set("minute", 0)
+    .set("second", 0);
+  const range = [initDate.toDate(), initDate.clone().add(1, "month").toDate()];
 
   const events = await getRecords("events", [
     where("hostEmail", "==", hostId),
@@ -138,6 +139,15 @@ export async function getEventsByMonth(hostId, monthString) {
 //#region
 
 //#region vendors
+export async function getVendors(constraints = []) {
+  const vendors = await getRecords("vendors", constraints);
+  if (vendors) {
+    return map(vendors, (e) => e.record);
+  } else {
+    return [];
+  }
+}
+
 export async function getAvailableVendors(
   fromDate,
   toDate,
@@ -194,10 +204,13 @@ export async function getAvailableVendors(
 //#region
 
 //#region invitees
-export async function getInvitees(eventId) {
-  const invitees = await getRecords("invitees", [
-    where("eventId", "==", eventId),
-  ]);
+export async function getInvitees(filters = {}) {
+  const constraints = [];
+  map(filters, (val, key) => {
+    constraints.push(where(key, "==", val));
+  });
+
+  const invitees = await getRecords("invitees", constraints);
 
   if (invitees) {
     return map(invitees, (e) => e.record);
@@ -210,16 +223,30 @@ export async function addInvitee(data) {
   return await addDoc(collection(db, "invitees"), data);
 }
 
-export async function updateInvitee(eventId, inviteeId, data) {
+export async function getInvitee(eventId, inviteeId) {
   let invitee = await getRecords("invitees", [
     where("eventId", "==", eventId),
     where("inviteeId", "==", inviteeId),
   ]);
   invitee = get(invitee, "0");
 
+  return invitee;
+}
+
+export async function updateInvitee(eventId, inviteeId, data) {
+  const invitee = await getInvitee(eventId, inviteeId);
   if (invitee) {
     const ref = doc(db, "invitees", get(invitee, "id"));
     await updateDoc(ref, data);
+  }
+}
+
+export async function updateInviteStatus(eventId, inviteeId, status) {
+  const invitee = await getInvitee(eventId, inviteeId);
+  if (invitee) {
+    const ref = doc(db, "invitees", get(invitee, "id"));
+    invitee.record.status = status;
+    await updateDoc(ref, invitee.record);
   }
 }
 
@@ -243,7 +270,7 @@ export async function getEventsInvitedTo(inviteeId, constraints = []) {
 
   const events = await getRecords("events", [
     where(
-      "Document ID",
+      documentId(),
       "in",
       invitees.map((data) => data.record.eventId)
     ),
@@ -255,5 +282,24 @@ export async function getEventsInvitedTo(inviteeId, constraints = []) {
   } else {
     return [];
   }
+}
+//#region
+
+//#region payments
+export async function getPayments(eventId) {
+  const payments = await getRecords("payments", [
+    where("eventId", "==", eventId),
+  ]);
+
+  if (payments) {
+    return map(payments, (e) => e.record);
+  } else {
+    return [];
+  }
+}
+
+export async function makePayment(data, id) {
+  const ref = doc(db, "payments", id);
+  return await setDoc(ref, data, { merge: true });
 }
 //#region

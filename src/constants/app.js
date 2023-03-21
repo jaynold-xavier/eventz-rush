@@ -90,11 +90,11 @@ export const INVITE_STATUSES = {
   },
   accepted: {
     text: "Accepted",
-    color: "green",
+    color: "lime",
   },
   declined: {
     text: "Declined",
-    color: "red",
+    color: "#f44336",
   },
   paid: {
     text: "Paid",
@@ -102,8 +102,25 @@ export const INVITE_STATUSES = {
   },
 };
 
+export const EVENT_WIZARD_STEPS = [
+  {
+    key: "basic",
+    text: "Basic Info",
+  },
+  {
+    key: "selectVendors",
+    text: "Select Vendors",
+  },
+  {
+    key: "payment",
+    text: "Payment",
+  },
+];
+
 //#region date constants
-export const DISPLAY_DATE_FORMAT = "MMMM DD, YYYY";
+export const DATE_DISPLAY_FORMAT = "DD MMM YYYY";
+export const TIME_DISPLAY_FORMAT = "hh:mm A";
+export const DATETIME_DISPLAY_FORMAT = "MMMM DD, YYYY hh:mm A";
 //#region
 
 //#region antd props

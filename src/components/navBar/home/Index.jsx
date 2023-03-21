@@ -157,7 +157,6 @@ export default function Navbar({ user }) {
           </Popover>
         </ConfigProvider>
       ),
-      onClick: (e) => goToPage(appRoutes.home),
     },
     {
       key: "account",

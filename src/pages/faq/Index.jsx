@@ -15,7 +15,7 @@ export default function FAQ() {
 
       <Content prefixCls="page-content" className="faq-content">
         <div className="container">
-          <Collapse expandIconPosition="right" accordion>
+          <Collapse expandIconPosition="end" accordion>
             <Collapse.Panel header="Question?">
               Duis fugiat mollit amet tempor. Aliqua non amet duis qui ad
               cupidatat aute tempor commodo minim labore veniam. Laborum sit

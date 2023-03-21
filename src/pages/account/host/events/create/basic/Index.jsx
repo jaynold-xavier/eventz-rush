@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Col, Form, Input, Row, Select, DatePicker, Tooltip, Tag } from "antd";
 import { get } from "lodash";
 import dayjs from "dayjs";
@@ -8,39 +8,19 @@ import {
   ImageUploader,
   LocationSelect,
 } from "../../../../../../components/fields";
-import { getEventsByMonth } from "../../../../../../services/database";
 import { isDateInRange } from "../../../../../../helpers/timestamp";
 import { appTheme } from "../../../../../../assets/js/theme";
 import { RichTextEditor } from "../../../../../../components/fields";
-import { maxAdvanceBookingPeriod } from "../../../../../../constants/app";
+import {
+  DATETIME_DISPLAY_FORMAT,
+  maxAdvanceBookingPeriod,
+} from "../../../../../../constants/app";
 
 const { RangePicker } = DatePicker;
 
 const initStartDate = dayjs().set("hour", 18).set("minute", 0).set("second", 0);
 
-export default function BasicInfoStep({ hostEmail }) {
-  const [events, setEvents] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(dayjs());
-
-  const monthString = selectedDate && selectedDate.format("YYYY-MM");
-
-  useEffect(() => {
-    let isCancel = false;
-
-    fetchDataSource(isCancel);
-
-    async function fetchDataSource(isCancel) {
-      if (isCancel) return;
-
-      const eventsByMonth = await getEventsByMonth(hostEmail, monthString);
-      setEvents(eventsByMonth);
-    }
-
-    return () => {
-      isCancel = true;
-    };
-  }, [monthString, hostEmail]);
-
+export default function BasicInfoStep({ events, setSelectedDate }) {
   return (
     <>
       <Row gutter={[24, 24]}>
@@ -56,6 +36,7 @@ export default function BasicInfoStep({ hostEmail }) {
               placeholder="Enter Event Type"
               size="large"
               options={eventTypesOptions}
+              allowClear
             />
           </Form.Item>
         </Col>
@@ -69,10 +50,7 @@ export default function BasicInfoStep({ hostEmail }) {
         name="date"
         label="Date"
         wrapperCol={{ span: 12 }}
-        initialValue={[
-          initStartDate,
-          initStartDate.clone().add(1, "day").set("hour", 0),
-        ]}
+        initialValue={[initStartDate, initStartDate.clone().add(24, "hour")]}
         rules={[
           { required: true },
           {
@@ -133,6 +111,7 @@ export default function BasicInfoStep({ hostEmail }) {
           renderExtraFooter={(mode) => {
             return <Tag color="red">Event</Tag>;
           }}
+          separator="➔"
           dateRender={(current) => {
             const event = events.find((event) => {
               return isDateInRange(
@@ -168,6 +147,7 @@ export default function BasicInfoStep({ hostEmail }) {
               </Tooltip>
             );
           }}
+          format={DATETIME_DISPLAY_FORMAT}
           showSecond={false}
           minuteStep={30}
           showTime

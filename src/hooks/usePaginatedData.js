@@ -14,19 +14,24 @@ export default function usePaginatedData({
   table,
   constraints = [],
   pageSize = 25,
+  transformData,
 }) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
+  const [reload, setReload] = useState(false);
 
   const docsRef = useRef([]);
-  const hasMoreRef = useRef(true);
+  const hasMoreRef = useRef(!!table);
 
   useEffect(() => {
     let isCancel = false;
 
     async function loadInitData(isCancel) {
-      if (isCancel) return;
+      if (isCancel || !table) {
+        setLoading(false);
+        return;
+      }
 
       // Query the first page of docs
       const first = query(
@@ -35,7 +40,10 @@ export default function usePaginatedData({
         limit(pageSize)
       );
 
-      const initData = await getData(first);
+      let initData = await getData(first);
+      if (transformData) {
+        initData = transformData(initData);
+      }
       console.log("initData", initData);
 
       hasMoreRef.current = !isEmpty(initData);
@@ -48,7 +56,7 @@ export default function usePaginatedData({
     return () => {
       isCancel = true;
     };
-  }, [table, constraints, pageSize]);
+  }, [table, constraints, reload, transformData, pageSize]);
 
   const loadPrev = () => {
     setPage((s) => s - 1);
@@ -68,7 +76,10 @@ export default function usePaginatedData({
       limit(pageSize)
     );
 
-    const nextData = await getData(next);
+    let nextData = await getData(next);
+    if (transformData) {
+      nextData = transformData(nextData);
+    }
     console.log("nextData", nextData);
 
     hasMoreRef.current = !isEmpty(nextData);
@@ -83,11 +94,13 @@ export default function usePaginatedData({
     loading,
     currentPage: page,
     hasMore: hasMoreRef.current,
+    setReload,
   };
 
   async function getData(query) {
     try {
       setLoading(true);
+
       const querySnapshot = await getDocs(query);
       docsRef.current = [...docsRef.current, ...querySnapshot.docs];
 

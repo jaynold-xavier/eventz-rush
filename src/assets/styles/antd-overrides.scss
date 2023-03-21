@@ -9,18 +9,30 @@
 // drawer
 .ant-drawer {
   .ant-drawer-header {
+    position: relative;
+
     .ant-drawer-close {
-      right: 0;
       position: absolute;
-      border: 1px solid #dcdcdc;
-      border-radius: 50%;
+      right: 0;
+      top: 0;
+      border-left: 1px solid #e7e7e7;
+      width: 50px;
       padding: 8px;
+      z-index: 99;
+      background: #fff;
+      height: 100%;
+      margin: 0;
 
       &:hover {
         background-color: #f4f3ff;
         border-color: #b8b0f9;
       }
     }
+  }
+
+  .ant-drawer-content-wrapper {
+    width: 100% !important;
+    max-width: 600px;
   }
 }
 

@@ -56,7 +56,6 @@ export default function SelectServicesDrawer({
   return (
     <Drawer
       className="select-services-layout"
-      width={600}
       title={"Select Services"}
       afterOpenChange={(open) => {
         if (open) {

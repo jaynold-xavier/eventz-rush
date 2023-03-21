@@ -1,37 +1,26 @@
-import {
-  PlusOutlined,
-  CalendarTwoTone,
-  ClockCircleTwoTone,
-} from "@ant-design/icons";
+import { PlusOutlined, ClockCircleTwoTone } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import {
-  Badge,
   Button,
-  Card,
   Col,
   ConfigProvider,
-  Empty,
   Layout,
-  List,
+  message,
   Popconfirm,
   Row,
   Space,
-  Statistic,
   Typography,
 } from "antd";
-import { get, isEmpty, map } from "lodash";
+import { get } from "lodash";
 import { orderBy, Timestamp, where } from "firebase/firestore";
 import dayjs from "dayjs";
 
-import BlobImg1 from "../../../../assets/images/shapes/shape-1.svg";
 import BlobImg2 from "../../../../assets/images/shapes/shape-2.svg";
 import BlobImg3 from "../../../../assets/images/shapes/shape-3.svg";
-import BlobImg4 from "../../../../assets/images/shapes/shape-4.svg";
 
 import { getDisplayName } from "../../../../helpers/auth";
 import ScrollableCard from "../../../../components/card/scrollable/Index";
-import CalendarView from "../../../../components/calendar/view/Index";
 import { getEventsByMonth, updateEvent } from "../../../../services/database";
 import { appTheme, buttonActionTheme } from "../../../../assets/js/theme";
 import {
@@ -40,11 +29,9 @@ import {
 } from "../../../../constants/app";
 import IconFont from "../../../../components/icons/Index";
 import { appRoutes } from "../../../../constants/routes";
-import {
-  dateRangeString,
-  isDateInRange,
-  timeRangeString,
-} from "../../../../helpers/timestamp";
+import { timeRangeString } from "../../../../helpers/timestamp";
+import Countdown from "../../../../components/countdown/Index";
+import { EventsListCalendar } from "../../../../components/calendar";
 
 const { Header, Content } = Layout;
 
@@ -112,7 +99,7 @@ export default function Dashboard({ user }) {
               ]}
               blobImg={BlobImg2}
             >
-              {(item) => {
+              {(item, setReload) => {
                 return (
                   <CardEventItem
                     id={get(item, "id")}
@@ -125,6 +112,7 @@ export default function Dashboard({ user }) {
                         )
                       )
                     }
+                    setReload={setReload}
                   />
                 );
               }}
@@ -137,7 +125,7 @@ export default function Dashboard({ user }) {
 
         <Row gutter={[24, 24]}>
           <Col xl={20} lg={24} md={24} sm={24} xs={24}>
-            <EventCalendar params={{ email: get(user, "email") }} />
+            <EventCalendar params={{ hostEmail: get(user, "email") }} />
           </Col>
         </Row>
       </Content>
@@ -150,8 +138,7 @@ function EventCalendar({ params = {} }) {
   const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const hostEmail = get(params, "email");
-  const monthString = selectedDate && selectedDate.format("YYYY-MM");
+  const hostEmail = get(params, "hostEmail");
 
   useEffect(() => {
     let isCancel = false;
@@ -163,7 +150,7 @@ function EventCalendar({ params = {} }) {
 
       try {
         setLoading(true);
-        const data = await getEventsByMonth(hostEmail, monthString);
+        const data = await getEventsByMonth(hostEmail, selectedDate);
         setDataSource(data);
       } finally {
         setLoading(false);
@@ -173,132 +160,19 @@ function EventCalendar({ params = {} }) {
     return () => {
       isCancel = true;
     };
-  }, [monthString, hostEmail]);
+  }, [selectedDate, hostEmail]);
 
   return (
-    <Card
-      title={`Events of the month (${selectedDate.format("MMMM YYYY")})`}
-      className="events-calendar"
-      hoverable={false}
-    >
-      <Card.Grid
-        className={"p-0" + (isEmpty(dataSource) ? " d-flex" : "")}
-        style={{ width: "60%" }}
-        hoverable={false}
-      >
-        <List
-          className="w-100 m-auto"
-          dataSource={dataSource}
-          renderItem={renderItem}
-          loading={loading}
-          locale={{
-            emptyText: (
-              <Empty
-                image={Empty.PRESENTED_IMAGE_SIMPLE}
-                description="No Events during this month"
-              />
-            ),
-          }}
-          style={{ maxHeight: 400, overflow: "auto" }}
-        />
-      </Card.Grid>
-
-      <Card.Grid className="p-0" style={{ width: "40%" }} hoverable={false}>
-        <CalendarView
-          value={selectedDate}
-          onChange={setSelectedDate}
-          dateCellRender={(value) => {
-            value = value.startOf("day");
-            const isEvent = dataSource.some((event) => {
-              return isDateInRange(
-                value,
-                event.fromDate.toDate(),
-                event.toDate.toDate()
-              );
-            });
-
-            if (isEvent) {
-              return value.format("DD");
-            }
-          }}
-        />
-      </Card.Grid>
-    </Card>
+    <EventsListCalendar
+      dataSource={dataSource}
+      loading={loading}
+      selectedDate={selectedDate}
+      setSelectedDate={setSelectedDate}
+    />
   );
-
-  function renderItem({
-    bannerURL,
-    description,
-    fromDate,
-    location,
-    status,
-    title,
-    toDate,
-  }) {
-    const fromDateJs = dayjs(fromDate.toDate());
-    const toDateJs = dayjs(toDate.toDate());
-
-    const dateText = dateRangeString(fromDateJs, toDateJs);
-    const timeText = timeRangeString(fromDateJs, toDateJs);
-
-    const statusObj = get(EVENT_STATUSES, status);
-
-    return (
-      <List.Item
-        className="align-items-start"
-        style={{ borderLeft: `2px solid ${appTheme.colorPrimary}` }}
-      >
-        <List.Item.Meta
-          title={title}
-          description={
-            <>
-              <Space size={5}>
-                <IconFont
-                  type="icon-location"
-                  className="font-16"
-                  style={{ color: appTheme.colorPrimary }}
-                />
-
-                <Typography.Text
-                  className="font-14 text-grey"
-                  style={{ maxWidth: 300 }}
-                  ellipsis={{ tooltip: location }}
-                >
-                  {location}
-                </Typography.Text>
-              </Space>
-
-              <br />
-
-              <Space size={20}>
-                <Space className="font-14">
-                  <CalendarTwoTone twoToneColor={appTheme.colorPrimary} />
-                  <span className="text-grey">{dateText}</span>
-                </Space>
-
-                <Space className="font-14">
-                  <ClockCircleTwoTone twoToneColor={appTheme.colorPrimary} />
-                  <span className="text-grey">{timeText}</span>
-                </Space>
-              </Space>
-            </>
-          }
-        />
-
-        {statusObj && (
-          <Badge
-            className="position-absolute"
-            color={get(statusObj, "color")}
-            text={<span className="font-14">{get(statusObj, "text")}</span>}
-            style={{ right: "1rem" }}
-          />
-        )}
-      </List.Item>
-    );
-  }
 }
 
-function CardEventItem({ id, item, continueEvent }) {
+function CardEventItem({ id, item, continueEvent, setReload }) {
   const { title, location, fromDate, toDate, status } = item || {};
 
   const fromDateJs = dayjs(fromDate.toDate());
@@ -310,6 +184,10 @@ function CardEventItem({ id, item, continueEvent }) {
   const cancelEvent = async () => {
     item.status = EVENT_STATUSES.cancelled.text;
     await updateEvent(id, item);
+
+    setReload && setReload((s) => !s);
+
+    message.success("Event cancelled!");
   };
 
   return (
@@ -398,23 +276,7 @@ function CardEventItem({ id, item, continueEvent }) {
             </ConfigProvider>
           </Space>
         ) : (
-          <div>
-            <Statistic.Countdown
-              format="DD : HH : mm : ss"
-              value={fromDateJs}
-              style={{ lineHeight: "1rem" }}
-            />
-            <Space
-              className="text-light-grey font-10 font-weight-bold"
-              size={30}
-              style={{ marginLeft: 5 }}
-            >
-              <span>Days</span>
-              <span>Hours</span>
-              <span>Mins</span>
-              <span>Secs</span>
-            </Space>
-          </div>
+          <Countdown value={fromDateJs} />
         )}
       </Space>
     </Space>

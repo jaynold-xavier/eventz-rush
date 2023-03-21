@@ -570,40 +570,6 @@ $navbar-height: 100px;
     }
   }
 
-  .vendor-dashboard-layout,
-  .host-dashboard-layout {
-    main {
-      padding: 1rem;
-    }
-
-    .create-event-btn {
-      width: 50%;
-      height: 3rem;
-    }
-
-    .events-calendar {
-      @media #{$small-screen}, #{$mobile-screen}, #{$tablet-screen}, #{$laptop-screen} {
-        .ant-card-grid {
-          width: 100% !important;
-        }
-      }
-
-      .ant-picker-calendar {
-        .ant-picker-cell-inner {
-          .ant-picker-calendar-date-content {
-            position: absolute;
-            top: 0;
-            left: 0;
-            background: #cf1322;
-            color: #fff;
-            padding: 0 3px;
-            border-radius: 5px;
-          }
-        }
-      }
-    }
-  }
-
   .host-events-layout {
     .host-events-header {
       display: flex;
@@ -645,6 +611,21 @@ $navbar-height: 100px;
       position: fixed;
       z-index: 15;
       bottom: 12px;
+    }
+
+    .payment-field-container {
+      @media #{$small-screen}, #{$mobile-screen}, #{$tablet-screen} {
+        flex-direction: column-reverse;
+      }
+      .ant-collapse-item.ant-collapse-item-disabled {
+        $success-color: #40cf85;
+
+        background-color: lighten($success-color, 40);
+
+        .ant-collapse-header-text {
+          color: darken($success-color, 40);
+        }
+      }
     }
 
     .event-create-footer {

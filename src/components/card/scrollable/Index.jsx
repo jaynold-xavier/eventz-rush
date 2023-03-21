@@ -15,12 +15,14 @@ export default function ScrollableCard({
   resource,
   constraints,
   blobImg = BlobImg3,
+  transformData,
   children,
   ...rest
 }) {
-  const { data, loadPrev, loadNext, loading, currentPage, hasMore } =
+  const { data, loadPrev, loadNext, loading, currentPage, hasMore, setReload } =
     usePaginatedData({
       table: resource,
+      transformData,
       constraints,
       pageSize: 1,
     });
@@ -40,7 +42,7 @@ export default function ScrollableCard({
       } else {
         const currentData = data[currentPage - 1];
         if (!isEmpty(currentData)) {
-          return children && children(data[currentPage - 1]);
+          return children && children(data[currentPage - 1], setReload);
         } else {
           return emptyRender;
         }

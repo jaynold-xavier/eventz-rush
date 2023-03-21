@@ -66,6 +66,10 @@
 .hover-text-deep-purple:hover {
   color: #673ab7 !important;
 }
+.text-primary,
+.hover-text-primary:hover {
+  color: #6252f1 !important;
+}
 .text-red,
 .hover-text-red:hover {
   color: #f44336 !important;
@@ -177,6 +181,29 @@
   }
 }
 
+// calendar
+.events-calendar {
+  @media #{$small-screen}, #{$mobile-screen}, #{$tablet-screen}, #{$laptop-screen} {
+    .ant-card-grid {
+      width: 100% !important;
+    }
+  }
+
+  .ant-picker-calendar {
+    .ant-picker-cell-inner {
+      .ant-picker-calendar-date-content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: #cf1322;
+        color: #fff;
+        padding: 0 3px;
+        border-radius: 5px;
+      }
+    }
+  }
+}
+
 // card
 @mixin card-glow($baseColor) {
   background: linear-gradient(
@@ -189,6 +216,7 @@
 }
 
 .scrollable-card {
+  border-radius: 20px !important;
   overflow: hidden;
 
   .ant-card-body {
@@ -368,6 +396,14 @@
 
 .bg-transparent {
   background-color: transparent !important;
+}
+
+.bg-primary {
+  background-color: #6252f1 !important;
+}
+
+.bg-light-primary {
+  background-color: lighten(#6252f1, 32) !important;
 }
 
 .block-center {
@@ -668,6 +704,7 @@
 .flex-wrap {
   -ms-flex-wrap: wrap !important;
   flex-wrap: wrap !important;
+  gap: 1rem;
 }
 
 .flex-nowrap {

@@ -1,48 +1,54 @@
-import { useNavigate, useParams } from "react-router-dom";
-import React, { useEffect, useRef, useState } from "react";
-import { Layout, Affix, Steps, Space, Button, Form, message } from "antd";
-import { get } from "lodash";
+import { useParams } from "react-router-dom";
+import React, { useState } from "react";
+import { Layout, Affix, Steps, Form, Spin } from "antd";
+import { get, has } from "lodash";
+import dayjs from "dayjs";
 
 import usePrompt from "../../../../../hooks/usePrompt";
-import confirmChanges from "../../../../../helpers/prompt";
-import { appRoutes } from "../../../../../constants/routes";
-import { EVENT_STATUSES } from "../../../../../constants/app";
-import {
-  createEvent,
-  getEvent,
-  updateEvent,
-} from "../../../../../services/database";
 import BasicInfoStep from "./basic/Index";
 import SelectVendorsStep from "./selectVendors/Index";
 import PaymentStep from "./payment/Index";
-import dayjs from "dayjs";
+import Footer from "./Footer";
 
-const { Header, Content, Footer } = Layout;
+import useEventWizard from "./useEventWizard";
+import useSupportingData from "./useSupportingData";
+import {
+  EVENT_STATUSES,
+  EVENT_WIZARD_STEPS,
+} from "../../../../../constants/app";
 
-const steps = [
-  {
-    key: "basic",
-    title: "Basic Info",
-  },
-  {
-    key: "selectVendors",
-    title: "Select Vendors",
-  },
-  {
-    key: "payment",
-    title: "Payment",
-  },
-];
+const { Header, Content } = Layout;
+
+const steps = EVENT_WIZARD_STEPS.map((e) => {
+  return {
+    key: e.key,
+    title: e.text,
+  };
+});
 
 export default function EventCreateUpdateWizard({ user }) {
-  const [form] = Form.useForm();
-
   const { id } = useParams();
-  const navigate = useNavigate();
 
-  const [title, setTitle] = useState("New Event");
-  const [currentStep, setCurrentStep] = useState(0);
-  const eventIdRef = useRef(id);
+  const [loading, setLoading] = useState(!!id);
+  const [selectedDate, setSelectedDate] = useState(dayjs());
+
+  const hostEmail = get(user, "email");
+
+  const {
+    // state
+    form,
+    eventId,
+    title,
+    currentStep,
+    netAmount,
+    // actions
+    setTitle,
+    setCurrentStep,
+    setNetAmount,
+    saveChanges,
+    cancelChanges,
+    updateEvent,
+  } = useEventWizard({ id, user, setLoading });
 
   usePrompt((event) => {
     if (form.isFieldsTouched()) {
@@ -52,51 +58,72 @@ export default function EventCreateUpdateWizard({ user }) {
     return event.returnValue;
   });
 
-  useEffect(() => {
-    let isCancel = false;
+  const { events, vendors, setFilters } = useSupportingData({
+    form,
+    eventId,
+    hostEmail,
+    selectedDate,
+    setLoading,
+  });
 
-    async function loadEvent(isCancel) {
-      if (isCancel || !id) return;
+  const onValuesChange = (value, values) => {
+    console.log("onValuesChange", value, values);
 
-      const event = await getEvent(id);
-      if (event) {
-        event.date = [
-          dayjs(event.fromDate.toDate()),
-          dayjs(event.toDate.toDate()),
-        ];
-        if (event.bannerURL) {
-          const file = {};
-          file.uid = "1";
-          file.name = "banner";
-          file.thumbUrl = event.bannerURL;
-
-          event.bannerURL = [file];
-        }
-        delete event.fromDate;
-        delete event.toDate;
-
-        form.setFieldsValue(event);
-      }
+    if (has(value, "title")) {
+      setTitle(get(value, "title"));
     }
 
-    loadEvent(isCancel);
+    if (has(value, "vendors")) {
+      setNetAmount(get(value, "vendors"));
+    }
+  };
 
-    return () => {
-      isCancel = true;
-    };
-  }, [id, form]);
+  const onSave = async (e) => {
+    await saveChanges();
+    setCurrentStep((s) => s + 1);
+  };
+
+  const onCancel = async (e) => {
+    await cancelChanges();
+  };
 
   const stepContent = () => {
     switch (currentStep) {
       case 0:
-        return <BasicInfoStep hostEmail={get(user, "email")} />;
+        return (
+          <BasicInfoStep events={events} setSelectedDate={setSelectedDate} />
+        );
       case 1:
-        return <SelectVendorsStep form={form} eventId={eventIdRef.current} />;
+        return (
+          <SelectVendorsStep
+            eventId={eventId}
+            dataSource={vendors}
+            setFilters={setFilters}
+          />
+        );
       case 2:
+        let eventCreatedOn = form.getFieldValue("createdOn");
+        if (eventCreatedOn) {
+          if (eventCreatedOn.toDate) {
+            eventCreatedOn = eventCreatedOn.toDate();
+          }
+          eventCreatedOn = dayjs(eventCreatedOn);
+        } else {
+          eventCreatedOn = new Date();
+        }
+
+        const bookEvent = () => {
+          updateEvent({ status: EVENT_STATUSES.booked.text });
+        };
+
         return (
           <PaymentStep
-            eventCreatedOn={form.getFieldValue("createdOn")}
-            vendors={form.getFieldValue("vendors")}
+            form={form}
+            eventId={eventId}
+            netAmount={netAmount}
+            eventCreatedOn={eventCreatedOn}
+            invitees={form.getFieldValue("vendors")}
+            bookEvent={bookEvent}
           />
         );
       default:
@@ -104,66 +131,7 @@ export default function EventCreateUpdateWizard({ user }) {
     }
   };
 
-  const validateSection = async () => {
-    let data;
-    switch (currentStep) {
-      case 0:
-        data = await form.validateFields([
-          "bannerURL",
-          "date",
-          "description",
-          "location",
-          "title",
-          "type",
-        ]);
-        break;
-      case 1:
-        data = await form.validateFields(["vendors"]);
-        break;
-      default:
-        data = await form.validateFields();
-        break;
-    }
-
-    return data;
-  };
-
-  const onValuesChange = (value, values) => {
-    setTitle(get(values, "title") || "New Event");
-  };
-
-  const saveChanges = async () => {
-    const data = await validateSection();
-    console.log({ validatedData: data });
-
-    switch (currentStep) {
-      case 0:
-        data.bannerURL = get(data.bannerURL, "0.thumbUrl", "");
-        data.fromDate = data.date[0].toDate();
-        data.toDate = data.date[1].toDate();
-        delete data.date;
-
-        if (eventIdRef.current) {
-          await updateEvent(eventIdRef.current, data);
-        } else {
-          data.createdOn = new Date();
-          data.status = EVENT_STATUSES.ongoing.text;
-          data.hostEmail = get(user, "email");
-
-          eventIdRef.current = await createEvent(data);
-
-          message.success("Event Created!");
-        }
-        break;
-      default:
-        break;
-    }
-  };
-
-  const cancelChanges = async () => {
-    await confirmChanges(form.isFieldsTouched());
-    navigate(appRoutes.account.dashboard);
-  };
+  const isLastStep = currentStep === EVENT_WIZARD_STEPS.length - 1;
 
   return (
     <Layout prefixCls="event-create-layout">
@@ -176,54 +144,33 @@ export default function EventCreateUpdateWizard({ user }) {
       </Affix>
 
       <Content className="p-3">
-        <Form
-          form={form}
-          layout="vertical"
-          onValuesChange={onValuesChange}
-          validateMessages={{ required: "${label} is required" }}
-          scrollToFirstError={{
-            behavior: "smooth",
-            block: "center",
-            inline: "center",
-          }}
-        >
-          {stepContent()}
-        </Form>
+        <Spin spinning={loading}>
+          <Form
+            form={form}
+            layout="vertical"
+            onValuesChange={onValuesChange}
+            validateMessages={{ required: "${label} is required" }}
+            scrollToFirstError={{
+              behavior: "smooth",
+              block: "center",
+              inline: "center",
+            }}
+          >
+            {stepContent()}
+          </Form>
+        </Spin>
       </Content>
 
       <Footer
-        prefixCls="event-create-footer"
-        className="d-flex justify-content-between flex-wrap bg-white"
-      >
-        <Space className="ml-auto" size={12}>
-          <Button
-            type="primary"
-            size="large"
-            onClick={(e) => {
-              setCurrentStep((s) => s - 1);
-            }}
-            disabled={currentStep === 0}
-          >
-            Prev
-          </Button>
-
-          <Button
-            type="primary"
-            size="large"
-            onClick={async (e) => {
-              await saveChanges();
-              setCurrentStep((s) => s + 1);
-            }}
-            disabled={currentStep === steps.length - 1}
-          >
-            Save and Continue
-          </Button>
-
-          <Button size="large" onClick={cancelChanges}>
-            Cancel
-          </Button>
-        </Space>
-      </Footer>
+        invitees={form.getFieldValue("vendors")}
+        netAmount={netAmount}
+        vendors={vendors}
+        disablePrev={currentStep === 0}
+        onSave={onSave}
+        onCancel={onCancel}
+        disableSave={isLastStep}
+        onPrev={(e) => setCurrentStep((s) => s - 1)}
+      />
     </Layout>
   );
 }

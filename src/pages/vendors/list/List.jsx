@@ -1,14 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import React from "react";
-import { Avatar, Empty, List, Button } from "antd";
+import { Empty, List, Button } from "antd";
 
-import { vendors } from "../../../assets/js/mockData";
 import { appRoutes } from "../../../constants/routes";
 import ListItem from "./item/Index";
 
 const loading = false;
 
-export default function VendorsList({ ...rest }) {
+export default function VendorsList({ dataSource, ...rest }) {
   const navigate = useNavigate();
 
   const goToDetails = (id) => {
@@ -18,7 +17,7 @@ export default function VendorsList({ ...rest }) {
   return (
     <List
       className="vendors-list"
-      dataSource={vendors}
+      dataSource={dataSource}
       grid={{
         gutter: 16,
         xs: 1,
@@ -44,7 +43,7 @@ export default function VendorsList({ ...rest }) {
             className="rounded-0"
             size="large"
             type="primary"
-            onClick={(e) => goToDetails(item.id)}
+            onClick={(e) => goToDetails(item.email)}
             block
           >
             Explore Me
