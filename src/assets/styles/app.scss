@@ -579,96 +579,118 @@ $navbar-height: 100px;
       padding: 1rem;
       background-color: #fafafa;
     }
+  }
+}
 
-    .events-list {
-      .events-list-item {
-        .ant-card-body {
-          @media #{$small-screen}, #{$mobile-screen}, #{$tablet-screen} {
-            flex-wrap: wrap;
-          }
+.select-services-layout {
+  .ant-drawer-body {
+    .services-selection-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+
+      label.ant-checkbox-wrapper {
+        margin: 0;
+
+        span:first-child {
+          width: 18px;
+        }
+
+        span:last-child {
+          width: 100%;
         }
       }
     }
   }
+}
 
-  .event-create-layout {
-    .event-create-header {
-      padding: 24px;
-      background-color: #fafafa;
-      box-shadow: 0px 0px 10px 0px gainsboro;
-    }
-
-    .ant-upload-wrapper {
-      .ant-upload.ant-upload-select,
-      .ant-upload-list-item-container {
-        max-width: 500px;
-        width: 100% !important;
-        max-height: 200px;
-      }
-    }
-
-    .selected-vendors {
-      position: fixed;
-      z-index: 15;
-      bottom: 12px;
-    }
-
-    .payment-field-container {
+.events-list {
+  .events-list-item {
+    .ant-card-body {
       @media #{$small-screen}, #{$mobile-screen}, #{$tablet-screen} {
-        flex-direction: column-reverse;
-      }
-      .ant-collapse-item.ant-collapse-item-disabled {
-        $success-color: #40cf85;
-
-        background-color: lighten($success-color, 40);
-
-        .ant-collapse-header-text {
-          color: darken($success-color, 40);
-        }
+        flex-wrap: wrap;
       }
     }
+  }
+}
 
-    .event-create-footer {
-      position: sticky;
-      bottom: 0;
-      padding: 16px 24px;
-      background-color: #fafafa;
-      box-shadow: 0px 0px 10px 0px gainsboro;
-      z-index: 10;
+.event-create-layout {
+  .event-create-header {
+    padding: 24px;
+    background-color: #fafafa;
+    box-shadow: 0px 0px 10px 0px gainsboro;
+  }
+
+  .ant-upload-wrapper {
+    .ant-upload.ant-upload-select,
+    .ant-upload-list-item-container {
+      max-width: 500px;
+      width: 100% !important;
+      max-height: 200px;
     }
   }
 
-  .event-details-layout {
-    .event-details-header {
-      .header-info {
-        display: flex;
-        justify-content: space-between;
-        gap: 1rem;
-        flex-wrap: wrap;
-        background: linear-gradient(45deg, #f3f2ff, transparent);
-        width: 100%;
-        padding: 1rem;
-      }
+  .selected-vendors {
+    position: fixed;
+    z-index: 15;
+    bottom: 12px;
+  }
 
-      .banner-img,
-      .banner-img > img {
-        min-height: 100px;
-        max-height: 400px;
-      }
+  .payment-field-container {
+    @media #{$small-screen}, #{$mobile-screen}, #{$tablet-screen} {
+      flex-direction: column-reverse;
+    }
+    .ant-collapse-item.ant-collapse-item-disabled {
+      $success-color: #40cf85;
 
-      .banner-img + .header-info {
-        position: absolute;
-        bottom: 0;
+      background-color: lighten($success-color, 40);
+
+      .ant-collapse-header-text {
+        color: darken($success-color, 40);
       }
     }
+  }
 
-    .event-details-content {
-      .event-basic-info {
-        & > .ant-col {
-          padding: 1rem;
-          border: 1px solid #e6e6e6;
-          border-left: 0;
-        }
+  .event-create-footer {
+    position: sticky;
+    bottom: 0;
+    padding: 16px 24px;
+    background-color: #fafafa;
+    box-shadow: 0px 0px 10px 0px gainsboro;
+    z-index: 10;
+  }
+}
+
+.event-details-layout {
+  .event-details-header {
+    .header-info {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      background: linear-gradient(45deg, #f3f2ff, transparent);
+      width: 100%;
+      padding: 1rem;
+    }
+
+    .banner-img,
+    .banner-img > img {
+      min-height: 100px;
+      max-height: 400px;
+    }
+
+    .banner-img + .header-info {
+      position: absolute;
+      bottom: 0;
+    }
+  }
+
+  .event-details-content {
+    .event-basic-info {
+      & > .ant-col {
+        padding: 1rem;
+        border: 1px solid #e6e6e6;
+        border-left: 0;
       }
     }
   }

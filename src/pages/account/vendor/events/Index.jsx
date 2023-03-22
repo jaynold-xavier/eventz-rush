@@ -25,7 +25,7 @@ import {
   Typography,
 } from "antd";
 import { where } from "firebase/firestore";
-import { get, isEmpty } from "lodash";
+import { find, get, isEmpty } from "lodash";
 import dayjs from "dayjs";
 
 import { getEvents, getEventsInvitedTo } from "../../../../services/database";
@@ -262,7 +262,7 @@ export default function VendorsEventsList({ user = {} }) {
     const isDifferentToDate =
       fromDateJs.format("DD MM YYYY") !== toDateJs.format("DD MM YYYY");
 
-    const statusObj = get(EVENT_STATUSES, status);
+    const statusObj = find(EVENT_STATUSES, (e) => e.text === status);
 
     return (
       <>

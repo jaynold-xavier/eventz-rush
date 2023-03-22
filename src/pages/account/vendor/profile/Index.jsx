@@ -228,7 +228,8 @@ export default function VendorProfile({ user }) {
                         <InputNumber
                           {...props}
                           max={50}
-                          onChange={(e) => props.onChange(e.target.value)}
+                          precision={0}
+                          onChange={(value) => props.onChange(value)}
                           autoFocus
                         />
                       )}

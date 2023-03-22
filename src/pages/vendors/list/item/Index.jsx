@@ -99,7 +99,14 @@ export default function ListItem({
             </Space>
             <Typography.Paragraph
               className="vendor-item-description font-14"
-              ellipsis={{ rows: 3, tooltip: descriptionRender }}
+              ellipsis={{
+                rows: 3,
+                tooltip: {
+                  title: descriptionRender,
+                  autoAdjustOverflow: true,
+                  arrowPointAtCenter: true,
+                },
+              }}
             >
               {descriptionRender}
             </Typography.Paragraph>

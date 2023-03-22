@@ -27,7 +27,8 @@ export default function ScrollableCard({
       pageSize: 1,
     });
 
-  const hasData = hasMore || !isEmpty(data);
+  const canGoBack = hasMore || !isEmpty(data);
+  const canGoNext = hasMore && !isEmpty(data);
 
   const render = () => {
     if (loading) {
@@ -63,7 +64,7 @@ export default function ScrollableCard({
       }}
     >
       <Card className="scrollable-card" headStyle={{ border: 0 }} {...rest}>
-        {hasData && currentPage > 1 && (
+        {canGoBack && currentPage > 1 && (
           <span className="prev-btn">
             <Button
               type="link"
@@ -83,7 +84,7 @@ export default function ScrollableCard({
           alt="blob"
         />
 
-        {hasData && currentPage >= 1 && (
+        {canGoNext && currentPage >= 1 && (
           <span className="next-btn">
             <Button
               type="link"

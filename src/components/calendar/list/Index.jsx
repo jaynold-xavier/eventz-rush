@@ -1,7 +1,7 @@
 import { CalendarTwoTone, ClockCircleTwoTone } from "@ant-design/icons";
 import React from "react";
 import { Badge, Card, Empty, List, Space, Typography } from "antd";
-import { get } from "lodash";
+import { find, get } from "lodash";
 import dayjs from "dayjs";
 
 import {
@@ -75,7 +75,7 @@ function renderItem({ fromDate, location, status, title, toDate }) {
   const dateText = dateRangeString(fromDateJs, toDateJs);
   const timeText = timeRangeString(fromDateJs, toDateJs);
 
-  const statusObj = get(EVENT_STATUSES, status);
+  const statusObj = find(EVENT_STATUSES, (e) => e.text === status);
 
   return (
     <List.Item

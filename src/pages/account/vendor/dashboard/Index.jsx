@@ -1,7 +1,8 @@
 import {
-  ClockCircleTwoTone,
-  CheckOutlined,
   BellOutlined,
+  CheckOutlined,
+  ClockCircleTwoTone,
+  CloseOutlined,
 } from "@ant-design/icons";
 import React, { useMemo, useEffect, useState } from "react";
 import {
@@ -15,7 +16,7 @@ import {
   Space,
   Typography,
 } from "antd";
-import { get, isEmpty, filter } from "lodash";
+import { get, isEmpty, filter, some } from "lodash";
 import { documentId, where } from "firebase/firestore";
 import dayjs from "dayjs";
 
@@ -29,7 +30,11 @@ import {
   getInvitees,
   updateInviteStatus,
 } from "../../../../services/database";
-import { appTheme, buttonActionTheme } from "../../../../assets/js/theme";
+import {
+  appTheme,
+  buttonActionTheme,
+  navLinkTheme,
+} from "../../../../assets/js/theme";
 import {
   commonPopConfirmProp,
   EVENT_STATUSES,
@@ -39,6 +44,7 @@ import IconFont from "../../../../components/icons/Index";
 import { timeRangeString } from "../../../../helpers/timestamp";
 import Countdown from "../../../../components/countdown/Index";
 import { EventsListCalendar } from "../../../../components/calendar";
+import { useRef } from "react";
 
 const { Header, Content } = Layout;
 
@@ -46,6 +52,8 @@ export default function Dashboard({ user }) {
   const [bookedEventIds, setBookedEventIds] = useState();
   const [pendingEventIds, setPendingEventIds] = useState();
   const [reload, setReload] = useState(false);
+
+  const eventsWithRequestRef = useRef();
 
   const vendorEmail = get(user, "email");
 
@@ -63,16 +71,22 @@ export default function Dashboard({ user }) {
 
       const bookedEventIds = [];
       const pendingEventIds = [];
+      const eventsWithRequest = [];
       invitees.forEach((i) => {
         if (i.status === INVITE_STATUSES.accepted.text) {
           bookedEventIds.push(i.eventId);
         } else if (i.status === INVITE_STATUSES.pending.text) {
           pendingEventIds.push(i.eventId);
+
+          if (isEmpty(i.services)) {
+            eventsWithRequest.push(i.eventId);
+          }
         }
       });
 
       setBookedEventIds(bookedEventIds);
       setPendingEventIds(pendingEventIds);
+      eventsWithRequestRef.current = eventsWithRequest;
     }
 
     return () => {
@@ -80,12 +94,22 @@ export default function Dashboard({ user }) {
     };
   }, [vendorEmail, reload]);
 
-  const transformOngoingEvents = (data) => {
-    return filter(data, (e) => e.record.status === EVENT_STATUSES.booked.text);
+  const transformUpcomingEvents = (data) => {
+    return filter(
+      data,
+      (e) =>
+        e.record.status === EVENT_STATUSES.booked.text &&
+        e.record.fromDate.toDate() > new Date()
+    );
   };
 
   const transformPendingInvites = (data) => {
-    return filter(data, (e) => e.record.status === EVENT_STATUSES.ongoing.text);
+    return filter(
+      data,
+      (e) =>
+        e.record.status === EVENT_STATUSES.ongoing.text &&
+        e.record.fromDate.toDate() > new Date()
+    );
   };
 
   const upcomingEventsConstraints = useMemo(() => {
@@ -121,12 +145,20 @@ export default function Dashboard({ user }) {
 
       <Content>
         <Row gutter={[24, 24]}>
-          <Col xxl={10} xl={12} lg={24} md={24} sm={24} xs={24}>
+          <Col
+            className="ml-auto"
+            xxl={10}
+            xl={12}
+            lg={24}
+            md={24}
+            sm={24}
+            xs={24}
+          >
             <ScrollableCard
               title="Upcoming Events"
               resource={isEmpty(bookedEventIds) ? null : "events"}
               constraints={upcomingEventsConstraints}
-              transformData={transformOngoingEvents}
+              transformData={transformUpcomingEvents}
               blobImg={BlobImg3}
             >
               {(item) => {
@@ -141,7 +173,15 @@ export default function Dashboard({ user }) {
             </ScrollableCard>
           </Col>
 
-          <Col xxl={10} xl={12} lg={24} md={24} sm={24} xs={24}>
+          <Col
+            className="mr-auto"
+            xxl={10}
+            xl={12}
+            lg={24}
+            md={24}
+            sm={24}
+            xs={24}
+          >
             <ScrollableCard
               title="Invites Pending"
               resource={isEmpty(pendingEventIds) ? null : "events"}
@@ -156,6 +196,7 @@ export default function Dashboard({ user }) {
                     item={get(item, "record")}
                     inviteeId={vendorEmail}
                     setReload={setReload}
+                    eventsWithRequest={eventsWithRequestRef.current}
                   />
                 );
               }}
@@ -166,17 +207,13 @@ export default function Dashboard({ user }) {
         <br />
         <br />
 
-        <Row gutter={[24, 24]}>
-          <Col xl={20} lg={24} md={24} sm={24} xs={24}>
-            <EventCalendar params={{ vendorEmail }} />
-          </Col>
-        </Row>
+        <EventCalendar params={{ vendorEmail }} />
       </Content>
     </Layout>
   );
 }
 
-function EventCalendar({ params = {} }) {
+function EventCalendar({ eventIds, params = {} }) {
   const [selectedDate, setSelectedDate] = useState(dayjs());
   const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -186,24 +223,26 @@ function EventCalendar({ params = {} }) {
   useEffect(() => {
     let isCancel = false;
 
-    // fetchDataSource(isCancel);
+    fetchDataSource(isCancel);
 
-    // async function fetchDataSource(isCancel) {
-    //   if (isCancel) return;
+    async function fetchDataSource(isCancel) {
+      if (isCancel) return;
 
-    //   try {
-    //     setLoading(true);
-    //     const data = await getEventsByMonth(vendorEmail, selectedDate);
-    //     setDataSource(data);
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    // }
+      try {
+        setLoading(true);
+        if (isEmpty(eventIds)) {
+          const data = await getEventsByMonth(selectedDate, { eventIds });
+          setDataSource(data);
+        }
+      } finally {
+        setLoading(false);
+      }
+    }
 
     return () => {
       isCancel = true;
     };
-  }, [selectedDate, vendorEmail]);
+  }, [selectedDate, vendorEmail, eventIds]);
 
   return (
     <EventsListCalendar
@@ -215,14 +254,8 @@ function EventCalendar({ params = {} }) {
   );
 }
 
-function CardEventItem({ id, item, inviteeId, setReload }) {
+function CardEventItem({ id, item, inviteeId, setReload, eventsWithRequest }) {
   const { title, location, fromDate, toDate, status } = item || {};
-
-  const fromDateJs = dayjs(fromDate.toDate());
-  const toDateJs = dayjs(toDate.toDate());
-
-  const timeText = timeRangeString(fromDateJs, toDateJs);
-  const isSameDay = fromDateJs.isSame(toDateJs, "day");
 
   const onAcceptInvite = async () => {
     await updateInviteStatus(id, inviteeId, INVITE_STATUSES.accepted.text);
@@ -233,6 +266,65 @@ function CardEventItem({ id, item, inviteeId, setReload }) {
     await updateInviteStatus(id, inviteeId, INVITE_STATUSES.declined.text);
     setReload((s) => !s);
   };
+
+  const fromDateJs = dayjs(fromDate.toDate());
+  const toDateJs = dayjs(toDate.toDate());
+
+  const timeText = timeRangeString(fromDateJs, toDateJs);
+  const isSameDay = fromDateJs.isSame(toDateJs, "day");
+
+  const hasRequest = some(eventsWithRequest, (eventId) => eventId === id);
+
+  const actions = [];
+  if (hasRequest) {
+    actions.push(
+      <ConfigProvider
+        theme={{
+          token: {
+            colorPrimary: "gold",
+            colorBorder: "gold",
+          },
+        }}
+      >
+        <Button type="primary" ghost block>
+          Select Services
+        </Button>
+      </ConfigProvider>
+    );
+  } else {
+    if (status === EVENT_STATUSES.ongoing.text) {
+      actions.push(
+        <ConfigProvider
+          theme={{
+            token: {
+              colorText: navLinkTheme.colorPrimary,
+              colorLink: navLinkTheme,
+            },
+          }}
+        >
+          <Button type="link" icon={<CheckOutlined />} onClick={onAcceptInvite}>
+            Accept
+          </Button>
+        </ConfigProvider>
+      );
+
+      actions.push(
+        <ConfigProvider theme={{ token: appTheme }}>
+          <Popconfirm
+            title="Are you sure you want to cancel this event?"
+            onConfirm={onDeclineInvite}
+            {...commonPopConfirmProp}
+          >
+            <Button type="link" icon={<CloseOutlined />} danger>
+              Cancel
+            </Button>
+          </Popconfirm>
+        </ConfigProvider>
+      );
+    } else if (status === EVENT_STATUSES.booked.text) {
+      actions.push(<Countdown value={fromDateJs} />);
+    }
+  }
 
   return (
     <Space className="w-100" size={20} align="start" wrap>
@@ -291,27 +383,9 @@ function CardEventItem({ id, item, inviteeId, setReload }) {
           </Space>
         </div>
 
-        {status === EVENT_STATUSES.ongoing.text ? (
-          <Space size={10} wrap>
-            <ConfigProvider theme={{ token: buttonActionTheme }}>
-              <Button type="link" onClick={onAcceptInvite} danger>
-                Accept
-              </Button>
-            </ConfigProvider>
-
-            <Popconfirm
-              title="Are you sure you want to cancel this event?"
-              onConfirm={onDeclineInvite}
-              {...commonPopConfirmProp}
-            >
-              <Button type="link" icon={<CheckOutlined />} danger>
-                Cancel
-              </Button>
-            </Popconfirm>
-          </Space>
-        ) : (
-          <Countdown value={fromDateJs} />
-        )}
+        <Space size={10} wrap>
+          {actions}
+        </Space>
       </Space>
     </Space>
   );

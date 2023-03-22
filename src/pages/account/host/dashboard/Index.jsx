@@ -162,7 +162,7 @@ function EventCalendar({ params = {} }) {
 
       try {
         setLoading(true);
-        const data = await getEventsByMonth(hostEmail, selectedDate);
+        const data = await getEventsByMonth(selectedDate, { hostEmail });
         setDataSource(data);
       } finally {
         setLoading(false);

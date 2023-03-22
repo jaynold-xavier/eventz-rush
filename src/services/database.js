@@ -115,8 +115,10 @@ export async function getEvents(hostId, constraints = []) {
   }
 }
 
-export async function getEventsByMonth(hostId, selectedDate) {
-  if (!(hostId && selectedDate)) return [];
+export async function getEventsByMonth(selectedDate, filters = {}) {
+  if (!(filters && selectedDate)) return [];
+
+  const { hostEmail, eventIds } = filters || {};
 
   const initDate = selectedDate
     .startOf("month")
@@ -124,9 +126,16 @@ export async function getEventsByMonth(hostId, selectedDate) {
     .set("minute", 0)
     .set("second", 0);
   const range = [initDate.toDate(), initDate.clone().add(1, "month").toDate()];
+  const constraints = [];
+  if (hostEmail) {
+    constraints.push(where("hostEmail", "==", hostEmail));
+  }
+  if (eventIds) {
+    constraints.push(where(documentId(), "in", eventIds));
+  }
 
   const events = await getRecords("events", [
-    where("hostEmail", "==", hostId),
+    ...constraints,
     where("fromDate", ">", range[0]),
     where("fromDate", "<=", range[1]),
   ]);
@@ -196,7 +205,14 @@ export async function getAvailableVendors(
   const vendors = await getRecords("vendors", [...constraints]);
 
   if (vendors) {
-    return map(vendors, (e) => e.record);
+    return map(vendors, (e) => {
+      const record = e.record;
+      if (!get(record, "configurations.showServices")) {
+        record.services = [];
+      }
+
+      return record;
+    });
   } else {
     return [];
   }

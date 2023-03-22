@@ -43,11 +43,13 @@ export default function VendorPhotos({ user }) {
   }, [hostEmail]);
 
   const onSave = (fileList) => {
+    const photos = map(fileList, (file) => {
+      return file.thumbUrl || get(file.originFileObj, "thumbUrl");
+    }).filter((val) => val);
+
     updateVendor(hostEmail, {
       ...data,
-      photos: map(fileList, (file) => {
-        return file.thumbUrl;
-      }),
+      photos,
     });
 
     setData((s) => ({ ...s, photos: fileList }));
@@ -59,8 +61,6 @@ export default function VendorPhotos({ user }) {
       <div>Photo</div>
     </div>
   );
-
-  console.log({ data });
 
   return (
     <Layout prefixCls="vendor-dashboard-layout">

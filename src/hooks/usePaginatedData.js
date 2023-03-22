@@ -29,6 +29,7 @@ export default function usePaginatedData({
 
     async function loadInitData(isCancel) {
       if (isCancel || !table) {
+        setData([]);
         setLoading(false);
         return;
       }

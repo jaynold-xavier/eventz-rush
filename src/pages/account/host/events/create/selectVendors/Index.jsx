@@ -133,12 +133,18 @@ function VendorsList({
 
     const inviteeInfo = {
       eventId,
-      inviteeId: data.inviteeId,
-      services: data.services,
-      amount: data.amount,
+      inviteeId: data.inviteeId || data.email,
       status: INVITE_STATUSES.pending.text,
       type: USER_ROLES.vendor.text,
     };
+
+    if (data.services) {
+      inviteeInfo.services = data.services;
+    }
+
+    if (data.amount) {
+      inviteeInfo.amount = data.amount;
+    }
 
     const currentData = value || [];
     const existing = currentData.find((v) => v.inviteeId === data.inviteeId);

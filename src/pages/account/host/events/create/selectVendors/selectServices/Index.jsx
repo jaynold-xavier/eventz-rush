@@ -96,14 +96,14 @@ export default function SelectServicesDrawer({
         <Empty description="No services available" />
       ) : (
         <Checkbox.Group
-          className="w-100"
+          className="services-selection-list w-100"
           value={selectedServices}
           onChange={setSelectedServices}
         >
           {map(services, (s) => {
             return (
               <Checkbox key={s.id} className="w-100" value={s.id}>
-                <Space className="justify-content-between">
+                <Space className="w-100 justify-content-between">
                   <div dangerouslySetInnerHTML={{ __html: s.description }} />
                   <strong>{formatAsCurrency(s.amount)}</strong>
                 </Space>

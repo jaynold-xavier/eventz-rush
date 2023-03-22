@@ -48,7 +48,7 @@ const useSupportingData = ({
     async function fetchCreatedEvents(isCancel) {
       if (isCancel) return;
 
-      const eventsByMonth = await getEventsByMonth(hostEmail, selectedDate);
+      const eventsByMonth = await getEventsByMonth(selectedDate, { hostEmail });
       setEvents(eventsByMonth);
     }
 
