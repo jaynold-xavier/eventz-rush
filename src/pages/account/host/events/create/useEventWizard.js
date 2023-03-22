@@ -224,7 +224,6 @@ const useEventWizard = ({ id, user, setLoading }) => {
     const netAmount = filter(invitees, (i) => {
       return [
         INVITE_STATUSES.accepted.text,
-        INVITE_STATUSES.pending.text,
       ].includes(i.status);
     })
       .map((i) => i.amount)

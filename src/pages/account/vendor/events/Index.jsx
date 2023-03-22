@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { documentId, where } from "firebase/firestore";
-import { get, isEmpty } from "lodash";
+import { where } from "firebase/firestore";
+import { filter, get, isEmpty } from "lodash";
 
 import { getEvents, getInvitees } from "../../../../services/database";
 import { EventsList } from "../../../events";
@@ -70,7 +70,7 @@ export default function HostEventsList({ user = {} }) {
 
       try {
         setLoading(true);
-        const inviteeEvents = await getInvitees(null, vendorEmail);
+        const inviteeEvents = await getInvitees({ inviteeId: vendorEmail });
         const eventIds = inviteeEvents.map((i) => i.eventId);
         setEventIds(eventIds);
       } finally {
@@ -94,8 +94,8 @@ export default function HostEventsList({ user = {} }) {
       try {
         setLoading(true);
         const constraints = constructConstraints(filters);
-        constraints.push(where(documentId(), "in", eventIds));
-        const data = await getEvents(null, constraints);
+        let data = await getEvents(null, constraints);
+        data = filter(data, (e) => eventIds && eventIds.includes(e.id));
         setDataSource(data);
       } finally {
         setLoading(false);
@@ -115,7 +115,6 @@ export default function HostEventsList({ user = {} }) {
       setFilters={setFilters}
       setShowFilters={setShowFilters}
       showFilters={showFilters}
-      isVendor
     />
   );
 }

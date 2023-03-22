@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Layout } from "antd";
 
-import { getVendors } from "../../../services/database";
+import { getReviews, getVendors } from "../../../services/database";
 import { HomePageHeader } from "../../../components/page/index";
 import Filters from "./filters/Index";
 import List from "./List";
 import { where } from "firebase/firestore";
 import { isEmpty } from "lodash";
+import { getAverageRatings } from "../../../helpers/number";
 
 const { Content } = Layout;
 
@@ -57,7 +58,14 @@ export default function VendorsList() {
 
         const constraints = constructConstraints(filters);
         const vendorsList = await getVendors(constraints);
-        setDataSource(vendorsList);
+        const transformedData = await Promise.all(
+          vendorsList.map(async (v) => {
+            const ratings = await getReviews(v.email);
+            v.ratings = getAverageRatings(ratings.map((r) => r.rating));
+            return v;
+          })
+        );
+        setDataSource(transformedData);
       } finally {
         setLoading(false);
       }

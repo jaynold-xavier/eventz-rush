@@ -132,6 +132,7 @@ export const PAYMENT_CATEGORIES = {
 export const DATE_DISPLAY_FORMAT = "DD MMM YYYY";
 export const TIME_DISPLAY_FORMAT = "hh:mm A";
 export const DATETIME_DISPLAY_FORMAT = "MMMM DD, YYYY hh:mm A";
+export const FULL_DATETIME_DISPLAY_FORMAT = "MMMM DD, YYYY hh:mm A";
 //#region
 
 //#region antd props

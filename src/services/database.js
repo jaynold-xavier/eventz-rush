@@ -318,3 +318,29 @@ export async function makePayment(data, id) {
   return await setDoc(ref, data, { merge: true });
 }
 //#region
+
+//#region payments
+export async function getReviews(filters = {}) {
+  const { eventId, inviteeId } = filters || {};
+  const constraints = [];
+  if (eventId) {
+    constraints.push(where("eventId", "==", eventId));
+  }
+  if (inviteeId) {
+    constraints.push(where("inviteeId", "==", inviteeId));
+  }
+
+  const reviews = await getRecords("reviews", constraints);
+
+  if (reviews) {
+    return map(reviews, (e) => e.record);
+  } else {
+    return [];
+  }
+}
+
+export async function rateVendor(data) {
+  const review = await addDoc(collection(db, "reviews"), data);
+  return review;
+}
+//#region

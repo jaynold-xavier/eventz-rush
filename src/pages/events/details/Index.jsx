@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   Badge,
@@ -22,36 +22,56 @@ import {
   createEvent,
   getEvent,
   getInvitees,
+  getReviews,
   getUser,
+  rateVendor,
   updateEvent,
 } from "../../../services/database";
 import { appTheme } from "../../../assets/js/theme";
 import {
   EVENT_STATUSES,
+  FULL_DATETIME_DISPLAY_FORMAT,
   INVITE_STATUSES,
   USER_ROLES,
 } from "../../../constants/app";
 import { appRoutes } from "../../../constants/routes";
 import VendorItem from "../../vendors/list/item/Index";
 import { canCancelEvent, canUpdateEvent } from "../../../helpers/validations";
+import useAuth from "../../../hooks/useAuth";
+import { CreateReviewLayout } from "../../review";
 
 const { Header, Content } = Layout;
 
-const dateString = "dddd, MMMM YYYY hh:mm A";
+const dateString = FULL_DATETIME_DISPLAY_FORMAT;
 
 export default function EventDetails() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const { id } = useParams();
 
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState();
   const [vendors, setVendors] = useState();
 
+  const [showReviewLayout, setShowReviewLayout] = useState(false);
+  const [reviews, setReviews] = useState();
+
+  const selectedVendorRef = useRef();
+
   useEffect(() => {
     let isCancel = false;
 
+    async function fetchReviews(eventId) {
+      const reviews = await getReviews({ eventId });
+      return reviews;
+    }
+
     async function fetchInvitees(eventId) {
-      const invitees = await getInvitees({ eventId });
+      let invitees = await getInvitees({ eventId });
+      invitees = filter(
+        invitees,
+        (i) => i.status === INVITE_STATUSES.accepted.text
+      );
       const promises = map(invitees, (i) => {
         return getUser(i.inviteeId);
       });
@@ -72,6 +92,11 @@ export default function EventDetails() {
           const vendorsData = await fetchInvitees(id);
           if (vendorsData) {
             setVendors(vendorsData);
+          }
+
+          const reviewsData = await fetchReviews(id);
+          if (reviewsData) {
+            setReviews(reviewsData);
           }
         }
       } finally {
@@ -120,6 +145,18 @@ export default function EventDetails() {
     navigate(appRoutes.account.dashboard);
   };
 
+  const onRateVendor = (item) => {
+    selectedVendorRef.current = item;
+    setShowReviewLayout(true);
+  };
+
+  const rateVendorAsync = async (data) => {
+    data.eventId = id;
+    await rateVendor(data);
+
+    message.success("Vendor reviewed!");
+  };
+
   const {
     bannerURL,
     description,
@@ -139,10 +176,7 @@ export default function EventDetails() {
 
   const statusObj = find(EVENT_STATUSES, (e) => e.text === status);
 
-  const acceptedInvitees = filter(
-    vendors,
-    (i) => i.status === INVITE_STATUSES.accepted.text
-  );
+  const isVendor = !!get(user, "type");
 
   return (
     <Layout prefixCls="event-details-layout">
@@ -164,6 +198,7 @@ export default function EventDetails() {
                 className="mb-1"
                 level={3}
                 ellipsis={{ tooltip: title }}
+                style={{ maxWidth: "50vw" }}
               >
                 {title}
               </Typography.Title>
@@ -182,17 +217,19 @@ export default function EventDetails() {
             </div>
 
             <Space className="ml-auto" size={10}>
-              {canUpdateEvent(data) && (
+              {canUpdateEvent(data) && !isVendor && (
                 <Button type="primary" onClick={onUpdateEvent}>
                   Update
                 </Button>
               )}
 
-              <Button type="primary" onClick={onCloneEvent}>
-                Clone
-              </Button>
+              {!isVendor && (
+                <Button type="primary" onClick={onCloneEvent}>
+                  Clone
+                </Button>
+              )}
 
-              {canCancelEvent(data) && (
+              {canCancelEvent(data) && !isVendor && (
                 <Button onClick={onCancelEvent}>Cancel</Button>
               )}
             </Space>
@@ -212,28 +249,36 @@ export default function EventDetails() {
             )}
 
             {fromDateString && (
-              <Col span={6}>
+              <Col xs={24} sm={24} md={24} lg={24} xl={6} xxl={6}>
                 <strong className="font-14">From</strong>
                 <div className="font-18 mt-1">{fromDateString}</div>
               </Col>
             )}
 
             {toDateString && (
-              <Col span={6}>
+              <Col xs={24} sm={24} md={24} lg={24} xl={6} xxl={6}>
                 <strong className="font-14">To</strong>
                 <div className="font-18 mt-1">{toDateString}</div>
               </Col>
             )}
 
             {location && (
-              <Col span={6}>
+              <Col xs={24} sm={24} md={24} lg={24} xl={6} xxl={6}>
                 <strong className="font-14">Where</strong>
                 <div className="font-18 mt-1">{location}</div>
               </Col>
             )}
 
             {amount && (
-              <Col className="text-right" span={6}>
+              <Col
+                className="text-right"
+                xs={24}
+                sm={24}
+                md={24}
+                lg={24}
+                xl={6}
+                xxl={6}
+              >
                 <strong className="font-14">Total Cost</strong>
                 <div className="font-18 mt-1">{amount}</div>
               </Col>
@@ -241,16 +286,31 @@ export default function EventDetails() {
 
             <Col span={24}>
               <strong className="font-14">Vendors</strong>
-              <VendorsList dataSource={acceptedInvitees} />
+              <VendorsList
+                dataSource={vendors}
+                isEventClosed={[EVENT_STATUSES.closed.text].includes(status)}
+                reviews={reviews}
+                onRateVendor={onRateVendor}
+              />
             </Col>
           </Row>
+
+          <CreateReviewLayout
+            open={showReviewLayout}
+            saveChanges={rateVendorAsync}
+            vendorInfo={selectedVendorRef.current}
+            onCancel={(e) => {
+              selectedVendorRef.current = null;
+              setShowReviewLayout(false);
+            }}
+          />
         </Content>
       </Spin>
     </Layout>
   );
 }
 
-function VendorsList({ dataSource }) {
+function VendorsList({ dataSource, isEventClosed, reviews, onRateVendor }) {
   return (
     <List
       className="vendors-list mt-1"
@@ -270,6 +330,16 @@ function VendorsList({ dataSource }) {
   );
 
   function renderItem(item) {
-    return <VendorItem data={item} />;
+    const hasReview = find(reviews, (r) => r.inviteeId === item.email);
+    const actions = [];
+    if (isEventClosed && !hasReview) {
+      actions.push(
+        <Button type="primary" onClick={(e) => onRateVendor(item)} block>
+          Rate Vendor
+        </Button>
+      );
+    }
+
+    return <VendorItem data={item} actions={actions} />;
   }
 }

@@ -6,7 +6,16 @@ import {
   CheckOutlined,
 } from "@ant-design/icons";
 import React from "react";
-import { Avatar, Card, List, Skeleton, Space, Tag, Typography } from "antd";
+import {
+  Avatar,
+  Card,
+  List,
+  Rate,
+  Skeleton,
+  Space,
+  Tag,
+  Typography,
+} from "antd";
 import { get } from "lodash";
 
 import { appTheme } from "../../../../assets/js/theme";
@@ -25,7 +34,7 @@ export default function ListItem({
   inviteStatus,
   ...rest
 }) {
-  const { email, type, description, phoneNumber, photoURL } = data;
+  const { email, type, description, phoneNumber, photoURL, ratings } = data;
 
   const descriptionRender = (
     <div dangerouslySetInnerHTML={{ __html: description || "—" }} />
@@ -71,6 +80,12 @@ export default function ListItem({
         {selected && (
           <div className="font-14 text-center text-red text-uppercase">
             {inviteStatus}
+          </div>
+        )}
+
+        {!!ratings && (
+          <div className="text-center">
+            <Rate value={ratings} allowClear={false} disabled />
           </div>
         )}
 

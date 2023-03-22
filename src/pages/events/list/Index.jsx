@@ -36,6 +36,7 @@ import { SearchInput } from "../../../components/fields";
 import IconFont from "../../../components/icons/Index";
 import { InviteesGroup } from "../../../components/avatar";
 import { formatAsCurrency } from "../../../helpers/number";
+import useAuth from "../../../hooks/useAuth";
 
 const { Header, Content } = Layout;
 
@@ -46,16 +47,18 @@ export default function EventsList({
   setFilters,
   showFilters,
   setShowFilters,
-  isVendor = false,
 }) {
+  const { user } = useAuth();
   const navigate = useNavigate();
+
+  const isVendor = !!get(user, "type");
 
   return (
     <Layout prefixCls="events-list-layout">
       <Affix>
         <Header
           prefixCls="events-list-header"
-          className="d-flex justify-content-between p-3"
+          className="d-flex justify-content-between bg-white p-3"
         >
           <h5>My Events</h5>
 
@@ -231,7 +234,7 @@ export default function EventsList({
             navigate(appRoutes.account.events.details.replace("{id}", id))
           }
         >
-          <div className="date-badge">
+          <div className="date-badge m-auto">
             <div>
               <h3 style={{ lineHeight: "3rem" }}>{fromDateJs.format("DD")}</h3>
               <div className="font-12">{fromDateJs.format("MMM YYYY")}</div>
@@ -257,7 +260,7 @@ export default function EventsList({
                 className="mb-1"
                 level={3}
                 ellipsis={{ tooltip: title }}
-                style={{ width: 400 }}
+                style={{ maxWidth: "50vw" }}
               >
                 {title}
               </Typography.Title>
@@ -275,7 +278,7 @@ export default function EventsList({
 
             <Tag color={appTheme.colorPrimary}>{type}</Tag>
 
-            <Space className="mt-1" size={5}>
+            <Space className="mt-1">
               <IconFont
                 type="icon-info"
                 className="font-16"
@@ -297,12 +300,12 @@ export default function EventsList({
 
             <br />
 
-            <Space className="mt-1" size={5}>
-              <IconFont type="icon-location" className="font-16" />
+            <Space className="mt-1">
+              <IconFont type="icon-location" className="font-16 text-primary" />
 
               <Typography.Text
                 className="font-14"
-                style={{ maxWidth: 400 }}
+                style={{ maxWidth: "50vw" }}
                 ellipsis={{ tooltip: location }}
               >
                 {location}
@@ -311,7 +314,7 @@ export default function EventsList({
 
             <br />
 
-            <Space className="mt-1" size={5}>
+            <Space className="font-14 mt-1">
               <ClockCircleTwoTone twoToneColor={appTheme.colorPrimary} />
               <span>{timeText}</span>
             </Space>
@@ -323,7 +326,7 @@ export default function EventsList({
                 vendors={vendors}
               />
 
-              {netAmount && (
+              {!!netAmount && (
                 <div className="price-info text-right">
                   <div className="font-12">Total Amount</div>
                   <h5>{formatAsCurrency(netAmount)}</h5>

@@ -87,11 +87,7 @@ function renderItem({ fromDate, location, status, title, toDate }) {
         description={
           <>
             <Space size={5}>
-              <IconFont
-                type="icon-location"
-                className="font-16"
-                style={{ color: appTheme.colorPrimary }}
-              />
+              <IconFont type="icon-location" className="font-16 text-primary" />
 
               <Typography.Text
                 className="font-14 text-grey"
