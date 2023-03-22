@@ -664,7 +664,7 @@ $navbar-height: 100px;
 
     .event-details-content {
       .event-basic-info {
-        .ant-col {
+        & > .ant-col {
           padding: 1rem;
           border: 1px solid #e6e6e6;
           border-left: 0;

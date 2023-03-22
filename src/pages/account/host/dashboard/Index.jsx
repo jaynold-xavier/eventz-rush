@@ -65,7 +65,15 @@ export default function Dashboard({ user }) {
         <br />
 
         <Row gutter={[24, 24]}>
-          <Col xxl={10} xl={12} lg={24} md={24} sm={24} xs={24}>
+          <Col
+            className="ml-auto"
+            xxl={10}
+            xl={12}
+            lg={24}
+            md={24}
+            sm={24}
+            xs={24}
+          >
             <ScrollableCard
               title="Upcoming Events"
               resource="events"
@@ -88,7 +96,15 @@ export default function Dashboard({ user }) {
             </ScrollableCard>
           </Col>
 
-          <Col xxl={10} xl={12} lg={24} md={24} sm={24} xs={24}>
+          <Col
+            className="mr-auto"
+            xxl={10}
+            xl={12}
+            lg={24}
+            md={24}
+            sm={24}
+            xs={24}
+          >
             <ScrollableCard
               title="Ongoing Events"
               resource="events"
@@ -123,11 +139,7 @@ export default function Dashboard({ user }) {
         <br />
         <br />
 
-        <Row gutter={[24, 24]}>
-          <Col xl={20} lg={24} md={24} sm={24} xs={24}>
-            <EventCalendar params={{ hostEmail: get(user, "email") }} />
-          </Col>
-        </Row>
+        <EventCalendar params={{ hostEmail: get(user, "email") }} />
       </Content>
     </Layout>
   );

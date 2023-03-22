@@ -15,7 +15,7 @@ import {
   Typography,
 } from "antd";
 import dayjs from "dayjs";
-import { cloneDeep, get, map } from "lodash";
+import { cloneDeep, find, get, map } from "lodash";
 
 import {
   addInvitee,
@@ -29,6 +29,10 @@ import { appTheme } from "../../../../../assets/js/theme";
 import { EVENT_STATUSES, USER_ROLES } from "../../../../../constants/app";
 import { appRoutes } from "../../../../../constants/routes";
 import VendorItem from "../../../../vendors/list/item/Index";
+import {
+  canCancelEvent,
+  canUpdateEvent,
+} from "../../../../../helpers/validations";
 
 const { Header, Content } = Layout;
 
@@ -82,7 +86,7 @@ export default function EventDetails() {
   }, [id]);
 
   const onUpdateEvent = (e) => {
-    navigate(appRoutes.account.dashboard);
+    navigate(appRoutes.account.events.update.replace("{id}", id));
   };
 
   const onCloneEvent = async (e) => {
@@ -132,7 +136,7 @@ export default function EventDetails() {
 
   const toDateString = toDate && dayjs(toDate.toDate()).format(dateString);
 
-  const statusObj = get(EVENT_STATUSES, status);
+  const statusObj = find(EVENT_STATUSES, (e) => e.text === status);
 
   return (
     <Layout prefixCls="event-details-layout">
@@ -172,13 +176,19 @@ export default function EventDetails() {
             </div>
 
             <Space className="ml-auto" size={10}>
-              <Button type="primary" onClick={onUpdateEvent}>
-                Update
-              </Button>
+              {canUpdateEvent(data) && (
+                <Button type="primary" onClick={onUpdateEvent}>
+                  Update
+                </Button>
+              )}
+
               <Button type="primary" onClick={onCloneEvent}>
                 Clone
               </Button>
-              <Button onClick={onCancelEvent}>Cancel</Button>
+
+              {canCancelEvent(data) && (
+                <Button onClick={onCancelEvent}>Cancel</Button>
+              )}
             </Space>
           </div>
         </Header>
@@ -237,7 +247,7 @@ export default function EventDetails() {
 function VendorsList({ dataSource }) {
   return (
     <List
-      className="vendors-list selectable-list"
+      className="vendors-list mt-3"
       dataSource={dataSource}
       grid={{
         gutter: 16,

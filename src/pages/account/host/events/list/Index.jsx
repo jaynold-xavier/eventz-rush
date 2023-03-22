@@ -142,7 +142,7 @@ export default function EventsList({ user = {} }) {
       </Affix>
 
       <Content className="host-events-content">
-        <Row className="p-3" gutter={[12, 24]} hidden={loading}>
+        <Row className="p-3 m-0" gutter={[12, 24]} hidden={loading}>
           <Col span={8}>
             <Button
               type={showFilters ? "primary" : "default"}

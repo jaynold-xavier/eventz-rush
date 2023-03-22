@@ -1,4 +1,8 @@
-import { ClockCircleTwoTone, BellOutlined } from "@ant-design/icons";
+import {
+  ClockCircleTwoTone,
+  CheckOutlined,
+  BellOutlined,
+} from "@ant-design/icons";
 import React, { useMemo, useEffect, useState } from "react";
 import {
   Button,
@@ -290,30 +294,20 @@ function CardEventItem({ id, item, inviteeId, setReload }) {
         {status === EVENT_STATUSES.ongoing.text ? (
           <Space size={10} wrap>
             <ConfigProvider theme={{ token: buttonActionTheme }}>
-              <Button type="primary" onClick={onAcceptInvite} block>
+              <Button type="link" onClick={onAcceptInvite} danger>
                 Accept
               </Button>
             </ConfigProvider>
 
-            <ConfigProvider
-              theme={{
-                token: {
-                  ...appTheme,
-                  colorPrimary: "#858585",
-                  colorBgContainer: undefined,
-                },
-              }}
+            <Popconfirm
+              title="Are you sure you want to cancel this event?"
+              onConfirm={onDeclineInvite}
+              {...commonPopConfirmProp}
             >
-              <Popconfirm
-                title="Are you sure you want to cancel this event?"
-                onConfirm={onDeclineInvite}
-                {...commonPopConfirmProp}
-              >
-                <Button type="primary" block>
-                  Cancel
-                </Button>
-              </Popconfirm>
-            </ConfigProvider>
+              <Button type="link" icon={<CheckOutlined />} danger>
+                Cancel
+              </Button>
+            </Popconfirm>
           </Space>
         ) : (
           <Countdown value={fromDateJs} />
