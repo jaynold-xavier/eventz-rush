@@ -14,9 +14,9 @@ import {
 } from "antd";
 import { get, isEmpty, map } from "lodash";
 
-import { VENDOR_TYPES } from "../../../../../../../constants/app";
-import { getDisplayName } from "../../../../../../../helpers/auth";
-import { formatAsCurrency } from "../../../../../../../helpers/number";
+import { VENDOR_TYPES } from "../../../constants/app";
+import { getDisplayName } from "../../../helpers/auth";
+import { formatAsCurrency } from "../../../helpers/number";
 
 const avatarProps = {
   shape: "circle",

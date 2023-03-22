@@ -38,6 +38,7 @@ import {
 import useAuth from "../../hooks/useAuth";
 import { addUser } from "../../services/database";
 import { VENDOR_TYPES } from "../../constants/app";
+import { stripeInstance } from "../../assets/js/stripe";
 
 const { Content } = Layout;
 
@@ -274,6 +275,17 @@ export default function Register() {
     if (type !== "host") {
       data.title = user.displayName || userName || "";
       data.type = type;
+      data.configurations = {
+        showContactInfo: true,
+        showServices: true,
+      };
+    } else {
+      const stripeInfo = await stripeInstance.customers.create({
+        email: data.email,
+        phone: data.phoneNumber,
+        name: data.userName,
+      });
+      data.stripeId = stripeInfo.id;
     }
 
     await addUser(data, type);

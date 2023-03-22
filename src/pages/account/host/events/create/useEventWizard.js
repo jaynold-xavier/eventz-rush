@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { Form, message } from "antd";
-import { filter, get, last } from "lodash";
+import { filter, get, find, last, size, map, isEmpty } from "lodash";
 import dayjs from "dayjs";
 
 import confirmChanges from "../../../../../helpers/prompt";
@@ -10,11 +10,16 @@ import {
   EVENT_STATUSES,
   INVITE_STATUSES,
   EVENT_WIZARD_STEPS,
+  PAYMENT_CATEGORIES,
+  BOOKING_PAYMENT_PERIOD,
+  FINAL_PAYMENT_PERIOD,
 } from "../../../../../constants/app";
 import {
   createEvent,
   getEvent,
   getInvitees,
+  getPayments,
+  makePayment,
   updateEvent,
 } from "../../../../../services/database";
 
@@ -43,12 +48,18 @@ const useEventWizard = ({ id, user, setLoading }) => {
       try {
         setLoading(true);
         const values = await Promise.all([
+          fetchPayments(),
           fetchEventBasicInfo(),
           fetchInvitees(),
         ]);
-        const [event = {}, invitees = []] = values;
+        const [payments = [], event = {}, invitees = []] = values;
 
-        form.setFieldsValue({ ...event, vendors: invitees });
+        if (size(payments) === size(PAYMENT_CATEGORIES)) {
+          message.warning("Cannot update a booked event!");
+          navigate(appRoutes.account.dashboard);
+        }
+
+        form.setFieldsValue({ ...event, vendors: invitees, payments });
       } catch (error) {
         console.log("event wizard", { error });
         message.error(get(error, "message"));
@@ -95,10 +106,22 @@ const useEventWizard = ({ id, user, setLoading }) => {
       return invitees;
     }
 
+    async function fetchPayments() {
+      const payments = await getPayments(id);
+      map(payments, (p) => {
+        if (p.dueDate) {
+          p.dueDate = dayjs(p.dueDate.toDate());
+        }
+
+        return p;
+      });
+      return payments;
+    }
+
     return () => {
       isCancel = true;
     };
-  }, [id, form, setLoading]);
+  }, [id, form, setLoading, navigate]);
 
   const saveChanges = async () => {
     const data = await validateSection();
@@ -144,6 +167,36 @@ const useEventWizard = ({ id, user, setLoading }) => {
     navigate(appRoutes.account.dashboard);
   };
 
+  const payNow = async (data, category) => {
+    if (isEmpty(data)) return;
+
+    data.eventId = eventIdRef.current;
+    data.category = category;
+    data.createdOn = new Date();
+
+    await makePayment(data, data.id);
+
+    switch (category) {
+      case PAYMENT_CATEGORIES.booking.key:
+        await updateEvent({ status: EVENT_STATUSES.booked.text });
+        message.success("Event Booked!");
+        break;
+      case PAYMENT_CATEGORIES.final.key:
+        navigate(appRoutes.account.dashboard);
+        message.success("Payments Completed!");
+        break;
+      default:
+        break;
+    }
+
+    return data;
+  };
+
+  const onStepChange = async (step) => {
+    await validateSection();
+    setCurrentStep(step);
+  };
+
   return {
     // state
     form,
@@ -154,10 +207,13 @@ const useEventWizard = ({ id, user, setLoading }) => {
     // actions
     setTitle: updateTitle,
     setCurrentStep,
+    onStepChange,
     setNetAmount: updateNetAmount,
     saveChanges,
     cancelChanges,
     updateEvent: updateEventItem,
+    generatePaymentInfo,
+    payNow,
   };
 
   function updateTitle(value) {
@@ -212,6 +268,74 @@ const useEventWizard = ({ id, user, setLoading }) => {
     }
 
     return data;
+  }
+
+  function generatePaymentInfo() {
+    let eventCreatedOn = form.getFieldValue("createdOn");
+    if (eventCreatedOn) {
+      if (eventCreatedOn.toDate) {
+        eventCreatedOn = eventCreatedOn.toDate();
+      }
+      eventCreatedOn = dayjs(eventCreatedOn);
+    } else {
+      eventCreatedOn = new Date();
+    }
+
+    const acceptedInvitees = filter(
+      form.getFieldValue("vendors"),
+      (i) => i.status === INVITE_STATUSES.accepted.text
+    );
+    const totalVendors = size(acceptedInvitees);
+
+    const existingPayments = getExistingPaymentInfo();
+    const {
+      bookingPaymentInfo: existingBookingPayment,
+      finalPaymentInfo: existingFinalPayment,
+    } = existingPayments;
+
+    const bookingPaymentParts = BOOKING_PAYMENT_PERIOD.split(" ");
+    const bookingPaymentInfo = {
+      amount: netAmount / 2,
+      quantity: totalVendors,
+      dueDate: eventCreatedOn
+        .clone()
+        .add(bookingPaymentParts[0], bookingPaymentParts[1]),
+      ...existingBookingPayment,
+    };
+
+    let fromDate = form.getFieldValue("date");
+    fromDate = get(fromDate, "0") || dayjs();
+    const finalPaymentParts = FINAL_PAYMENT_PERIOD.split(" ");
+    const finalPaymentInfo = {
+      amount: netAmount / 2,
+      quantity: totalVendors,
+      dueDate: fromDate
+        .clone()
+        .subtract(finalPaymentParts[0], finalPaymentParts[1]),
+      ...existingFinalPayment,
+    };
+
+    return {
+      bookingPaymentInfo,
+      finalPaymentInfo,
+    };
+
+    function getExistingPaymentInfo() {
+      const currentPayments = form.getFieldValue("payments");
+      const bookingPaymentInfo = find(
+        currentPayments,
+        (p) => p.category === PAYMENT_CATEGORIES.booking.key
+      );
+      const finalPaymentInfo = find(
+        currentPayments,
+        (p) => p.category === PAYMENT_CATEGORIES.final.key
+      );
+
+      return {
+        bookingPaymentInfo: bookingPaymentInfo || {},
+        finalPaymentInfo: finalPaymentInfo || {},
+      };
+    }
   }
   //#region
 };

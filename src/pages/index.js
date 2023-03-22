@@ -20,11 +20,12 @@ export { default as Register } from "./register/Index";
 export {
   EventCreateWizard,
   EventCreateWizard as EventUpdateWizard,
-  EventDetails,
   HostDashboard,
-  HostEvents,
+  HostEventsList,
   VendorDashboard,
-  VendorEvents,
+  VendorEventsList,
   VendorPhotos,
   VendorProfile,
 } from "./account";
+
+export { EventDetails } from "./events";

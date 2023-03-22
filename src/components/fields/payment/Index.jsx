@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   PaymentElement,
   useStripe,
@@ -6,11 +6,20 @@ import {
 } from "@stripe/react-stripe-js";
 import { Button, Col, message, Row } from "antd";
 
+import { stripeInstance } from "../../../assets/js/stripe";
+
 const paymentElementOptions = {
   layout: "tabs",
 };
 
-export default function PaymentField({ payNow, clientSecret, ...rest }) {
+export default function PaymentField({
+  userStripeId,
+  paymentInfo,
+  payNow,
+  clientSecret,
+  ...rest
+}) {
+  const [loading, setLoading] = useState(false);
   const stripe = useStripe();
   const elements = useElements();
 
@@ -44,61 +53,90 @@ export default function PaymentField({ payNow, clientSecret, ...rest }) {
   }, [stripe, clientSecret]);
 
   const onPayNow = async (e) => {
-    e.preventDefault();
-
     if (!stripe || !elements) {
       // Stripe.js has not yet loaded.
       // Make sure to disable form submission until Stripe.js has loaded.
       return;
     }
 
-    const { error, paymentIntent } = await stripe.confirmPayment({
-      elements,
-      redirect: "if_required",
-    });
+    try {
+      setLoading(true);
 
-    if (!error) {
-      console.log({ paymentIntent });
-
-      payNow({
-        id: paymentIntent.id,
-        status: paymentIntent.status,
-        amount: paymentIntent.amount,
-        type: "card",
+      const { error, paymentIntent } = await stripe.confirmPayment({
+        elements,
+        redirect: "if_required",
       });
 
-      message.success("Payment succeeded!");
-      return;
-    }
+      if (!error) {
+        const invoice = await stripeInstance.invoices.create({
+          customer: userStripeId,
+          pending_invoice_items_behavior: "exclude",
+        });
 
-    // This point will only be reached if there is an immediate error when
-    // confirming the payment. Otherwise, your customer will be redirected to
-    // your `return_url`. For some payment methods like iDEAL, your customer will
-    // be redirected to an intermediate site first to authorize the payment, then
-    // redirected to the `return_url`.
-    if (error.type === "card_error" || error.type === "validation_error") {
-      message.error(error.message);
-    } else {
-      message.error("An unexpected error occurred.");
+        const product = await stripeInstance.products.create({
+          name: "Vendors",
+          description: "Payment to vendors",
+          type: "service",
+        });
+
+        await stripeInstance.invoiceItems.create({
+          customer: userStripeId,
+          invoice: invoice.id,
+          quantity: paymentInfo.quantity,
+          price_data: {
+            currency: "inr",
+            tax_behavior: "exclusive",
+            product: product.id,
+            unit_amount: paymentIntent.amount,
+          },
+        });
+
+        await stripeInstance.invoices.finalizeInvoice(invoice.id);
+
+        await payNow({
+          id: paymentIntent.id,
+          status: paymentIntent.status,
+          amount: paymentIntent.amount,
+          invoiceId: invoice.id,
+          type: "card",
+        });
+
+        message.success("Payment succeeded!");
+        return;
+      }
+
+      // This point will only be reached if there is an immediate error when
+      // confirming the payment. Otherwise, your customer will be redirected to
+      // your `return_url`. For some payment methods like iDEAL, your customer will
+      // be redirected to an intermediate site first to authorize the payment, then
+      // redirected to the `return_url`.
+      if (error.type === "card_error" || error.type === "validation_error") {
+        message.error(error.message);
+      } else {
+        message.error("An unexpected error occurred.");
+      }
+    } catch (err) {
+      console.log("payment error", err);
+      message.error(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <Row gutter={[12, 24]}>
-      <Col span={24}>
-        <div className="font-weight-bold mb-3">Payment Details</div>
-        <PaymentElement
-          id="payment-element"
-          options={paymentElementOptions}
-          {...rest}
-        />
-      </Col>
+    <div className="payment-field">
+      <div className="font-weight-bold mb-3">Payment Details</div>
+      <PaymentElement
+        id="payment-element"
+        options={paymentElementOptions}
+        {...rest}
+      />
 
-      <Col span={24}>
-        <Button type="primary" onClick={onPayNow} block>
-          Pay Now
-        </Button>
-      </Col>
-    </Row>
+      <br />
+
+      <Button type="primary" loading={loading} onClick={onPayNow} block>
+        Pay Now
+      </Button>
+    </div>
   );
 }

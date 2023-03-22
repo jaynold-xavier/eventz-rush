@@ -4,7 +4,7 @@ import {
   ClockCircleTwoTone,
   CloseOutlined,
 } from "@ant-design/icons";
-import React, { useMemo, useEffect, useState } from "react";
+import React, { useMemo, useEffect, useState, useRef } from "react";
 import {
   Button,
   Col,
@@ -28,31 +28,32 @@ import ScrollableCard from "../../../../components/card/scrollable/Index";
 import {
   getEventsByMonth,
   getInvitees,
+  updateInvitee,
   updateInviteStatus,
 } from "../../../../services/database";
-import {
-  appTheme,
-  buttonActionTheme,
-  navLinkTheme,
-} from "../../../../assets/js/theme";
+import { appTheme, navLinkTheme } from "../../../../assets/js/theme";
 import {
   commonPopConfirmProp,
   EVENT_STATUSES,
   INVITE_STATUSES,
+  USER_ROLES,
 } from "../../../../constants/app";
 import IconFont from "../../../../components/icons/Index";
 import { timeRangeString } from "../../../../helpers/timestamp";
 import Countdown from "../../../../components/countdown/Index";
 import { EventsListCalendar } from "../../../../components/calendar";
-import { useRef } from "react";
+import { SelectServicesLayout as SelectServicesDrawer } from "../../../vendors";
 
 const { Header, Content } = Layout;
 
 export default function Dashboard({ user }) {
   const [bookedEventIds, setBookedEventIds] = useState();
   const [pendingEventIds, setPendingEventIds] = useState();
+  const [selectServicesVisible, setSelectServicesVisible] = useState(false);
   const [reload, setReload] = useState(false);
 
+  const eventIdsRef = useRef();
+  const selectedEventIdRef = useRef();
   const eventsWithRequestRef = useRef();
 
   const vendorEmail = get(user, "email");
@@ -69,10 +70,12 @@ export default function Dashboard({ user }) {
         inviteeId: vendorEmail,
       });
 
+      const eventIds = [];
       const bookedEventIds = [];
       const pendingEventIds = [];
       const eventsWithRequest = [];
       invitees.forEach((i) => {
+        eventIds.push(i.eventId);
         if (i.status === INVITE_STATUSES.accepted.text) {
           bookedEventIds.push(i.eventId);
         } else if (i.status === INVITE_STATUSES.pending.text) {
@@ -87,6 +90,7 @@ export default function Dashboard({ user }) {
       setBookedEventIds(bookedEventIds);
       setPendingEventIds(pendingEventIds);
       eventsWithRequestRef.current = eventsWithRequest;
+      eventIdsRef.current = eventIds;
     }
 
     return () => {
@@ -101,6 +105,34 @@ export default function Dashboard({ user }) {
         e.record.status === EVENT_STATUSES.booked.text &&
         e.record.fromDate.toDate() > new Date()
     );
+  };
+
+  const selectServices = async (data) => {
+    if (!data) return;
+
+    const inviteeInfo = {
+      eventId: selectedEventIdRef.current,
+      inviteeId: vendorEmail,
+      status: INVITE_STATUSES.accepted.text,
+      type: USER_ROLES.vendor.text,
+    };
+
+    if (data.services) {
+      inviteeInfo.services = data.services;
+    }
+
+    if (data.amount) {
+      inviteeInfo.amount = data.amount;
+    }
+
+    await updateInvitee(inviteeInfo.eventId, vendorEmail, inviteeInfo);
+
+    setReload((s) => !s);
+  };
+
+  const onSelectServicesClick = (id) => {
+    selectedEventIdRef.current = id;
+    setSelectServicesVisible(true);
   };
 
   const transformPendingInvites = (data) => {
@@ -147,12 +179,12 @@ export default function Dashboard({ user }) {
         <Row gutter={[24, 24]}>
           <Col
             className="ml-auto"
-            xxl={10}
-            xl={12}
-            lg={24}
-            md={24}
-            sm={24}
             xs={24}
+            sm={24}
+            md={24}
+            lg={24}
+            xl={12}
+            xxl={10}
           >
             <ScrollableCard
               title="Upcoming Events"
@@ -175,12 +207,12 @@ export default function Dashboard({ user }) {
 
           <Col
             className="mr-auto"
-            xxl={10}
-            xl={12}
-            lg={24}
-            md={24}
-            sm={24}
             xs={24}
+            sm={24}
+            md={24}
+            lg={24}
+            xl={12}
+            xxl={10}
           >
             <ScrollableCard
               title="Invites Pending"
@@ -196,6 +228,7 @@ export default function Dashboard({ user }) {
                     item={get(item, "record")}
                     inviteeId={vendorEmail}
                     setReload={setReload}
+                    onSelectServicesClick={onSelectServicesClick}
                     eventsWithRequest={eventsWithRequestRef.current}
                   />
                 );
@@ -207,7 +240,17 @@ export default function Dashboard({ user }) {
         <br />
         <br />
 
-        <EventCalendar params={{ vendorEmail }} />
+        <EventCalendar
+          eventIds={eventIdsRef.current}
+          params={{ vendorEmail }}
+        />
+
+        <SelectServicesDrawer
+          vendorInfo={user}
+          open={selectServicesVisible}
+          onClose={(e) => setSelectServicesVisible((s) => !s)}
+          onSave={selectServices}
+        />
       </Content>
     </Layout>
   );
@@ -230,7 +273,7 @@ function EventCalendar({ eventIds, params = {} }) {
 
       try {
         setLoading(true);
-        if (isEmpty(eventIds)) {
+        if (!isEmpty(eventIds)) {
           const data = await getEventsByMonth(selectedDate, { eventIds });
           setDataSource(data);
         }
@@ -254,7 +297,14 @@ function EventCalendar({ eventIds, params = {} }) {
   );
 }
 
-function CardEventItem({ id, item, inviteeId, setReload, eventsWithRequest }) {
+function CardEventItem({
+  id,
+  item,
+  inviteeId,
+  setReload,
+  onSelectServicesClick,
+  eventsWithRequest,
+}) {
   const { title, location, fromDate, toDate, status } = item || {};
 
   const onAcceptInvite = async () => {
@@ -286,7 +336,12 @@ function CardEventItem({ id, item, inviteeId, setReload, eventsWithRequest }) {
           },
         }}
       >
-        <Button type="primary" ghost block>
+        <Button
+          type="primary"
+          onClick={(e) => onSelectServicesClick(id)}
+          ghost
+          block
+        >
           Select Services
         </Button>
       </ConfigProvider>

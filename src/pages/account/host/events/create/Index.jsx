@@ -12,10 +12,7 @@ import Footer from "./Footer";
 
 import useEventWizard from "./useEventWizard";
 import useSupportingData from "./useSupportingData";
-import {
-  EVENT_STATUSES,
-  EVENT_WIZARD_STEPS,
-} from "../../../../../constants/app";
+import { EVENT_WIZARD_STEPS } from "../../../../../constants/app";
 
 const { Header, Content } = Layout;
 
@@ -44,10 +41,12 @@ export default function EventCreateUpdateWizard({ user }) {
     // actions
     setTitle,
     setCurrentStep,
+    onStepChange,
     setNetAmount,
     saveChanges,
     cancelChanges,
-    updateEvent,
+    generatePaymentInfo,
+    payNow,
   } = useEventWizard({ id, user, setLoading });
 
   usePrompt((event) => {
@@ -102,28 +101,15 @@ export default function EventCreateUpdateWizard({ user }) {
           />
         );
       case 2:
-        let eventCreatedOn = form.getFieldValue("createdOn");
-        if (eventCreatedOn) {
-          if (eventCreatedOn.toDate) {
-            eventCreatedOn = eventCreatedOn.toDate();
-          }
-          eventCreatedOn = dayjs(eventCreatedOn);
-        } else {
-          eventCreatedOn = new Date();
-        }
-
-        const bookEvent = () => {
-          updateEvent({ status: EVENT_STATUSES.booked.text });
-        };
-
+        const { bookingPaymentInfo, finalPaymentInfo } = generatePaymentInfo();
         return (
           <PaymentStep
-            form={form}
+            user={user}
             eventId={eventId}
             netAmount={netAmount}
-            eventCreatedOn={eventCreatedOn}
-            invitees={form.getFieldValue("vendors")}
-            bookEvent={bookEvent}
+            bookingPaymentInfo={bookingPaymentInfo}
+            finalPaymentInfo={finalPaymentInfo}
+            bookEvent={payNow}
           />
         );
       default:
@@ -139,7 +125,7 @@ export default function EventCreateUpdateWizard({ user }) {
         <Header prefixCls="event-create-header p-3">
           <div className="text-center mb-3">{title}</div>
 
-          <Steps items={steps} current={currentStep} />
+          <Steps items={steps} onChange={onStepChange} current={currentStep} />
         </Header>
       </Affix>
 

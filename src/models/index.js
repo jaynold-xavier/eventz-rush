@@ -22,6 +22,7 @@ class Vendor extends User {
     title,
     userName,
     websiteURL,
+    configurations,
   }) {
     super({ userName, email, photoUrl });
     this.description = description;
@@ -29,6 +30,11 @@ class Vendor extends User {
     this.services = services;
     this.title = title;
     this.websiteURL = websiteURL;
+    this.configurations = configurations;
+    // {
+    //   showContactInfo,
+    //   showServices
+    // }
   }
 }
 

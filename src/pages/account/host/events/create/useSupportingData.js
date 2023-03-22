@@ -79,6 +79,7 @@ const useSupportingData = ({
           eventId,
           constraints
         );
+        console.log("init vendors", data);
         setVendors(data);
       } finally {
         setLoading(false);

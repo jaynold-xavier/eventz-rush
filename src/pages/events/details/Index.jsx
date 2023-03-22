@@ -15,7 +15,7 @@ import {
   Typography,
 } from "antd";
 import dayjs from "dayjs";
-import { cloneDeep, find, get, map } from "lodash";
+import { cloneDeep, filter, find, get, map } from "lodash";
 
 import {
   addInvitee,
@@ -24,15 +24,16 @@ import {
   getInvitees,
   getUser,
   updateEvent,
-} from "../../../../../services/database";
-import { appTheme } from "../../../../../assets/js/theme";
-import { EVENT_STATUSES, USER_ROLES } from "../../../../../constants/app";
-import { appRoutes } from "../../../../../constants/routes";
-import VendorItem from "../../../../vendors/list/item/Index";
+} from "../../../services/database";
+import { appTheme } from "../../../assets/js/theme";
 import {
-  canCancelEvent,
-  canUpdateEvent,
-} from "../../../../../helpers/validations";
+  EVENT_STATUSES,
+  INVITE_STATUSES,
+  USER_ROLES,
+} from "../../../constants/app";
+import { appRoutes } from "../../../constants/routes";
+import VendorItem from "../../vendors/list/item/Index";
+import { canCancelEvent, canUpdateEvent } from "../../../helpers/validations";
 
 const { Header, Content } = Layout;
 
@@ -138,6 +139,11 @@ export default function EventDetails() {
 
   const statusObj = find(EVENT_STATUSES, (e) => e.text === status);
 
+  const acceptedInvitees = filter(
+    vendors,
+    (i) => i.status === INVITE_STATUSES.accepted.text
+  );
+
   return (
     <Layout prefixCls="event-details-layout">
       <Spin spinning={loading}>
@@ -197,9 +203,9 @@ export default function EventDetails() {
           <Row className="event-basic-info" gutter={0}>
             {description && (
               <Col span={24}>
-                <strong>Description</strong>
+                <strong className="font-14">Description</strong>
                 <div
-                  className="font-18 mt-3"
+                  className="font-18 mt-1"
                   dangerouslySetInnerHTML={{ __html: description }}
                 />
               </Col>
@@ -207,35 +213,35 @@ export default function EventDetails() {
 
             {fromDateString && (
               <Col span={6}>
-                <strong>From</strong>
-                <div className="font-18 mt-3">{fromDateString}</div>
+                <strong className="font-14">From</strong>
+                <div className="font-18 mt-1">{fromDateString}</div>
               </Col>
             )}
 
             {toDateString && (
               <Col span={6}>
-                <strong>To</strong>
-                <div className="font-18 mt-3">{toDateString}</div>
+                <strong className="font-14">To</strong>
+                <div className="font-18 mt-1">{toDateString}</div>
               </Col>
             )}
 
             {location && (
               <Col span={6}>
-                <strong>Where</strong>
-                <div className="font-18 mt-3">{location}</div>
+                <strong className="font-14">Where</strong>
+                <div className="font-18 mt-1">{location}</div>
               </Col>
             )}
 
             {amount && (
               <Col className="text-right" span={6}>
-                <strong>Total Cost</strong>
-                <div className="font-18 mt-3">{amount}</div>
+                <strong className="font-14">Total Cost</strong>
+                <div className="font-18 mt-1">{amount}</div>
               </Col>
             )}
 
             <Col span={24}>
-              <strong>Vendors</strong>
-              <VendorsList dataSource={vendors} />
+              <strong className="font-14">Vendors</strong>
+              <VendorsList dataSource={acceptedInvitees} />
             </Col>
           </Row>
         </Content>
@@ -247,7 +253,7 @@ export default function EventDetails() {
 function VendorsList({ dataSource }) {
   return (
     <List
-      className="vendors-list mt-3"
+      className="vendors-list mt-1"
       dataSource={dataSource}
       grid={{
         gutter: 16,

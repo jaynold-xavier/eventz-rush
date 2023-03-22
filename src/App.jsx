@@ -22,12 +22,12 @@ import {
   Login,
   Register,
   HostDashboard,
-  HostEvents,
+  HostEventsList,
   EventCreateWizard,
   EventUpdateWizard,
   EventDetails,
   VendorDashboard,
-  VendorEvents,
+  VendorEventsList,
   VendorPhotos,
   VendorProfile,
   VendorDetails,
@@ -121,9 +121,9 @@ export default function App() {
                 path={appRoutes.account.events.list}
                 element={
                   isVendor ? (
-                    <VendorEvents user={user} />
+                    <VendorEventsList user={user} />
                   ) : (
-                    <HostEvents user={user} />
+                    <HostEventsList user={user} />
                   )
                 }
               />

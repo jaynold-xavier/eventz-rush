@@ -27,7 +27,7 @@ import {
   updateInvitee,
 } from "../../../../../../services/database";
 import VendorItem from "../../../../../vendors/list/item/Index";
-import SelectServicesDrawer from "./selectServices/Index";
+import { SelectServicesLayout as SelectServicesDrawer } from "../../../../../vendors";
 import { INVITE_STATUSES } from "../../../../../../constants/app";
 
 export default function SelectVendorsStep({ eventId, dataSource, setFilters }) {
@@ -82,11 +82,7 @@ export default function SelectVendorsStep({ eventId, dataSource, setFilters }) {
         rules={[
           {
             validator: (rule, value) => {
-              const hasDeclinedVendors = !every(
-                value,
-                (v) => v.status === INVITE_STATUSES.accepted.text
-              );
-              if (size(value) < 1 || hasDeclinedVendors) {
+              if (size(value) < 1) {
                 message.error("Please select at least one vendor");
                 return Promise.reject();
               }
@@ -96,6 +92,17 @@ export default function SelectVendorsStep({ eventId, dataSource, setFilters }) {
               ) {
                 message.error(
                   "All the vendors have not yet accepted your invite"
+                );
+                return Promise.reject();
+              }
+
+              const hasAllDeclinedVendors = every(
+                value,
+                (v) => v.status === INVITE_STATUSES.declined.text
+              );
+              if (hasAllDeclinedVendors) {
+                message.error(
+                  "All selected vendors have declined. Please select another vendor(s)"
                 );
                 return Promise.reject();
               }
@@ -207,11 +214,18 @@ function VendorsList({
 
   function renderItem(item) {
     const inviteInfo = find(value, (v) => v.inviteeId === item.email);
+    let inviteStatus = get(inviteInfo, "status");
     const selected = !!inviteInfo;
 
     const actions = [];
-    const hasServices = !isEmpty(get(item, "services"));
-    if (hasServices) {
+    const showServices = get(item, "configurations.showServices");
+    let notRequiresRequest;
+    if (!inviteStatus || inviteStatus === INVITE_STATUSES.pending.text) {
+      notRequiresRequest = showServices && !isEmpty(get(item, "services"));
+    } else {
+      notRequiresRequest = true;
+    }
+    if (notRequiresRequest) {
       actions.push(
         <Button
           className="rounded-0"
@@ -271,9 +285,8 @@ function VendorsList({
       );
     }
 
-    let inviteStatus = get(inviteInfo, "status");
     if (inviteStatus) {
-      if (!hasServices) {
+      if (!notRequiresRequest) {
         inviteStatus = "Awaiting Info !";
       } else if (inviteStatus === INVITE_STATUSES.pending.text) {
         inviteStatus = "Invite pending !";

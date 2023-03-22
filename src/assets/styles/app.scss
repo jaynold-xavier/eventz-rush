@@ -605,10 +605,38 @@ $navbar-height: 100px;
 }
 
 .events-list {
+  .events-group-list-item {
+    padding: 0.5rem 1rem;
+    background-color: #ebebeb;
+  }
+
   .events-list-item {
-    .ant-card-body {
-      @media #{$small-screen}, #{$mobile-screen}, #{$tablet-screen} {
-        flex-wrap: wrap;
+    background: var(--color-primary);
+    border: 1px solid #dcdcdc;
+    border-block-end: 1px solid #dcdcdc !important;
+
+    .date-badge {
+      background: transparent;
+      border: 0;
+      color: #ffffff;
+      min-width: 150px;
+    }
+
+    @media #{$small-screen}, #{$mobile-screen}, #{$tablet-screen} {
+      flex-wrap: wrap;
+
+      .date-badge {
+        min-width: unset;
+      }
+    }
+
+    &:hover {
+      cursor: pointer;
+      border: 1px solid var(--color-primary);
+      border-block-end: 1px solid var(--color-primary) !important;
+
+      .bg-white {
+        background-color: lighten(#6252f1, 35) !important;
       }
     }
   }
@@ -618,7 +646,7 @@ $navbar-height: 100px;
   .event-create-header {
     padding: 24px;
     background-color: #fafafa;
-    box-shadow: 0px 0px 10px 0px gainsboro;
+    box-shadow: 0px 0px 10px 0px #dcdcdc;
   }
 
   .ant-upload-wrapper {
@@ -643,7 +671,7 @@ $navbar-height: 100px;
     .ant-collapse-item.ant-collapse-item-disabled {
       $success-color: #40cf85;
 
-      background-color: lighten($success-color, 40);
+      background-color: lighten($success-color, 40) !important;
 
       .ant-collapse-header-text {
         color: darken($success-color, 40);

@@ -1,2 +1,2 @@
 export { default as Dashboard } from "./dashboard/Index";
-export { EventsList, EventCreateWizard, EventDetails } from "./events";
+export { EventsList, EventCreateWizard } from "./events";

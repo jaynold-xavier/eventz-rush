@@ -102,12 +102,11 @@ export async function getEvent(id) {
 }
 
 export async function getEvents(hostId, constraints = []) {
-  if (!hostId) return [];
+  if (hostId) {
+    constraints.push(where("hostEmail", "==", hostId));
+  }
 
-  const events = await getRecords("events", [
-    where("hostEmail", "==", hostId),
-    ...constraints,
-  ]);
+  const events = await getRecords("events", constraints);
   if (events) {
     return map(events, (e) => ({ id: e.id, ...e.record }));
   } else {

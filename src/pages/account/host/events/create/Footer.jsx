@@ -19,7 +19,6 @@ export default function EventWizardFooter({
   onSave,
   onCancel,
 }) {
-  console.log("footer", invitees, vendors);
   return (
     <Footer
       prefixCls="event-create-footer"
@@ -35,6 +34,7 @@ export default function EventWizardFooter({
                 color: appTheme.colorPrimary,
                 backgroundColor: "#fde3cf",
               }}
+              maxCount={5}
             >
               {map(invitees, (i) => {
                 const vendor = find(vendors, (d) => d.email === i.inviteeId);

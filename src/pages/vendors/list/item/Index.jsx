@@ -98,7 +98,7 @@ export default function ListItem({
               <strong className="font-14">About</strong>
             </Space>
             <Typography.Paragraph
-              className="vendor-item-description font-14"
+              className="font-16"
               ellipsis={{
                 rows: 3,
                 tooltip: {
@@ -118,7 +118,7 @@ export default function ListItem({
               />
               <strong className="font-14">Phone</strong>
             </Space>
-            <div className="font-14">{phoneNumber || "—"}</div>
+            <div className="font-16">{phoneNumber || "—"}</div>
 
             <Space className="mt-3">
               <MailFilled
@@ -133,7 +133,9 @@ export default function ListItem({
               ellipsis={{ tooltip: email }}
               style={{ maxWidth: 250 }}
             >
-              <a href={`mailto:${email}`}>{email}</a>
+              <a className="font-16" href={`mailto:${email}`}>
+                {email}
+              </a>
             </Typography.Text>
           </Skeleton>
         </div>

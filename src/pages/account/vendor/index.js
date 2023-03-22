@@ -1,4 +1,4 @@
-export { default as VendorDashboard } from "./dashboard/Index";
-export { default as VendorEvents } from "./events/Index";
-export { default as VendorPhotos } from "./photos/Index";
-export { default as VendorProfile } from "./profile/Index";
+export { default as Dashboard } from "./dashboard/Index";
+export { default as EventsList } from "./events/Index";
+export { default as Photos } from "./photos/Index";
+export { default as Profile } from "./profile/Index";

@@ -1,25 +1,37 @@
-import { CheckCircleTwoTone } from "@ant-design/icons";
+import { CheckCircleTwoTone, DownloadOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { Card, Collapse, Col, Form, Row, Space, Spin, message } from "antd";
-import Stripe from "stripe";
+import {
+  Card,
+  Collapse,
+  Col,
+  Form,
+  Row,
+  Space,
+  Spin,
+  message,
+  Button,
+  Tooltip,
+} from "antd";
+import { Header } from "antd/es/layout/layout";
 import { Elements } from "@stripe/react-stripe-js";
-import { isEmpty, size, some } from "lodash";
+import { get, isEmpty, size, some, find } from "lodash";
 
 import { PaymentField } from "../../../../../../components/fields";
 import {
-  CLIENT_SECRET,
+  downloadInvoice,
+  stripeInstance,
   stripePromise,
 } from "../../../../../../assets/js/stripe";
 import { formatAsCurrency } from "../../../../../../helpers/number";
-import { Header } from "antd/es/layout/layout";
 import {
-  bookingPaymentPeriod,
+  BOOKING_PAYMENT_PERIOD,
   DATETIME_DISPLAY_FORMAT,
-  finalPaymentPeriod,
+  FINAL_PAYMENT_PERIOD,
+  PAYMENT_CATEGORIES,
 } from "../../../../../../constants/app";
-import { getPayments, makePayment } from "../../../../../../services/database";
+import { makePayment } from "../../../../../../services/database";
 import { appRoutes } from "../../../../../../constants/routes";
-import { useNavigate } from "react-router-dom";
 
 const appearance = {
   theme: "stripe",
@@ -34,44 +46,23 @@ const paymentCategories = {
   },
 };
 
-export default function PaymentStep({ eventId, form, ...rest }) {
-  useEffect(() => {
-    let isCancel = false;
-
-    async function loadPayments(isCancel) {
-      if (isCancel || !eventId) return;
-
-      const payments = await getPayments(eventId);
-      console.log("init payments", { payments, eventId });
-      if (payments) {
-        form.setFieldValue("payments", payments);
-      }
-    }
-
-    loadPayments(isCancel);
-
-    return () => {
-      isCancel = true;
-    };
-  }, [eventId, form]);
-
+export default function PaymentStep(props) {
   return (
     <Form.Item name="payments">
-      <PaymentSection eventId={eventId} {...rest} />
+      <PaymentSection {...props} />
     </Form.Item>
   );
 }
 
 function PaymentSection({
+  user,
   value,
   onChange,
   netAmount,
-  eventId,
-  invitees,
-  eventCreatedOn,
+  bookingPaymentInfo,
+  finalPaymentInfo,
   bookEvent,
 }) {
-  const navigate = useNavigate();
   const [collapseKeys, setCollapseKeys] = useState([]);
 
   useEffect(() => {
@@ -94,64 +85,16 @@ function PaymentSection({
   }, [value]);
 
   const payNow = async (data, category) => {
-    if (isEmpty(data)) return;
-
-    data.eventId = eventId;
-    data.category = category;
-    data.createdOn = new Date();
+    const paymentData = await bookEvent(data, category);
 
     const currentData = value || [];
-    currentData.push(data);
+    currentData.push(paymentData);
     onChange([...currentData]);
-
-    await makePayment(data, data.id);
-
-    const bookingPaymentDone = size(currentData) === 1;
-    if (bookingPaymentDone && bookEvent) {
-      await bookEvent();
-      message.success("Event Booked!");
-      return;
-    }
-
-    const allPaymentsDone = size(currentData) === size(paymentCategories);
-    if (allPaymentsDone) {
-      navigate(appRoutes.account.dashboard);
-      message.success("Payments Completed!");
-      return;
-    }
   };
 
-  let bookingPaymentDueDate;
-  let finalPaymentDueDate;
-  if (eventCreatedOn) {
-    const bookingPaymentParts = bookingPaymentPeriod.split(" ");
-    bookingPaymentDueDate = eventCreatedOn
-      .clone()
-      .add(bookingPaymentParts[0], bookingPaymentParts[1]);
-
-    const finalPaymentParts = finalPaymentPeriod.split(" ");
-    finalPaymentDueDate = eventCreatedOn
-      .clone()
-      .add(finalPaymentParts[0], finalPaymentParts[1]);
-  }
-
-  let bookingPaymentAmt;
-  let finalPaymentAmt;
-  if (netAmount) {
-    bookingPaymentAmt = netAmount / 2;
-    finalPaymentAmt = netAmount / 2;
-  }
-
-  const isBookingAmtPaid = some(
-    value,
-    (v) => v.category === paymentCategories.booking.text
-  );
-  const isFinalAmtPaid = some(
-    value,
-    (v) => v.category === paymentCategories.final.text
-  );
-
-  if (isEmpty(invitees)) return null;
+  const totalVendors = get(bookingPaymentInfo, "quantity");
+  const isBookingAmtPaid = !!get(bookingPaymentInfo, "invoiceId");
+  const isFinalAmtPaid = !!get(finalPaymentInfo, "invoiceId");
 
   return (
     <Row className="payment-field-container" gutter={[24, 24]}>
@@ -162,9 +105,10 @@ function PaymentSection({
             className="bg-white"
             header={
               <PaymentHeader
-                title="Booking"
-                dueDate={bookingPaymentDueDate}
-                amount={bookingPaymentAmt}
+                title={PAYMENT_CATEGORIES.booking.text}
+                invoiceId={get(bookingPaymentInfo, "invoiceId")}
+                dueDate={get(bookingPaymentInfo, "dueDate")}
+                amount={get(bookingPaymentInfo, "amount")}
                 isPaid={isBookingAmtPaid}
               />
             }
@@ -172,11 +116,10 @@ function PaymentSection({
             showArrow={false}
           >
             <PaymentContent
+              userStripeId={get(user, "stripeId")}
               category={paymentCategories.booking.text}
-              amount={bookingPaymentAmt}
-              value={value}
+              paymentInfo={bookingPaymentInfo}
               payNow={payNow}
-              onChange={onChange}
             />
           </Collapse.Panel>
 
@@ -185,9 +128,10 @@ function PaymentSection({
             className="bg-white"
             header={
               <PaymentHeader
-                title="Final"
-                dueDate={finalPaymentDueDate}
-                amount={finalPaymentAmt}
+                title={PAYMENT_CATEGORIES.final.text}
+                invoiceId={get(finalPaymentInfo, "invoiceId")}
+                dueDate={get(finalPaymentInfo, "dueDate")}
+                amount={get(finalPaymentInfo, "amount")}
                 isPaid={isFinalAmtPaid}
               />
             }
@@ -195,11 +139,10 @@ function PaymentSection({
             showArrow={false}
           >
             <PaymentContent
+              userStripeId={get(user, "stripeId")}
               category={paymentCategories.final.text}
-              amount={finalPaymentAmt}
+              paymentInfo={finalPaymentInfo}
               payNow={payNow}
-              value={value}
-              onChange={onChange}
             />
           </Collapse.Panel>
         </Collapse>
@@ -216,7 +159,7 @@ function PaymentSection({
 
           <Card.Grid className="w-100" hoverable={false}>
             <div className="d-flex justify-content-between">
-              <div>{`${size(invitees)} Vendors`}</div>
+              <div>{`${totalVendors} Vendors`}</div>
               <strong>{formatAsCurrency(netAmount)}</strong>
             </div>
           </Card.Grid>
@@ -226,8 +169,10 @@ function PaymentSection({
   );
 }
 
-function PaymentContent({ category, payNow, amount }) {
+function PaymentContent({ userStripeId, category, payNow, paymentInfo }) {
   const [clientSecret, setClientSecret] = useState();
+
+  const { amount } = paymentInfo || {};
 
   useEffect(() => {
     let isCancel = false;
@@ -236,8 +181,8 @@ function PaymentContent({ category, payNow, amount }) {
       if (isCancel || !amount) return;
 
       // Create a PaymentIntent with the order amount and currency
-      const stripeElem = new Stripe(CLIENT_SECRET);
-      const paymentIntent = await stripeElem.paymentIntents.create({
+      const paymentIntent = await stripeInstance.paymentIntents.create({
+        customer: userStripeId,
         amount: Math.round(amount),
         currency: "inr",
         payment_method_types: ["card"],
@@ -251,7 +196,7 @@ function PaymentContent({ category, payNow, amount }) {
     return () => {
       isCancel = true;
     };
-  }, [amount]);
+  }, [userStripeId, amount]);
 
   const options = {
     clientSecret,
@@ -263,6 +208,8 @@ function PaymentContent({ category, payNow, amount }) {
   return (
     <Elements stripe={stripePromise} options={options}>
       <PaymentField
+        userStripeId={userStripeId}
+        paymentInfo={paymentInfo}
         payNow={(data) => payNow(data, category)}
         clientSecret={clientSecret}
       />
@@ -270,7 +217,19 @@ function PaymentContent({ category, payNow, amount }) {
   );
 }
 
-function PaymentHeader({ title, dueDate, amount, isPaid }) {
+function PaymentHeader({ invoiceId, title, dueDate, amount, isPaid }) {
+  const [loading, setLoading] = useState(false);
+
+  const onDownload = async (e) => {
+    try {
+      setLoading(true);
+
+      await downloadInvoice(invoiceId);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Header
       prefixCls="payment-header"
@@ -280,11 +239,23 @@ function PaymentHeader({ title, dueDate, amount, isPaid }) {
         {isPaid && (
           <CheckCircleTwoTone className="font-24" twoToneColor="#40cf85" />
         )}
-        <h5>{title} Payment</h5>
+        <h5>{title}</h5>
+
+        {isPaid && (
+          <Tooltip title="Download Invoice">
+            <Button
+              type="primary"
+              icon={<DownloadOutlined />}
+              loading={loading}
+              onClick={onDownload}
+            />
+          </Tooltip>
+        )}
       </Space>
 
       <div>
         <h5 className="text-right">{formatAsCurrency(amount)}</h5>
+
         {dueDate && !isPaid && (
           <div className="font-14 mt-1 font-weight-light">
             Due on {dueDate.format(DATETIME_DISPLAY_FORMAT)}

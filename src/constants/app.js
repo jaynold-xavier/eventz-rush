@@ -117,6 +117,17 @@ export const EVENT_WIZARD_STEPS = [
   },
 ];
 
+export const PAYMENT_CATEGORIES = {
+  booking: {
+    key: "booking",
+    text: "Booking Payment",
+  },
+  final: {
+    key: "final",
+    text: "Final Payment",
+  },
+};
+
 //#region date constants
 export const DATE_DISPLAY_FORMAT = "DD MMM YYYY";
 export const TIME_DISPLAY_FORMAT = "hh:mm A";
@@ -132,7 +143,7 @@ export const commonPopConfirmProp = {
 //#region
 
 //#region app policies
-export const maxAdvanceBookingPeriod = "30 days";
-export const bookingPaymentPeriod = "2 days";
-export const finalPaymentPeriod = "14 days";
+export const MAX_ADV_BOOKING_PERIOD = "30 days";
+export const BOOKING_PAYMENT_PERIOD = "2 days";
+export const FINAL_PAYMENT_PERIOD = "14 days";
 //#region

@@ -13,7 +13,7 @@ import { appTheme } from "../../../../../../assets/js/theme";
 import { RichTextEditor } from "../../../../../../components/fields";
 import {
   DATETIME_DISPLAY_FORMAT,
-  maxAdvanceBookingPeriod,
+  MAX_ADV_BOOKING_PERIOD,
 } from "../../../../../../constants/app";
 
 const { RangePicker } = DatePicker;
@@ -61,7 +61,7 @@ export default function BasicInfoStep({ events, setSelectedDate }) {
                 return Promise.resolve();
               }
 
-              const maxBookingPeriodParts = maxAdvanceBookingPeriod.split(" ");
+              const maxBookingPeriodParts = MAX_ADV_BOOKING_PERIOD.split(" ");
               const minBookingDate = from
                 .clone()
                 .subtract(maxBookingPeriodParts[0], maxBookingPeriodParts[1]);
@@ -69,7 +69,7 @@ export default function BasicInfoStep({ events, setSelectedDate }) {
               if (dayjs().isAfter(minBookingDate)) {
                 return Promise.reject(
                   new Error(
-                    `Sorry, cannot book an event within ${maxAdvanceBookingPeriod} of the start of the event`
+                    `Sorry, cannot book an event within ${MAX_ADV_BOOKING_PERIOD} of the start of the event`
                   )
                 );
               }

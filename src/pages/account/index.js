@@ -1,17 +1,16 @@
 //#region host screens
 export {
   Dashboard as HostDashboard,
-  EventsList as HostEvents,
+  EventsList as HostEventsList,
   EventCreateWizard,
-  EventDetails,
 } from "./host";
 //#region
 
 //#region vendor screens
 export {
-  VendorDashboard,
-  VendorEvents,
-  VendorPhotos,
-  VendorProfile,
+  Dashboard as VendorDashboard,
+  EventsList as VendorEventsList,
+  Photos as VendorPhotos,
+  Profile as VendorProfile,
 } from "./vendor";
 //#region
