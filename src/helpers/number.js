@@ -1,4 +1,4 @@
-import { countBy, isEmpty } from "lodash";
+import { countBy, isEmpty, each } from "lodash";
 
 // Create our number formatter.
 const currencyFormatter = new Intl.NumberFormat(navigator.language, {
@@ -21,7 +21,7 @@ export function getRatingOccurrences(ratings) {
   if (isEmpty(ratings)) return [];
 
   const occurrences = countBy(ratings, (r) => r);
-  return Object.values(occurrences);
+  return occurrences;
 }
 
 export function getAverageRatings(ratings) {
@@ -30,12 +30,11 @@ export function getAverageRatings(ratings) {
   const occurrences = getRatingOccurrences(ratings);
 
   let average = 0;
-  for (let i = 0; i < occurrences.length; i++) {
-    const rateElement = occurrences[i];
-    average += rateElement * (i + 1);
-  }
-
-  const total = Math.round(occurrences.reduce((prev, curr) => prev + curr, 0));
+  let total = 0;
+  each(occurrences, (count, rate) => {
+    average += count * rate;
+    total += count;
+  });
 
   return average / total;
 }

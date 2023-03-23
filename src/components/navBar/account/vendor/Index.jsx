@@ -20,7 +20,7 @@ import BlobImg3 from "../../../../assets/images/shapes/shape-2.svg";
 import { getDisplayName } from "../../../../helpers/auth";
 import IconFont from "../../../icons/Index";
 
-export default function HostNavbar({ user, collapsed }) {
+export default function HostNavbar({ user }) {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -74,7 +74,7 @@ export default function HostNavbar({ user, collapsed }) {
           className="user-avatar justify-content-center"
           src={get(user, "photoURL")}
           icon={<UserOutlined style={{ fontSize: "100%" }} />}
-          size={collapsed ? 25 : 80}
+          size={80}
         />
       ),
     },

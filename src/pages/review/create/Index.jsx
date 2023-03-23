@@ -4,6 +4,7 @@ import {
   Avatar,
   Divider,
   Form,
+  Input,
   Modal,
   Rate,
   Space,
@@ -14,7 +15,6 @@ import { get } from "lodash";
 
 import { VENDOR_TYPES } from "../../../constants/app";
 import { getDisplayName } from "../../../helpers/auth";
-import { RichTextEditor } from "../../../components/fields";
 
 const avatarProps = {
   shape: "circle",
@@ -90,7 +90,7 @@ export default function CreateReviewLayout({
         </Form.Item>
 
         <Form.Item name="description" label="Description">
-          <RichTextEditor />
+          <Input.TextArea rows={5} />
         </Form.Item>
       </Form>
     </Modal>

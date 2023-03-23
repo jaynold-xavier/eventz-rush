@@ -5,14 +5,13 @@ import {
   Col,
   Layout,
   Row,
-  Skeleton,
   Space,
   Spin,
   Tabs,
   Tag,
   Typography,
 } from "antd";
-import { filter, get, isEmpty } from "lodash";
+import { filter, get, isEmpty, map } from "lodash";
 
 import { getReviews, getUser } from "../../../services/database";
 import useBackground from "../../../hooks/useBackground";
@@ -66,7 +65,12 @@ export default function VendorDetails() {
 
     async function fetchReviews() {
       const reviews = await getReviews({ inviteeId: id });
-      return reviews;
+      return map(reviews, (r) => {
+        if (r.description) {
+          r.description = '"' + r.description + '"';
+        }
+        return r;
+      });
     }
 
     return () => {
@@ -95,7 +99,7 @@ export default function VendorDetails() {
       }
 
       if (c.key === "reviews") {
-        return !isEmpty(get(data, "reviews"));
+        return !isEmpty(reviews);
       }
 
       return false;

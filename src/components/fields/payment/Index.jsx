@@ -4,7 +4,7 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
-import { Button, Col, message, Row } from "antd";
+import { Button, message } from "antd";
 
 import { stripeInstance } from "../../../assets/js/stripe";
 
@@ -101,7 +101,6 @@ export default function PaymentField({
           type: "card",
         });
 
-        message.success("Payment succeeded!");
         return;
       }
 

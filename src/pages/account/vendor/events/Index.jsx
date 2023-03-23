@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { where } from "firebase/firestore";
-import { filter, get, isEmpty } from "lodash";
+import { filter, get, isEmpty, map } from "lodash";
 
 import { getEvents, getInvitees } from "../../../../services/database";
 import { EventsList } from "../../../events";
+import { EVENT_STATUSES } from "../../../../constants/app";
 
 const initFilters = {
   period: "upcoming",
@@ -18,8 +19,6 @@ const constructConstraints = (filters = initFilters) => {
 
   if (q) {
     constraints.push(where("title", "==", q));
-    constraints.push(where("description", "==", q));
-    constraints.push(where("location", "==", q));
   }
 
   if (period) {
@@ -45,12 +44,17 @@ const constructConstraints = (filters = initFilters) => {
   }
 
   if (!isEmpty(status)) {
-    constraints.push(where("status", "in", status));
+    constraints.push(
+      where(
+        "status",
+        "array-contains-any",
+        map(status, (s) => get(EVENT_STATUSES[status], "text") || s)
+      )
+    );
   }
 
   return constraints;
 };
-
 export default function HostEventsList({ user = {} }) {
   const [loading, setLoading] = useState(true);
   const [dataSource, setDataSource] = useState([]);

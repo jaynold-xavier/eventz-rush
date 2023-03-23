@@ -12,7 +12,7 @@ export default function ReviewsViewer({ dataSource, loading, ...rest }) {
         xs: 1,
         sm: 2,
         md: 2,
-        lg: 3,
+        lg: 2,
         xl: 3,
         xxl: 4,
       }}
@@ -33,7 +33,12 @@ export default function ReviewsViewer({ dataSource, loading, ...rest }) {
             <Rate value={rating} allowClear={false} disabled />
           </div>
 
-          <div dangerouslySetInnerHTML={{ __html: description }} />
+          {description && (
+            <div
+              className="font-italic mt-3"
+              dangerouslySetInnerHTML={{ __html: description }}
+            />
+          )}
         </Card>
       </List.Item>
     );

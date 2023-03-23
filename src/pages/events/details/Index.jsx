@@ -154,6 +154,10 @@ export default function EventDetails() {
     data.eventId = id;
     await rateVendor(data);
 
+    const rData = reviews || [];
+    rData.push(data);
+    setReviews(rData);
+
     message.success("Vendor reviewed!");
   };
 
@@ -319,11 +323,10 @@ function VendorsList({ dataSource, isEventClosed, reviews, onRateVendor }) {
         gutter: 16,
         xs: 1,
         sm: 1,
-        md: 1,
+        md: 2,
         lg: 2,
         xl: 3,
         xxl: 4,
-        column: 3,
       }}
       renderItem={renderItem}
     />

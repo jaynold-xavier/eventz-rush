@@ -208,8 +208,7 @@ function HomeLayout({ user }) {
 }
 
 function AccountLayout({ isAuthenticated, user, isVendor }) {
-  const collapsible = window.innerWidth < 1024;
-  const [collapsed, setCollapsed] = useState(collapsible);
+  // const collapsible = window.innerWidth < 1024;
 
   const Navbar = isVendor ? VendorNavbar : HostNavbar;
 
@@ -223,23 +222,19 @@ function AccountLayout({ isAuthenticated, user, isVendor }) {
   }
 
   return (
-    <Layout className="account-layout">
+    <Layout className="account-layout" hasSider>
       <Sider
         width={250}
-        collapsedWidth={50}
-        collapsible={collapsible}
-        collapsed={collapsed}
-        // onMouseEnter={(e) => {
-        //   if (!collapsible) return;
-        //   setCollapsed((s) => !s);
-        // }}
-        // onMouseLeave={(e) => {
-        //   if (!collapsible) return;
-        //   setCollapsed(true);
-        // }}
-        trigger={null}
+        collapsedWidth="0"
+        onBreakpoint={(broken) => {
+          console.log({ broken });
+        }}
+        onCollapse={(collapsed, type) => {
+          console.log({ collapsed, type });
+        }}
+        collapsible
       >
-        <Navbar user={user} collapsed={collapsed} />
+        <Navbar user={user} />
       </Sider>
 
       <Outlet />

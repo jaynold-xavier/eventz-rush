@@ -79,7 +79,7 @@ export default function EventsList({
 
       <Content prefixCls="events-content">
         <Row className="filters p-3 m-0" gutter={[12, 24]} hidden={loading}>
-          <Col span={8}>
+          <Col xs={24} sm={24} lg={24} md={8} xl={8} xxl={8}>
             <Button
               type={showFilters ? "primary" : "default"}
               size="large"
@@ -91,7 +91,7 @@ export default function EventsList({
             </Button>
           </Col>
 
-          <Col span={8}>
+          <Col xs={24} sm={24} lg={24} md={8} xl={8} xxl={8}>
             <Radio.Group
               className="w-100"
               buttonStyle="solid"
@@ -118,18 +118,25 @@ export default function EventsList({
             </Radio.Group>
           </Col>
 
-          <Col className="text-right" span={8}>
+          <Col
+            className="text-right"
+            xs={24}
+            sm={24}
+            lg={24}
+            md={8}
+            xl={8}
+            xxl={8}
+          >
             <SearchInput
               className="w-100"
               placeholder="Search Events"
               size="large"
-              style={{ maxWidth: 300 }}
               onChange={(value) => setFilters((s) => ({ ...s, q: value }))}
             />
           </Col>
 
           {showFilters && (
-            <Col span={6}>
+            <Col xs={24} sm={24} lg={24} md={6} xl={6} xxl={6}>
               <Select
                 className="w-100"
                 size="large"
@@ -143,7 +150,7 @@ export default function EventsList({
           )}
 
           {showFilters && (
-            <Col span={6}>
+            <Col xs={24} sm={24} lg={24} md={6} xl={6} xxl={6}>
               <Select
                 className="w-100"
                 size="large"

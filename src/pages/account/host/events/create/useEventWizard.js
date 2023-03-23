@@ -178,12 +178,12 @@ const useEventWizard = ({ id, user, setLoading }) => {
 
     switch (category) {
       case PAYMENT_CATEGORIES.booking.key:
-        await updateEvent({ status: EVENT_STATUSES.booked.text });
+        await updateEvent(data.eventId, { status: EVENT_STATUSES.booked.text });
         message.success("Event Booked!");
         break;
       case PAYMENT_CATEGORIES.final.key:
         navigate(appRoutes.account.dashboard);
-        message.success("Payments Completed!");
+        message.success("Event Finalized!");
         break;
       default:
         break;
@@ -222,9 +222,7 @@ const useEventWizard = ({ id, user, setLoading }) => {
 
   function updateNetAmount(invitees = []) {
     const netAmount = filter(invitees, (i) => {
-      return [
-        INVITE_STATUSES.accepted.text,
-      ].includes(i.status);
+      return [INVITE_STATUSES.accepted.text].includes(i.status);
     })
       .map((i) => i.amount)
       .reduce((prev, curr) => prev + curr, 0);

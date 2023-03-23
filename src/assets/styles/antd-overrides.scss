@@ -6,6 +6,22 @@
 //   height: 3rem;
 // }
 
+// sider
+.ant-layout-sider {
+  .ant-layout-sider-zero-width-trigger {
+    position: fixed;
+    left: 250px;
+    transition: left 300ms;
+    background-color: #35bfa5;
+  }
+
+  &.ant-layout-sider-collapsed {
+    .ant-layout-sider-zero-width-trigger {
+      left: 0;
+    }
+  }
+}
+
 // drawer
 .ant-drawer {
   .ant-drawer-header {

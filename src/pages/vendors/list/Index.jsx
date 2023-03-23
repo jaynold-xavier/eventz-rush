@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { where } from "firebase/firestore";
 import { Layout } from "antd";
+import { isEmpty } from "lodash";
 
 import { getReviews, getVendors } from "../../../services/database";
 import { HomePageHeader } from "../../../components/page/index";
+import { getAverageRatings } from "../../../helpers/number";
 import Filters from "./filters/Index";
 import List from "./List";
-import { where } from "firebase/firestore";
-import { isEmpty } from "lodash";
-import { getAverageRatings } from "../../../helpers/number";
 
 const { Content } = Layout;
 
@@ -23,8 +23,6 @@ const constructConstraints = (filters = initFilters) => {
 
   if (q) {
     constraints.push(where("title", "==", q));
-    constraints.push(where("description", "==", q));
-    constraints.push(where("userName", "==", q));
   }
 
   if (!isEmpty(date)) {
@@ -60,7 +58,7 @@ export default function VendorsList() {
         const vendorsList = await getVendors(constraints);
         const transformedData = await Promise.all(
           vendorsList.map(async (v) => {
-            const ratings = await getReviews(v.email);
+            const ratings = await getReviews({ inviteeId: v.email });
             v.ratings = getAverageRatings(ratings.map((r) => r.rating));
             return v;
           })
