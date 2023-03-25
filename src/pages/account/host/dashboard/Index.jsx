@@ -12,7 +12,7 @@ import {
   Space,
   Typography,
 } from "antd";
-import { get } from "lodash";
+import { get, some } from "lodash";
 import { orderBy, Timestamp, where } from "firebase/firestore";
 import dayjs from "dayjs";
 
@@ -21,11 +21,16 @@ import BlobImg3 from "../../../../assets/images/shapes/shape-3.svg";
 
 import { getDisplayName } from "../../../../helpers/auth";
 import ScrollableCard from "../../../../components/card/scrollable/Index";
-import { getEventsByMonth, updateEvent } from "../../../../services/database";
+import {
+  getEventsByMonth,
+  getPayments,
+  updateEvent,
+} from "../../../../services/database";
 import { appTheme, buttonActionTheme } from "../../../../assets/js/theme";
 import {
   commonPopConfirmProp,
   EVENT_STATUSES,
+  PAYMENT_CATEGORIES,
 } from "../../../../constants/app";
 import IconFont from "../../../../components/icons/Index";
 import { appRoutes } from "../../../../constants/routes";
@@ -90,6 +95,15 @@ export default function Dashboard({ user }) {
                   <CardEventItem
                     id={get(item, "id")}
                     item={get(item, "record")}
+                    continueEvent={(e) =>
+                      navigate({
+                        pathname: appRoutes.account.events.update.replace(
+                          "{id}",
+                          get(item, "id")
+                        ),
+                        search: "?step=2",
+                      })
+                    }
                   />
                 );
               }}
@@ -288,9 +302,50 @@ function CardEventItem({ id, item, continueEvent, setReload }) {
             </ConfigProvider>
           </Space>
         ) : (
-          <Countdown value={fromDateJs} />
+          <Space
+            className="w-100 justify-content-between"
+            align="center"
+            size={20}
+          >
+            <Countdown value={fromDateJs} />
+
+            <FinalPaymentButton eventId={id} continueEvent={continueEvent} />
+          </Space>
         )}
       </Space>
     </Space>
   );
+}
+
+function FinalPaymentButton({ eventId, continueEvent }) {
+  const [showButton, setShowButton] = useState(false);
+
+  useEffect(() => {
+    let isCancel = false;
+
+    async function initData(isCancel) {
+      if (isCancel) return;
+
+      const payments = await getPayments(eventId);
+      setShowButton(
+        !some(payments, (p) => p.category === PAYMENT_CATEGORIES.final.key)
+      );
+    }
+
+    initData(isCancel);
+
+    return () => {
+      isCancel = true;
+    };
+  }, [eventId]);
+
+  if (showButton) {
+    return (
+      <ConfigProvider theme={{ token: buttonActionTheme }}>
+        <Button type="primary" onClick={(e) => continueEvent()} block>
+          Pay Final Payment
+        </Button>
+      </ConfigProvider>
+    );
+  }
 }

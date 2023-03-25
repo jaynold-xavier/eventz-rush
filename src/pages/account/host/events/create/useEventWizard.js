@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { Form, message } from "antd";
 import { filter, get, find, last, size, map, isEmpty } from "lodash";
@@ -26,13 +26,14 @@ import {
 const newEventText = "New Event";
 
 const useEventWizard = ({ id, user, setLoading, setIsSaving }) => {
+  const [searchParams] = useSearchParams();
   const [form] = Form.useForm();
   const navigate = useNavigate();
 
   const eventIdRef = useRef(id);
 
   const [title, setTitle] = useState(newEventText);
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState(+searchParams.get("step") ?? 0);
   const [netAmount, setNetAmount] = useState(0);
 
   useEffect(() => {
@@ -291,8 +292,10 @@ const useEventWizard = ({ id, user, setLoading, setIsSaving }) => {
       }
       eventCreatedOn = dayjs(eventCreatedOn);
     } else {
-      eventCreatedOn = new Date();
+      eventCreatedOn = dayjs();
     }
+
+    if(!eventCreatedOn) return {}
 
     const acceptedInvitees = filter(
       form.getFieldValue("vendors"),

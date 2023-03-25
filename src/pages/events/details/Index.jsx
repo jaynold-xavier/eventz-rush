@@ -346,9 +346,12 @@ export default function EventDetails() {
               />
             </Tabs.TabPane>
 
-            {/* <Tabs.TabPane key="services" tab="Services">
-              <Services data={get(data, "services")} />
-            </Tabs.TabPane> */}
+            <Tabs.TabPane key="invoices" tab="Invoices">
+              <PaymentsList
+                dataSource={payments}
+                isEventClosed={[EVENT_STATUSES.closed.text].includes(status)}
+              />
+            </Tabs.TabPane>
           </FilteredTabs>
 
           <CreateReviewLayout
@@ -404,22 +407,13 @@ function PaymentsList({ dataSource, isEventClosed }) {
     <List
       className="payments-status-list mt-1"
       dataSource={dataSource}
-      grid={{
-        gutter: 16,
-        xs: 1,
-        sm: 1,
-        md: 2,
-        lg: 2,
-        xl: 3,
-        xxl: 4,
-      }}
       renderItem={RenderPaymentStatusItem}
     />
   );
 }
 
 function RenderPaymentStatusItem(item) {
-  const { dueDate, category, amount, invoiceId } = item || {};
+  const { dueDate, category, status, amount, invoiceId } = item || {};
 
   const [loading, setLoading] = useState(false);
 
@@ -433,7 +427,7 @@ function RenderPaymentStatusItem(item) {
     }
   };
 
-  const isPaid = !!amount;
+  const isPaid = status === "succeeded";
 
   return (
     <List.Item>
@@ -446,21 +440,21 @@ function RenderPaymentStatusItem(item) {
         }
       />
 
-      <Space>
-        {isPaid && (
-          <Tooltip title="Download Invoice">
-            <Button
-              type="primary"
-              icon={<DownloadOutlined />}
-              loading={loading}
-              onClick={onDownload}
-            />
-          </Tooltip>
-        )}
-      </Space>
-
       <div>
-        <h5 className="text-right">{formatAsCurrency(amount)}</h5>
+        <Space size={30}>
+          {isPaid && (
+            <Tooltip title="Download Invoice">
+              <Button
+                type="primary"
+                icon={<DownloadOutlined />}
+                loading={loading}
+                onClick={onDownload}
+              />
+            </Tooltip>
+          )}
+
+          <h5 className="text-right">{formatAsCurrency(amount)}</h5>
+        </Space>
 
         {dueDate && !isPaid && (
           <div className="font-14 mt-1 font-weight-light">

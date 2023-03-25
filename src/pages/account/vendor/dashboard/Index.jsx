@@ -377,7 +377,7 @@ function CardEventItem({
             {...commonPopConfirmProp}
           >
             <Button type="link" icon={<CloseOutlined />} danger>
-              Cancel
+              Decline
             </Button>
           </Popconfirm>
         </ConfigProvider>
