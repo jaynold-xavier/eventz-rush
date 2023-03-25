@@ -15,6 +15,7 @@ export default function EventWizardFooter({
   netAmount,
   disableSave,
   disablePrev,
+  loading,
   onPrev,
   onSave,
   onCancel,
@@ -91,6 +92,7 @@ export default function EventWizardFooter({
           size="large"
           onClick={onSave}
           disabled={disableSave}
+          loading={loading}
         >
           Save and Continue
         </Button>

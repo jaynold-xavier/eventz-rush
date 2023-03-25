@@ -249,7 +249,7 @@ export default function EventsList({
 
             {!isSameDay && (
               <>
-                <div className="font-12 mt-1">TO</div>
+                <div className="font-12 mt-1 text-red font-weight-bold">TO</div>
 
                 <div>
                   <h3 style={{ lineHeight: "3rem" }}>
@@ -261,7 +261,7 @@ export default function EventsList({
             )}
           </div>
 
-          <div className="bg-white p-3">
+          <div className="bg-white p-3 w-100">
             <div className="d-flex align-items-center justify-content-between flex-wrap">
               <Typography.Title
                 className="mb-1"
@@ -284,6 +284,9 @@ export default function EventsList({
             </div>
 
             <Tag color={appTheme.colorPrimary}>{type}</Tag>
+
+            <br />
+            <br />
 
             <Space className="mt-1">
               <IconFont

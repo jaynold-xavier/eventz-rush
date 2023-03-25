@@ -8,6 +8,7 @@ import {
   Layout,
   List,
   message,
+  Popconfirm,
   Row,
   Space,
   Spin,
@@ -29,6 +30,7 @@ import {
 } from "../../../services/database";
 import { appTheme } from "../../../assets/js/theme";
 import {
+  commonPopConfirmProp,
   EVENT_STATUSES,
   FULL_DATETIME_DISPLAY_FORMAT,
   INVITE_STATUSES,
@@ -117,21 +119,23 @@ export default function EventDetails() {
 
   const onCloneEvent = async (e) => {
     const clonedData = cloneDeep(data);
+    delete clonedData.fromDate;
+    delete clonedData.toDate;
     delete clonedData.createdOn;
     clonedData.status = EVENT_STATUSES.ongoing.text;
 
     const clonedEventId = await createEvent(clonedData);
     if (!clonedEventId) return;
 
-    const promises = map(vendors, (v) => {
-      return addInvitee({
-        eventId: clonedEventId,
-        inviteeId: v.email,
-        type: USER_ROLES.vendor.text,
-      });
-    });
+    // const promises = map(vendors, (v) => {
+    //   return addInvitee({
+    //     eventId: clonedEventId,
+    //     inviteeId: v.email,
+    //     type: USER_ROLES.vendor.text,
+    //   });
+    // });
 
-    await Promise.all(promises);
+    // await Promise.all(promises);
 
     navigate(appRoutes.account.events.update.replace("{id}", clonedEventId));
   };
@@ -228,13 +232,25 @@ export default function EventDetails() {
               )}
 
               {!isVendor && (
-                <Button type="primary" onClick={onCloneEvent}>
-                  Clone
-                </Button>
+                <Popconfirm
+                  title="Are you sure you want to cancel the event?"
+                  onConfirm={onCloneEvent}
+                  placement="bottomRight"
+                  {...commonPopConfirmProp}
+                >
+                  <Button type="primary">Clone</Button>
+                </Popconfirm>
               )}
 
               {canCancelEvent(data) && !isVendor && (
-                <Button onClick={onCancelEvent}>Cancel</Button>
+                <Popconfirm
+                  title="Are you sure you want to cancel the event?"
+                  onConfirm={onCancelEvent}
+                  placement="bottomRight"
+                  {...commonPopConfirmProp}
+                >
+                  <Button>Cancel</Button>
+                </Popconfirm>
               )}
             </Space>
           </div>

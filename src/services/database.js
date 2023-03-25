@@ -1,4 +1,4 @@
-import { auth, db } from "../assets/js/firebase";
+import { analytics, auth, db } from "../assets/js/firebase";
 import {
   addDoc,
   collection,
@@ -15,6 +15,7 @@ import {
 import { get, isEmpty, map } from "lodash";
 import { INVITE_STATUSES, USER_ROLES } from "../constants/app";
 import { isDateInRange } from "../helpers/timestamp";
+import { logEvent } from "firebase/analytics";
 
 //#region helpers
 export async function getRecords(table, constraints = []) {
@@ -235,7 +236,14 @@ export async function getInvitees(filters = {}) {
 }
 
 export async function addInvitee(data) {
-  return await addDoc(collection(db, "invitees"), data);
+  const resp = await addDoc(collection(db, "invitees"), data);
+  logEvent(analytics, "select_content", {
+    content_type: "vendor",
+    content_id: data.eventId + data.inviteeId,
+    items: [data],
+  });
+
+  return resp;
 }
 
 export async function getInvitee(eventId, inviteeId) {

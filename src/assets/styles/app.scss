@@ -605,9 +605,17 @@ $navbar-height: 100px;
 }
 
 .events-list {
+  .events-list-header {
+    border-bottom: 1px solid #dcdcdc;
+  }
+
   .events-group-list-item {
     padding: 0.5rem 1rem;
-    background-color: #ebebeb;
+    background-color: lighten(#6252f1, 30);
+
+    &:not(:first-child) {
+      margin-top: 2rem;
+    }
   }
 
   .events-list-item {

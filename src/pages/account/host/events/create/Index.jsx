@@ -26,6 +26,7 @@ const steps = EVENT_WIZARD_STEPS.map((e) => {
 export default function EventCreateUpdateWizard({ user }) {
   const { id } = useParams();
 
+  const [isSaving, setIsSaving] = useState(false);
   const [loading, setLoading] = useState(!!id);
   const [selectedDate, setSelectedDate] = useState(dayjs());
 
@@ -47,7 +48,7 @@ export default function EventCreateUpdateWizard({ user }) {
     cancelChanges,
     generatePaymentInfo,
     payNow,
-  } = useEventWizard({ id, user, setLoading });
+  } = useEventWizard({ id, user, setLoading, setIsSaving });
 
   usePrompt((event) => {
     if (form.isFieldsTouched()) {
@@ -152,6 +153,7 @@ export default function EventCreateUpdateWizard({ user }) {
         netAmount={netAmount}
         vendors={vendors}
         disablePrev={currentStep === 0}
+        loading={isSaving}
         onSave={onSave}
         onCancel={onCancel}
         disableSave={isLastStep}

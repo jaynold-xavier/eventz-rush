@@ -25,7 +25,7 @@ import {
 
 const newEventText = "New Event";
 
-const useEventWizard = ({ id, user, setLoading }) => {
+const useEventWizard = ({ id, user, setLoading, setIsSaving }) => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
 
@@ -55,7 +55,7 @@ const useEventWizard = ({ id, user, setLoading }) => {
         const [payments = [], event = {}, invitees = []] = values;
 
         if (size(payments) === size(PAYMENT_CATEGORIES)) {
-          message.warning("Cannot update a booked event!");
+          message.warning("Cannot update event!");
           navigate(appRoutes.account.dashboard);
         }
 
@@ -124,33 +124,39 @@ const useEventWizard = ({ id, user, setLoading }) => {
   }, [id, form, setLoading, navigate]);
 
   const saveChanges = async () => {
-    const data = await validateSection();
-    console.log({ validatedData: data });
+    try {
+      setIsSaving(true);
 
-    switch (currentStep) {
-      case 0:
-        data.bannerURL = get(data.bannerURL, "0.thumbUrl", "");
-        data.fromDate = data.date[0].toDate();
-        data.toDate = data.date[1].toDate();
-        delete data.date;
+      const data = await validateSection();
+      console.log({ validatedData: data });
 
-        if (eventIdRef.current) {
-          await updateEvent(eventIdRef.current, data);
-        } else {
-          data.status = EVENT_STATUSES.ongoing.text;
-          data.hostEmail = get(user, "email");
+      switch (currentStep) {
+        case 0:
+          data.bannerURL = get(data.bannerURL, "0.thumbUrl", "");
+          data.fromDate = data.date[0].toDate();
+          data.toDate = data.date[1].toDate();
+          delete data.date;
 
-          eventIdRef.current = await createEvent(data);
+          if (eventIdRef.current) {
+            await updateEvent(eventIdRef.current, data);
+          } else {
+            data.status = EVENT_STATUSES.ongoing.text;
+            data.hostEmail = get(user, "email");
 
-          message.success("Event Created!");
-        }
-        break;
-      case 1:
-        // update createdOn
-        updateEventItem({ createdOn: new Date() });
-        break;
-      default:
-        break;
+            eventIdRef.current = await createEvent(data);
+
+            message.success("Event Created!");
+          }
+          break;
+        case 1:
+          // update createdOn
+          updateEventItem({ createdOn: new Date() });
+          break;
+        default:
+          break;
+      }
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -193,7 +199,7 @@ const useEventWizard = ({ id, user, setLoading }) => {
   };
 
   const onStepChange = async (step) => {
-    await validateSection();
+    await validateSection(step);
     setCurrentStep(step);
   };
 
@@ -243,9 +249,12 @@ const useEventWizard = ({ id, user, setLoading }) => {
     await updateEvent(eventIdRef.current, event);
   }
 
-  async function validateSection() {
+  async function validateSection(step = currentStep + 1) {
+    console.log({ step, currentStep });
+    if (step < currentStep) return;
+
     let data;
-    switch (currentStep) {
+    switch (step - 1) {
       case 0:
         data = await form.validateFields([
           "bannerURL",
