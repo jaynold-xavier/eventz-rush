@@ -604,14 +604,14 @@ $navbar-height: 100px;
   }
 }
 
-.events-list {
-  .events-list-header {
-    border-bottom: 1px solid #dcdcdc;
-  }
+.events-list-header {
+  border-bottom: 1px solid #dcdcdc;
+}
 
+.events-list {
   .events-group-list-item {
     padding: 0.5rem 1rem;
-    background-color: lighten(#6252f1, 30);
+    background-color: lighten(#6252f1, 35);
 
     &:not(:first-child) {
       margin-top: 2rem;

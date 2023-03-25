@@ -1,4 +1,10 @@
-import { UserOutlined, DeleteOutlined } from "@ant-design/icons";
+import {
+  CloudDownloadOutlined,
+  CloudUploadOutlined,
+  DeleteOutlined,
+  PlusOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import { read, utils } from "xlsx";
 import {
@@ -198,7 +204,7 @@ export default function VendorProfile({ user }) {
                 </Col>
 
                 <Col span={12}>
-                  <Space direction="vertical" size={12}>
+                  <Space className="d-flex" direction="vertical" size={12}>
                     <InlineEditor
                       placeholder="Enter Phone Number"
                       value={get(data, "phoneNumber")}
@@ -240,10 +246,7 @@ export default function VendorProfile({ user }) {
                       value={get(data, "websiteURL")}
                       onChange={(value) => updateData({ websiteURL: value })}
                       viewerTemplate={({ value, placeholder }) => (
-                        <Typography.Text
-                          ellipsis={{ tooltip: value }}
-                          style={{ maxWidth: 300 }}
-                        >
+                        <Typography.Text ellipsis={{ tooltip: value }}>
                           {value || placeholder}
                         </Typography.Text>
                       )}
@@ -285,17 +288,18 @@ export default function VendorProfile({ user }) {
         <br />
 
         <Row gutter={[12, 12]}>
-          <Col span={18}>
+          <Col xs={24} sm={24} lg={24} md={24} xl={18} xxl={18}>
             <Card
               title="Services"
               loading={loading}
               extra={[
                 <Button
+                  icon={<CloudDownloadOutlined />}
                   onClick={(e) => {
                     downloadResource("services-template.ods");
                   }}
                 >
-                  Download Template
+                  Template
                 </Button>,
                 <Upload
                   onChange={onImportExcel}
@@ -305,11 +309,16 @@ export default function VendorProfile({ user }) {
                   beforeUpload={beforeUpload}
                   showUploadList={false}
                 >
-                  <Button className="ml-2" type="primary">
+                  <Button
+                    className="ml-2"
+                    type="primary"
+                    icon={<CloudUploadOutlined />}
+                  >
                     Import
                   </Button>
                 </Upload>,
               ]}
+              bodyStyle={{ padding: "0 24px 1rem" }}
             >
               <ServicesWizard
                 data={get(data, "services")}
@@ -321,7 +330,7 @@ export default function VendorProfile({ user }) {
             </Card>
           </Col>
 
-          <Col span={6}>
+          <Col xs={24} sm={24} lg={24} md={24} xl={6} xxl={6}>
             <Card title="Settings" loading={loading}>
               <Row gutter={[12, 12]}>
                 <Col span={12}>Show Contact Info</Col>
@@ -419,7 +428,11 @@ function ServicesWizard({ data, saveChanges }) {
 
   return (
     <List
-      header={<Button onClick={addItem}>Add Item</Button>}
+      header={
+        <Button icon={<PlusOutlined />} onClick={addItem}>
+          Add Item
+        </Button>
+      }
       dataSource={services}
       renderItem={(...props) => renderItem(...props, onChange, removeItem)}
       locale={{
