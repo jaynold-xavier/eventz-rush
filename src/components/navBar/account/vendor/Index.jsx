@@ -20,7 +20,7 @@ import BlobImg3 from "../../../../assets/images/shapes/shape-2.svg";
 import { getDisplayName } from "../../../../helpers/auth";
 import IconFont from "../../../icons/Index";
 
-export default function HostNavbar({ user }) {
+export default function VendorNavbar({ user }) {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -131,15 +131,14 @@ export default function HostNavbar({ user }) {
       />
 
       <Menu
-        className="host-nav-bar h-100 pt-3"
+        className="vendor-nav-bar pt-3"
         mode="inline"
         selectedKeys={[location.pathname]}
         items={navItems}
       />
 
       <Menu
-        className="host-nav-bar position-sticky"
-        style={{ bottom: 0 }}
+        className="vendor-nav-bar mt-auto"
         mode="inline"
         selectedKeys={[location.pathname]}
         items={userItems}

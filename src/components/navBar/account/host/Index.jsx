@@ -109,15 +109,14 @@ export default function HostNavbar({ user }) {
       />
 
       <Menu
-        className="host-nav-bar h-100 pt-3"
+        className="host-nav-bar pt-3"
         mode="inline"
         selectedKeys={[location.pathname]}
         items={navItems}
       />
 
       <Menu
-        className="host-nav-bar position-sticky"
-        style={{ bottom: 0 }}
+        className="host-nav-bar mt-auto"
         mode="inline"
         selectedKeys={[location.pathname]}
         items={userItems}

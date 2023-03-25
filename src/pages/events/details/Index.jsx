@@ -1,3 +1,4 @@
+import { CheckCircleTwoTone, DownloadOutlined } from "@ant-design/icons";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -12,7 +13,9 @@ import {
   Row,
   Space,
   Spin,
+  Tabs,
   Tag,
+  Tooltip,
   Typography,
 } from "antd";
 import dayjs from "dayjs";
@@ -23,6 +26,7 @@ import {
   createEvent,
   getEvent,
   getInvitees,
+  getPayments,
   getReviews,
   getUser,
   rateVendor,
@@ -31,16 +35,20 @@ import {
 import { appTheme } from "../../../assets/js/theme";
 import {
   commonPopConfirmProp,
+  DATETIME_DISPLAY_FORMAT,
   EVENT_STATUSES,
   FULL_DATETIME_DISPLAY_FORMAT,
   INVITE_STATUSES,
-  USER_ROLES,
+  PAYMENT_CATEGORIES,
 } from "../../../constants/app";
 import { appRoutes } from "../../../constants/routes";
 import VendorItem from "../../vendors/list/item/Index";
 import { canCancelEvent, canUpdateEvent } from "../../../helpers/validations";
 import useAuth from "../../../hooks/useAuth";
 import { CreateReviewLayout } from "../../review";
+import { FilteredTabs } from "../../../components/tabs";
+import { formatAsCurrency } from "../../../helpers/number";
+import { downloadInvoice } from "../../../assets/js/stripe";
 
 const { Header, Content } = Layout;
 
@@ -54,6 +62,7 @@ export default function EventDetails() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState();
   const [vendors, setVendors] = useState();
+  const [payments, setPayments] = useState();
 
   const [showReviewLayout, setShowReviewLayout] = useState(false);
   const [reviews, setReviews] = useState();
@@ -62,6 +71,17 @@ export default function EventDetails() {
 
   useEffect(() => {
     let isCancel = false;
+
+    async function fetchPayments(eventId) {
+      const payments = await getPayments(eventId);
+      return map(payments, (p) => {
+        if (p.dueDate) {
+          p.dueDate = dayjs(p.dueDate.toDate());
+        }
+
+        return p;
+      });
+    }
 
     async function fetchReviews(eventId) {
       const reviews = await getReviews({ eventId });
@@ -91,12 +111,21 @@ export default function EventDetails() {
         if (event) {
           setData(event);
 
-          const vendorsData = await fetchInvitees(id);
+          const values = await Promise.all([
+            fetchPayments(id),
+            fetchReviews(id),
+            fetchInvitees(id),
+          ]);
+          const [payments = [], reviewsData = {}, vendorsData = []] = values;
+
+          if (payments) {
+            setPayments(payments);
+          }
+
           if (vendorsData) {
             setVendors(vendorsData);
           }
 
-          const reviewsData = await fetchReviews(id);
           if (reviewsData) {
             setReviews(reviewsData);
           }
@@ -303,17 +332,24 @@ export default function EventDetails() {
                 <div className="font-18 mt-1">{amount}</div>
               </Col>
             )}
+          </Row>
 
-            <Col span={24}>
-              <strong className="font-14">Vendors</strong>
+          <br />
+
+          <FilteredTabs size="large">
+            <Tabs.TabPane key="vendors" tab="Vendors">
               <VendorsList
                 dataSource={vendors}
                 isEventClosed={[EVENT_STATUSES.closed.text].includes(status)}
                 reviews={reviews}
                 onRateVendor={onRateVendor}
               />
-            </Col>
-          </Row>
+            </Tabs.TabPane>
+
+            {/* <Tabs.TabPane key="services" tab="Services">
+              <Services data={get(data, "services")} />
+            </Tabs.TabPane> */}
+          </FilteredTabs>
 
           <CreateReviewLayout
             open={showReviewLayout}
@@ -361,4 +397,77 @@ function VendorsList({ dataSource, isEventClosed, reviews, onRateVendor }) {
 
     return <VendorItem data={item} actions={actions} />;
   }
+}
+
+function PaymentsList({ dataSource, isEventClosed }) {
+  return (
+    <List
+      className="payments-status-list mt-1"
+      dataSource={dataSource}
+      grid={{
+        gutter: 16,
+        xs: 1,
+        sm: 1,
+        md: 2,
+        lg: 2,
+        xl: 3,
+        xxl: 4,
+      }}
+      renderItem={RenderPaymentStatusItem}
+    />
+  );
+}
+
+function RenderPaymentStatusItem(item) {
+  const { dueDate, category, amount, invoiceId } = item || {};
+
+  const [loading, setLoading] = useState(false);
+
+  const onDownload = async (e) => {
+    try {
+      setLoading(true);
+
+      await downloadInvoice(invoiceId);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const isPaid = !!amount;
+
+  return (
+    <List.Item>
+      <List.Item.Meta
+        title={PAYMENT_CATEGORIES[category].text}
+        avatar={
+          isPaid && (
+            <CheckCircleTwoTone className="font-24" twoToneColor="#40cf85" />
+          )
+        }
+      />
+
+      <Space>
+        {isPaid && (
+          <Tooltip title="Download Invoice">
+            <Button
+              type="primary"
+              icon={<DownloadOutlined />}
+              loading={loading}
+              onClick={onDownload}
+            />
+          </Tooltip>
+        )}
+      </Space>
+
+      <div>
+        <h5 className="text-right">{formatAsCurrency(amount)}</h5>
+
+        {dueDate && !isPaid && (
+          <div className="font-14 mt-1 font-weight-light">
+            Due on {dueDate.format(DATETIME_DISPLAY_FORMAT)}
+          </div>
+        )}
+      </div>
+    </List.Item>
+  );
 }

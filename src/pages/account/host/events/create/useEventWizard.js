@@ -54,15 +54,17 @@ const useEventWizard = ({ id, user, setLoading, setIsSaving }) => {
         ]);
         const [payments = [], event = {}, invitees = []] = values;
 
-        if (size(payments) === size(PAYMENT_CATEGORIES)) {
-          message.warning("Cannot update event!");
-          navigate(appRoutes.account.dashboard);
-        }
-
         form.setFieldsValue({ ...event, vendors: invitees, payments });
       } catch (error) {
         console.log("event wizard", { error });
-        message.error(get(error, "message"));
+
+        const errorMessage = get(error, "message");
+        if (errorMessage === "Cannot update event!") {
+          navigate(appRoutes.account.dashboard);
+          message.warning("Cannot update event!");
+        } else {
+          message.error(get(error, "message"));
+        }
       } finally {
         setLoading(false);
       }
@@ -115,6 +117,11 @@ const useEventWizard = ({ id, user, setLoading, setIsSaving }) => {
 
         return p;
       });
+
+      if (size(payments) === size(PAYMENT_CATEGORIES)) {
+        throw new Error("Cannot update event!");
+      }
+
       return payments;
     }
 

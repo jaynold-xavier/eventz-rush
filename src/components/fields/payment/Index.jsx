@@ -71,6 +71,8 @@ export default function PaymentField({
         const invoice = await stripeInstance.invoices.create({
           customer: userStripeId,
           pending_invoice_items_behavior: "exclude",
+          collection_method: "send_invoice",
+          due_date: paymentInfo.dueDate.unix(),
         });
 
         const product = await stripeInstance.products.create({

@@ -39,6 +39,7 @@ import useAuth from "../../hooks/useAuth";
 import { addUser } from "../../services/database";
 import { VENDOR_TYPES } from "../../constants/app";
 import { stripeInstance } from "../../assets/js/stripe";
+import { getDisplayName } from "../../helpers/auth";
 
 const { Content } = Layout;
 
@@ -269,6 +270,7 @@ export default function Register() {
       email: user.email,
       photoURL: user.photoURL || "",
       phoneNumber: user.phoneNumber || "",
+      title: user.displayName || userName || "",
       userName,
     };
 
@@ -283,7 +285,7 @@ export default function Register() {
       const stripeInfo = await stripeInstance.customers.create({
         email: data.email,
         phone: data.phoneNumber,
-        name: data.userName,
+        name: getDisplayName(data),
       });
       data.stripeId = stripeInfo.id;
     }

@@ -352,14 +352,20 @@ function CardEventItem({
         <ConfigProvider
           theme={{
             token: {
-              colorText: navLinkTheme.colorPrimary,
-              colorLink: navLinkTheme,
+              ...appTheme,
+              colorLink: navLinkTheme.colorPrimary,
             },
           }}
         >
-          <Button type="link" icon={<CheckOutlined />} onClick={onAcceptInvite}>
-            Accept
-          </Button>
+          <Popconfirm
+            title="Are you sure you want to accept this event?"
+            onConfirm={onAcceptInvite}
+            {...commonPopConfirmProp}
+          >
+            <Button type="link" icon={<CheckOutlined />}>
+              Accept
+            </Button>
+          </Popconfirm>
         </ConfigProvider>
       );
 

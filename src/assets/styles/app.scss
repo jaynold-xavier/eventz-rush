@@ -253,6 +253,14 @@ $navbar-height: 100px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    &.flex-wrap {
+      @media #{$small-screen}, #{$mobile-screen} {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: end;
+      }
+    }
   }
 
   .ant-divider {
@@ -483,12 +491,18 @@ $navbar-height: 100px;
   min-height: 100vh;
 
   .ant-layout-sider {
-    height: 100%;
-    max-height: 100vh;
+    background-color: #fafafa;
+    height: 100vh;
+
+    @media #{$small-screen}, #{$mobile-screen}, #{$tablet-screen} {
+      position: fixed;
+      z-index: 99;
+    }
 
     .ant-layout-sider-children {
-      position: fixed;
+      display: grid;
       width: inherit;
+      overflow: auto;
     }
 
     .blob-img {

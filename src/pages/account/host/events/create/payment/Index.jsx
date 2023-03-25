@@ -1,5 +1,4 @@
 import { CheckCircleTwoTone, DownloadOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import {
   Card,
@@ -9,13 +8,12 @@ import {
   Row,
   Space,
   Spin,
-  message,
   Button,
   Tooltip,
 } from "antd";
 import { Header } from "antd/es/layout/layout";
 import { Elements } from "@stripe/react-stripe-js";
-import { get, isEmpty, size, some, find } from "lodash";
+import { get, size, some } from "lodash";
 
 import { PaymentField } from "../../../../../../components/fields";
 import {

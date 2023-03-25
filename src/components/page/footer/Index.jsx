@@ -36,10 +36,8 @@ export function HomeFooter() {
 
         <Divider />
 
-        <div className="container">
-          <span style={{ wordSpacing: 2 }}>
-            Copyright &#169; 2023 All Rights Reserved
-          </span>
+        <div className="container flex-wrap">
+          <span>Copyright &#169; 2023 All Rights Reserved</span>
 
           <span>Design By Jaynold</span>
 
