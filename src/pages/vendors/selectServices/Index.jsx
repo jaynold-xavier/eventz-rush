@@ -92,6 +92,8 @@ export default function SelectServicesDrawer({
 
       <p>Please select the services you require from this vendor.</p>
 
+      <br />
+
       {isEmpty(services) ? (
         <Empty description="No services available" />
       ) : (

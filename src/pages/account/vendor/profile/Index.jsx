@@ -164,7 +164,11 @@ export default function VendorProfile({ user }) {
               <InlineEditor
                 placeholder="Enter Title"
                 value={get(data, "title")}
-                onChange={(value) => updateData({ title: value })}
+                onChange={(value) =>
+                  updateData({
+                    title: value || get(data, "userName") || get(data, "title"),
+                  })
+                }
                 viewerTemplate={({ value, placeholder }) => (
                   <Typography.Title
                     className="user-name mb-0"

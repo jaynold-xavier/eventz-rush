@@ -276,7 +276,7 @@ export default function Register() {
 
     if (type !== "host") {
       data.title = user.displayName || userName || "";
-      data.type = type;
+      data.type = VENDOR_TYPES[type].text;
       data.configurations = {
         showContactInfo: true,
         showServices: true,
