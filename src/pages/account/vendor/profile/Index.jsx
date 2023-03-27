@@ -32,6 +32,7 @@ import InlineEditor from "../../../../components/fields/inlineEditor/Index";
 import RichTextEditor from "../../../../components/fields/richTextEditor/Index";
 import { formatAsCurrency } from "../../../../helpers/number";
 import { downloadResource } from "../../../../services/storage";
+import useAuth from "../../../../hooks/useAuth";
 
 const { Header, Content } = Layout;
 
@@ -66,6 +67,8 @@ export default function VendorProfile({ user }) {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState();
 
+  const { setUser } = useAuth();
+
   const hostEmail = get(user, "email");
 
   useEffect(() => {
@@ -97,6 +100,7 @@ export default function VendorProfile({ user }) {
       return { ...s };
     });
 
+    setUser(data);
     updateVendor(data.email, data);
   };
 

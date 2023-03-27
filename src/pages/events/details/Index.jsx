@@ -150,23 +150,28 @@ export default function EventDetails() {
     const clonedData = cloneDeep(data);
     delete clonedData.fromDate;
     delete clonedData.toDate;
-    delete clonedData.createdOn;
     clonedData.status = EVENT_STATUSES.ongoing.text;
 
-    const clonedEventId = await createEvent(clonedData);
-    if (!clonedEventId) return;
+    if (clonedData.bannerURL) {
+      clonedData.bannerURL = [
+        {
+          uid: "1",
+          name: "banner",
+          thumbUrl: clonedData.bannerURL,
+        },
+      ];
+    } else {
+      clonedData.bannerURL = [];
+    }
 
-    // const promises = map(vendors, (v) => {
-    //   return addInvitee({
-    //     eventId: clonedEventId,
-    //     inviteeId: v.email,
-    //     type: USER_ROLES.vendor.text,
-    //   });
-    // });
+    delete clonedData.createdOn;
 
-    // await Promise.all(promises);
-
-    navigate(appRoutes.account.events.update.replace("{id}", clonedEventId));
+    navigate(
+      {
+        pathname: appRoutes.account.events.create,
+      },
+      { state: clonedData }
+    );
   };
 
   const onCancelEvent = async (e) => {
@@ -262,7 +267,7 @@ export default function EventDetails() {
 
               {!isVendor && (
                 <Popconfirm
-                  title="Are you sure you want to cancel the event?"
+                  title="Are you sure you want to clone the event?"
                   onConfirm={onCloneEvent}
                   placement="bottomRight"
                   {...commonPopConfirmProp}
@@ -298,14 +303,14 @@ export default function EventDetails() {
             )}
 
             {fromDateString && (
-              <Col xs={24} sm={24} md={24} lg={24} xl={6} xxl={6}>
+              <Col xs={24} sm={24} md={12} lg={12} xl={6} xxl={6}>
                 <strong className="font-14">From</strong>
                 <div className="font-18 mt-1">{fromDateString}</div>
               </Col>
             )}
 
             {toDateString && (
-              <Col xs={24} sm={24} md={24} lg={24} xl={6} xxl={6}>
+              <Col xs={24} sm={24} md={12} lg={12} xl={6} xxl={6}>
                 <strong className="font-14">To</strong>
                 <div className="font-18 mt-1">{toDateString}</div>
               </Col>

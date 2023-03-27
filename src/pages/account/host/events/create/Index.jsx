@@ -135,6 +135,7 @@ export default function EventCreateUpdateWizard({ user }) {
           <Form
             form={form}
             layout="vertical"
+            initialValues={window.history.state.usr}
             onValuesChange={onValuesChange}
             validateMessages={{ required: "${label} is required" }}
             scrollToFirstError={{

@@ -3,7 +3,7 @@ import { Collapse, Layout } from "antd";
 
 import { HomePageHeader } from "../../components/page/index";
 
-const { Header, Content } = Layout;
+const { Content } = Layout;
 
 export default function FAQ() {
   return (

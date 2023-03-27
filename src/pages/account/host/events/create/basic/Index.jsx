@@ -24,13 +24,13 @@ export default function BasicInfoStep({ events, setSelectedDate }) {
   return (
     <>
       <Row gutter={[24, 24]}>
-        <Col span={12}>
+        <Col xs={24} sm={24} lg={24} md={12} xl={12} xxl={12}>
           <Form.Item name="title" label="Title" rules={[{ required: true }]}>
             <Input placeholder="Enter Event Title" size="large" />
           </Form.Item>
         </Col>
 
-        <Col span={12}>
+        <Col xs={24} sm={24} lg={24} md={12} xl={12} xxl={12}>
           <Form.Item name="type" label="Type" rules={[{ required: true }]}>
             <Select
               placeholder="Enter Event Type"
@@ -49,7 +49,14 @@ export default function BasicInfoStep({ events, setSelectedDate }) {
       <Form.Item
         name="date"
         label="Date"
-        wrapperCol={{ span: 12 }}
+        wrapperCol={{
+          xs: 24,
+          sm: 24,
+          lg: 24,
+          md: 12,
+          xl: 12,
+          xxl: 12,
+        }}
         initialValue={[initStartDate, initStartDate.clone().add(24, "hour")]}
         rules={[
           { required: true },

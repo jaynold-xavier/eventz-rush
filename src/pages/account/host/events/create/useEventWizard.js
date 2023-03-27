@@ -183,9 +183,7 @@ const useEventWizard = ({ id, user, setLoading, setIsSaving }) => {
   };
 
   const cancelChanges = async () => {
-    if (currentStep < last(EVENT_WIZARD_STEPS) - 1) {
       await confirmChanges(form.isFieldsTouched());
-    }
 
     // update step progress
     // if (eventIdRef.current) {

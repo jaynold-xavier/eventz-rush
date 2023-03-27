@@ -41,7 +41,7 @@ export function HomeFooter() {
 
           <span>Design By Jaynold</span>
 
-          <Button type="link" href={appRoutes.home}>
+          <Button type="link" href={appRoutes.policy}>
             Privacy & Legal
           </Button>
         </div>

@@ -10,6 +10,9 @@ export { VendorsList, VendorDetails } from "./vendors";
 // faq page
 export { default as FAQ } from "./faq/Index";
 
+// privacy page
+export { default as Privacy } from "./policy/Index";
+
 // login page
 export { default as Login } from "./login/Index";
 

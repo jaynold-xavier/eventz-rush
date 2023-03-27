@@ -79,10 +79,7 @@ export default function VendorDetails() {
   }, [id]);
 
   const showContactInfo =
-    get(data, "config.showContactInfo") && get(data, "phoneNumber");
-
-  const showServices =
-    get(data, "config.showServices") && !isEmpty(data, "services");
+    get(data, "configurations.showContactInfo") && get(data, "phoneNumber");
 
   const filterTabs = (children) => {
     return filter(children, (c) => {
@@ -91,10 +88,11 @@ export default function VendorDetails() {
       }
 
       if (c.key === "photos") {
-        return !isEmpty(get(data, "description"));
+        return !isEmpty(get(data, "photos"));
       }
 
       if (c.key === "services") {
+        const showServices = get(data, "configurations.showServices");
         return showServices && !isEmpty(get(data, "services"));
       }
 
@@ -183,7 +181,7 @@ export default function VendorDetails() {
               <Services data={get(data, "services")} />
             </Tabs.TabPane>
 
-            <Tabs.TabPane key="photos" tab="Photos">
+            <Tabs.TabPane key="photos" tab="Photos" forceRender>
               <Photos data={get(data, "photos")} />
             </Tabs.TabPane>
 

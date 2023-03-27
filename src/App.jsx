@@ -19,6 +19,7 @@ import { HomeFooter } from "./components/page";
 import {
   FAQ,
   Home,
+  Privacy,
   Login,
   Register,
   HostDashboard,
@@ -66,6 +67,7 @@ export default function App() {
             <Route element={<HomeLayout user={user} />}>
               <Route path={appRoutes.home} element={<Home />} />
               <Route path={appRoutes.faq} element={<FAQ />} />
+              <Route path={appRoutes.policy} element={<Privacy />} />
 
               <Route path={appRoutes.vendors.list} element={<VendorsList />} />
               <Route

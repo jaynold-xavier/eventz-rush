@@ -40,6 +40,8 @@ export default function ListItem({
     <div dangerouslySetInnerHTML={{ __html: description || "—" }} />
   );
 
+  const showContactInfo = get(data, "configurations.showContactInfo");
+
   const classNames = ["vendors-list-item pl-0 pr-0"];
   if (selected) {
     classNames.push("selected");
@@ -126,14 +128,18 @@ export default function ListItem({
               {descriptionRender}
             </Typography.Paragraph>
 
-            <Space>
-              <PhoneFilled
-                className="font-14"
-                style={{ color: appTheme.colorPrimary }}
-              />
-              <strong className="font-14">Phone</strong>
-            </Space>
-            <div className="font-16">{phoneNumber || "—"}</div>
+            {showContactInfo && (
+              <>
+                <Space>
+                  <PhoneFilled
+                    className="font-14"
+                    style={{ color: appTheme.colorPrimary }}
+                  />
+                  <strong className="font-14">Phone</strong>
+                </Space>
+                <div className="font-16">{phoneNumber || "—"}</div>
+              </>
+            )}
 
             <Space className="mt-3">
               <MailFilled
