@@ -15,6 +15,7 @@ import useAuth from "../../../../hooks/useAuth";
 import BlobImg3 from "../../../../assets/images/shapes/shape-2.svg";
 import { getDisplayName } from "../../../../helpers/auth";
 import IconFont from "../../../icons/Index";
+import { UserAvatar } from "../../../avatar";
 
 export default function HostNavbar({ user }) {
   const location = useLocation();
@@ -62,10 +63,9 @@ export default function HostNavbar({ user }) {
         </div>
       ),
       icon: (
-        <Avatar
+        <UserAvatar
           className="user-avatar justify-content-center"
           src={get(user, "photoURL")}
-          icon={<UserOutlined style={{ fontSize: "100%" }} />}
           size={80}
         />
       ),

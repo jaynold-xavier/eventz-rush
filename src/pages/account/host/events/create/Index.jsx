@@ -8,7 +8,7 @@ import usePrompt from "../../../../../hooks/usePrompt";
 import BasicInfoStep from "./basic/Index";
 import SelectVendorsStep from "./selectVendors/Index";
 import PaymentStep from "./payment/Index";
-import Footer from "./Footer";
+import Footer from "./footer/Index";
 
 import useEventWizard from "./useEventWizard";
 import useSupportingData from "./useSupportingData";

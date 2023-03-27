@@ -163,46 +163,12 @@ export async function getAvailableVendors(
   currentEventId,
   constraints = []
 ) {
-  let invitees = await getRecords("invitees", [
-    where("type", "==", USER_ROLES.vendor.text),
-    where("status", "not-in", [
-      INVITE_STATUSES.pending.text,
-      INVITE_STATUSES.declined.text,
-    ]),
-  ]);
-  invitees = invitees
-    .filter((i) => i.eventId !== currentEventId)
-    .map((i) => i.record);
-
-  let eventData = await Promise.all(
-    invitees.map(async (invitee) => {
-      return getEvent(invitee.eventId);
+  let vendors = await getRecords("vendors", [...constraints]);
+  vendors = await Promise.all(
+    vendors.filter(async (v) => {
+      return isVendorFree(v.id);
     })
   );
-  eventData = eventData.filter((val) => val);
-
-  invitees = invitees
-    .filter((invitee, i) => {
-      const event = eventData[i];
-      if (event && fromDate && toDate) {
-        return (
-          isDateInRange(
-            fromDate,
-            event.fromDate.toDate(),
-            event.toDate.toDate()
-          ) ||
-          isDateInRange(toDate, event.fromDate.toDate(), event.toDate.toDate())
-        );
-      } else {
-        return true;
-      }
-    })
-    .map((invitee) => invitee.inviteeId);
-
-  if (!isEmpty(invitees)) {
-    constraints.push(where("email", "not-in", invitees));
-  }
-  const vendors = await getRecords("vendors", [...constraints]);
 
   if (vendors) {
     return map(vendors, (e) => {
@@ -215,6 +181,38 @@ export async function getAvailableVendors(
     });
   } else {
     return [];
+  }
+
+  async function isVendorFree(id) {
+    let invitees = await getRecords("invitees", [
+      where("inviteeId", "==", id),
+      where("status", "not-in", [INVITE_STATUSES.accepted.text]),
+    ]);
+
+    invitees = invitees.filter((i) => i.eventId !== currentEventId);
+    invitees = await Promise.all(
+      invitees.filter(async (i) => {
+        const event = await getEvent(i.eventId);
+        if (event && fromDate && toDate) {
+          return (
+            isDateInRange(
+              fromDate,
+              event.fromDate.toDate(),
+              event.toDate.toDate()
+            ) ||
+            isDateInRange(
+              toDate,
+              event.fromDate.toDate(),
+              event.toDate.toDate()
+            )
+          );
+        } else {
+          return true;
+        }
+      })
+    );
+
+    return !isEmpty(invitees);
   }
 }
 //#region
@@ -247,10 +245,14 @@ export async function addInvitee(data) {
 }
 
 export async function getInvitee(eventId, inviteeId) {
-  let invitee = await getRecords("invitees", [
-    where("eventId", "==", eventId),
-    where("inviteeId", "==", inviteeId),
-  ]);
+  const constraints = [];
+  if (eventId) {
+    constraints.push(where("eventId", "==", eventId));
+  }
+  if (inviteeId) {
+    constraints.push(where("inviteeId", "==", inviteeId));
+  }
+  let invitee = await getRecords("invitees", constraints);
   invitee = get(invitee, "0");
 
   return invitee;

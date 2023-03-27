@@ -164,7 +164,7 @@ export default function Dashboard({ user }) {
           <h5>{getDisplayName(user)}</h5>
         </div>
 
-        <Popover
+        {/* <Popover
           title="Notifications"
           content="Coming Soon!!"
           placement="bottomRight"
@@ -172,7 +172,7 @@ export default function Dashboard({ user }) {
           trigger="click"
         >
           <BellOutlined className="font-20" />
-        </Popover>
+        </Popover> */}
       </Header>
 
       <Content>

@@ -33,7 +33,9 @@ const useEventWizard = ({ id, user, setLoading, setIsSaving }) => {
   const eventIdRef = useRef(id);
 
   const [title, setTitle] = useState(newEventText);
-  const [currentStep, setCurrentStep] = useState(+searchParams.get("step") ?? 0);
+  const [currentStep, setCurrentStep] = useState(
+    +searchParams.get("step") ?? 0
+  );
   const [netAmount, setNetAmount] = useState(0);
 
   useEffect(() => {
@@ -54,6 +56,16 @@ const useEventWizard = ({ id, user, setLoading, setIsSaving }) => {
           fetchInvitees(),
         ]);
         const [payments = [], event = {}, invitees = []] = values;
+
+        if (
+          payments.some(
+            (p) =>
+              p.category === PAYMENT_CATEGORIES.booking.key &&
+              p.status === "succeeded"
+          )
+        ) {
+          setCurrentStep(2);
+        }
 
         form.setFieldsValue({ ...event, vendors: invitees, payments });
       } catch (error) {
@@ -120,7 +132,9 @@ const useEventWizard = ({ id, user, setLoading, setIsSaving }) => {
       });
 
       if (size(payments) === size(PAYMENT_CATEGORIES)) {
-        throw new Error("Cannot update event!");
+        const err = new Error("Cannot update event!");
+        err.name = "event-already-booked";
+        throw err;
       }
 
       return payments;
@@ -174,9 +188,9 @@ const useEventWizard = ({ id, user, setLoading, setIsSaving }) => {
     }
 
     // update step progress
-    if (eventIdRef.current) {
-      updateEventItem({ stepProgress: EVENT_WIZARD_STEPS[currentStep].key });
-    }
+    // if (eventIdRef.current) {
+    //   updateEventItem({ stepProgress: EVENT_WIZARD_STEPS[currentStep].key });
+    // }
 
     navigate(appRoutes.account.dashboard);
   };
@@ -295,7 +309,7 @@ const useEventWizard = ({ id, user, setLoading, setIsSaving }) => {
       eventCreatedOn = dayjs();
     }
 
-    if(!eventCreatedOn) return {}
+    if (!eventCreatedOn) return {};
 
     const acceptedInvitees = filter(
       form.getFieldValue("vendors"),

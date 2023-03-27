@@ -1,3 +1,4 @@
+// TODO: not used- delete
 export function getHSL(color) {
   let r = parseInt(color.substr(1, 2), 16) / 255; // Grab the hex representation of red (chars 1-2) and convert to decimal (base 10).
   let g = parseInt(color.substr(3, 2), 16) / 255;

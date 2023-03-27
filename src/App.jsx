@@ -13,8 +13,8 @@ import { get, isEmpty } from "lodash";
 
 import { appRoutes } from "./constants/routes";
 
-import { HomeFooter } from "./components/page";
 import { HomeNavBar, HostNavbar, VendorNavbar } from "./components/navBar";
+import { HomeFooter } from "./components/page";
 
 import {
   FAQ,
@@ -228,9 +228,6 @@ function AccountLayout({ isAuthenticated, user, isVendor }) {
         width={250}
         collapsed={collapsed}
         collapsedWidth="0"
-        onBreakpoint={(broken) => {
-          console.log({ broken });
-        }}
         onCollapse={(collapsed, type) => {
           setCollapsed(collapsed);
           console.log({ collapsed, type });

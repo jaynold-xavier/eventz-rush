@@ -2,8 +2,8 @@ import React from "react";
 import { Space, Button, Layout } from "antd";
 import { isEmpty } from "lodash";
 
-import { formatAsCurrency } from "../../../../../helpers/number";
-import InviteesGroup from "../../../../../components/avatar/invitees/Index";
+import { formatAsCurrency } from "../../../../../../helpers/number";
+import InviteesGroup from "../../../../../../components/avatar/invitees/Index";
 
 const { Footer } = Layout;
 
@@ -40,14 +40,11 @@ export default function EventWizardFooter({
       )}
 
       <Space className="ml-auto" size={12}>
-        <Button
-          type="primary"
-          size="large"
-          onClick={onPrev}
-          disabled={disablePrev}
-        >
-          Prev
-        </Button>
+        {!disablePrev && (
+          <Button type="primary" size="large" onClick={onPrev}>
+            Prev
+          </Button>
+        )}
 
         <Button
           type="primary"
@@ -60,7 +57,7 @@ export default function EventWizardFooter({
         </Button>
 
         <Button size="large" onClick={onCancel}>
-          Exit
+          Cancel
         </Button>
       </Space>
     </Footer>

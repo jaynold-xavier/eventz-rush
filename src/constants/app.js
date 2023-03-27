@@ -41,12 +41,6 @@ export const EVENT_TYPES = {
   charity: {
     text: "Charity",
   },
-  companyParty: {
-    text: "Company Party",
-  },
-  christmasParty: {
-    text: "Christmas Party",
-  },
   engagement: {
     text: "Engagement",
   },

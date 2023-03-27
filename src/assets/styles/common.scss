@@ -72,7 +72,7 @@
 }
 .text-red,
 .hover-text-red:hover {
-  color: #ff8178!important;
+  color: #ff8178 !important;
 }
 .text-sand,
 .hover-text-sand:hover {
@@ -178,6 +178,22 @@
 
   @media #{$small-screen}, #{$mobile-screen}, #{$tablet-screen} {
     flex-wrap: wrap;
+  }
+}
+
+// avatar
+.avatar-upload {
+  position: relative;
+  
+  .ant-upload-wrapper {
+    transform: translate(30%, 0%);
+    background: #ffffff;
+    border-radius: 50%;
+    padding: 0px 4px;
+    border: 1px solid #dcdcdc;
+    bottom: 0;
+    top: auto;
+    cursor: pointer;
   }
 }
 

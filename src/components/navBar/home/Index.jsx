@@ -27,6 +27,7 @@ import {
 import { signOutOfApp } from "../../../services/auth";
 import IconFont from "../../icons/Index";
 import { getDisplayName } from "../../../helpers/auth";
+import { UserAvatar } from "../../avatar";
 
 export default function Navbar({ user }) {
   const location = useLocation();
@@ -94,10 +95,9 @@ export default function Navbar({ user }) {
           borderTopRightRadius: "1rem",
         }}
       >
-        <Avatar
-          className="user-avatar"
+        <UserAvatar
+          className="user-avatar justify-content-center"
           src={get(user, "photoURL")}
-          icon={<UserOutlined />}
           size={50}
         />
 
@@ -136,28 +136,28 @@ export default function Navbar({ user }) {
   );
 
   const authItems = [
-    {
-      key: "notifications",
-      label: (
-        <ConfigProvider
-          theme={{
-            token: {
-              ...buttonActionTheme,
-              colorText: appTheme.colorText,
-            },
-          }}
-        >
-          <Popover
-            title="Notifications"
-            content="Coming Soon!!"
-            placement="bottomRight"
-            trigger="click"
-          >
-            <BellOutlined className="font-20" />
-          </Popover>
-        </ConfigProvider>
-      ),
-    },
+    // {
+    //   key: "notifications",
+    //   label: (
+    //     <ConfigProvider
+    //       theme={{
+    //         token: {
+    //           ...buttonActionTheme,
+    //           colorText: appTheme.colorText,
+    //         },
+    //       }}
+    //     >
+    //       <Popover
+    //         title="Notifications"
+    //         content="Coming Soon!!"
+    //         placement="bottomRight"
+    //         trigger="click"
+    //       >
+    //         <BellOutlined className="font-20" />
+    //       </Popover>
+    //     </ConfigProvider>
+    //   ),
+    // },
     {
       key: "account",
       label: (
@@ -189,11 +189,11 @@ export default function Navbar({ user }) {
               }
               arrowPointAtCenter
             >
-              <Avatar
-                className="user-avatar"
+              <UserAvatar
+                className="user-avatar justify-content-center"
                 src={get(user, "photoURL")}
-                icon={<UserOutlined />}
                 size={38}
+                hideUpload
               />
             </Tooltip>
           </Popover>
