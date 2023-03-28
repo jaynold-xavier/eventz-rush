@@ -3,11 +3,12 @@ import { where } from "firebase/firestore";
 import { Layout } from "antd";
 import { isEmpty } from "lodash";
 
-import { getReviews, getVendors } from "../../../services/database";
+import { getAvailableVendors, getReviews } from "../../../services/database";
 import { HomePageHeader } from "../../../components/page/index";
 import { getAverageRatings } from "../../../helpers/number";
 import Filters from "./filters/Index";
 import List from "./List";
+import { VENDOR_TYPES } from "../../../constants/app";
 
 const { Content } = Layout;
 
@@ -25,15 +26,17 @@ const constructConstraints = (filters = initFilters) => {
     constraints.push(where("title", "==", q));
   }
 
-  if (!isEmpty(date)) {
-    const range = [date[0].toDate(), date[1].toDate()];
-    constraints.push(where("fromDate", ">", range[0]));
-    constraints.push(where("fromDate", "<=", range[1]));
+  if (!isEmpty(type)) {
+    constraints.push(
+      where(
+        "type",
+        "in",
+        type.map((e) => VENDOR_TYPES[e].text)
+      )
+    );
   }
 
-  if (!isEmpty(type)) {
-    constraints.push(where("type", "in", type));
-  }
+  console.log({ constraints });
 
   return constraints;
 };
@@ -54,8 +57,19 @@ export default function VendorsList() {
       try {
         setLoading(true);
 
+        const { date } = filters;
+        let range = [];
+        if (!isEmpty(date)) {
+          range = [date[0].toDate(), date[1].toDate()];
+        }
+
         const constraints = constructConstraints(filters);
-        const vendorsList = await getVendors(constraints);
+        const vendorsList = await getAvailableVendors(
+          range[0],
+          range[1],
+          null,
+          constraints
+        );
         const transformedData = await Promise.all(
           vendorsList.map(async (v) => {
             const ratings = await getReviews({ inviteeId: v.email });
@@ -63,6 +77,7 @@ export default function VendorsList() {
             return v;
           })
         );
+
         setDataSource(transformedData);
       } finally {
         setLoading(false);

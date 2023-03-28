@@ -148,15 +148,6 @@ export async function getEventsByMonth(selectedDate, filters = {}) {
 //#region
 
 //#region vendors
-export async function getVendors(constraints = []) {
-  const vendors = await getRecords("vendors", constraints);
-  if (vendors) {
-    return map(vendors, (e) => e.record);
-  } else {
-    return [];
-  }
-}
-
 export async function getAvailableVendors(
   fromDate,
   toDate,
@@ -189,7 +180,10 @@ export async function getAvailableVendors(
       where("status", "not-in", [INVITE_STATUSES.accepted.text]),
     ]);
 
-    invitees = invitees.filter((i) => i.eventId !== currentEventId);
+    if (currentEventId) {
+      invitees = invitees.filter((i) => i.eventId !== currentEventId);
+    }
+
     invitees = await Promise.all(
       invitees.filter(async (i) => {
         const event = await getEvent(i.eventId);
