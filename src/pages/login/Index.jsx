@@ -117,14 +117,17 @@ export default function Login() {
             form={form}
             className="auth-form"
             layout="vertical"
-            validateMessages={{ required: "${label} is required" }}
+            validateMessages={{
+              types: { email: "Please enter a valid email" },
+              required: "${label} is required",
+            }}
             onValuesChange={onValuesChange}
             onFinish={login}
           >
             <Form.Item
               name="email"
               label="Email"
-              rules={[{ required: true }]}
+              rules={[{ required: true, type: "email" }]}
               initialValue={get(cachedCredentials, "email")}
             >
               <Input
