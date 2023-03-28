@@ -52,7 +52,7 @@ export default function VendorDetails() {
         setData(vendor);
         setReviews(reviews);
       } catch (error) {
-        console.log("vendor detais", { error });
+        console.log("vendor details", { error });
       } finally {
         setLoading(false);
       }
@@ -113,7 +113,7 @@ export default function VendorDetails() {
               <Space>
                 <Avatar
                   className="user-avatar"
-                  src={data.photoURL}
+                  src={get(data, "photoURL") || undefined}
                   {...avatarProps}
                 />
 
@@ -122,6 +122,7 @@ export default function VendorDetails() {
                     className="user-name mb-0"
                     level={2}
                     ellipsis={{ tooltip: data.title }}
+                    style={{ maxWidth: 300 }}
                   >
                     {data.title}
                   </Typography.Title>
@@ -144,9 +145,9 @@ export default function VendorDetails() {
 
                     <strong>Email</strong>
 
-                    {data.experience && <div>Years of Experience</div>}
+                    {data.experience && <strong>Years of Experience</strong>}
 
-                    {data.website && <div>Website</div>}
+                    {data.website && <strong>Website</strong>}
                   </Space>
                 </Col>
 

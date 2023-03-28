@@ -174,7 +174,7 @@ export default function VendorProfile({ user }) {
                     className="user-name mb-0"
                     level={2}
                     ellipsis={{ tooltip: value }}
-                    style={{ maxWidth: 500 }}
+                    style={{ maxWidth: 300 }}
                   >
                     {value || placeholder}
                   </Typography.Title>
