@@ -19,7 +19,7 @@ import {
   Typography,
 } from "antd";
 import dayjs from "dayjs";
-import { cloneDeep, filter, find, get, map } from "lodash";
+import { cloneDeep, filter, find, get, isEmpty, map } from "lodash";
 
 import {
   addInvitee,
@@ -201,6 +201,20 @@ export default function EventDetails() {
     message.success("Vendor reviewed!");
   };
 
+  const filterTabs = (children) => {
+    return filter(children, (c) => {
+      if (c.key === "vendors") {
+        return !isEmpty(vendors);
+      }
+
+      if (c.key === "invoices") {
+        return !isEmpty(payments);
+      }
+
+      return false;
+    });
+  };
+
   const {
     bannerURL,
     description,
@@ -343,7 +357,7 @@ export default function EventDetails() {
 
           <br />
 
-          <FilteredTabs size="large">
+          <FilteredTabs size="large" filter={filterTabs}>
             <Tabs.TabPane key="vendors" tab="Vendors">
               <VendorsList
                 dataSource={vendors}

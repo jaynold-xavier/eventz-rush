@@ -1,4 +1,5 @@
 import { get } from "lodash";
+
 import { USER_ROLES } from "../constants/app";
 
 export function getDisplayName(user) {
@@ -7,7 +8,7 @@ export function getDisplayName(user) {
 
 export function getUserRole(user) {
   const type = get(user, "type");
-  if (type === USER_ROLES.host.key) {
+  if (type === USER_ROLES.host.text) {
     return USER_ROLES.host.key;
   } else {
     return USER_ROLES.vendor.key;
