@@ -4,6 +4,8 @@ import ImgCrop from "antd-img-crop";
 import React from "react";
 
 import { appTheme } from "../../../assets/js/theme";
+import { USER_ROLES } from "../../../constants/app";
+import { getUserRole } from "../../../helpers/auth";
 import useAuth from "../../../hooks/useAuth";
 import { updateHost, updateVendor } from "../../../services/database";
 import { ImageUploader } from "../../fields/upload/Index";
@@ -14,7 +16,8 @@ export default function UserAvatar({ src, hideUpload = false, ...rest }) {
   const onChange = ({ file }) => {
     setUser((s) => ({ ...s, photoURL: file.thumbUrl }));
 
-    if (user.type) {
+    const role = getUserRole(user);
+    if (role === USER_ROLES.vendor.key) {
       updateVendor(user.email, { photoURL: file.thumbUrl || "" });
     } else {
       updateHost(user.email, { photoURL: file.thumbUrl || "" });

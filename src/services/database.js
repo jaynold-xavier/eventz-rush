@@ -62,7 +62,7 @@ export async function addUser(data, type) {
   }
 
   let collection;
-  if (type === "host") {
+  if (type === USER_ROLES.host.key) {
     collection = "hosts";
   } else {
     collection = "vendors";

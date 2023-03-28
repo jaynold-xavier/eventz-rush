@@ -24,7 +24,7 @@ import {
 import { filter, find, get } from "lodash";
 import dayjs from "dayjs";
 
-import { EVENT_STATUSES, INVITE_STATUSES } from "../../../constants/app";
+import { EVENT_STATUSES, INVITE_STATUSES, USER_ROLES } from "../../../constants/app";
 import { appRoutes } from "../../../constants/routes";
 import { appTheme } from "../../../assets/js/theme";
 import { timeRangeString } from "../../../helpers/timestamp";
@@ -37,6 +37,7 @@ import IconFont from "../../../components/icons/Index";
 import { InviteesGroup } from "../../../components/avatar";
 import { formatAsCurrency } from "../../../helpers/number";
 import useAuth from "../../../hooks/useAuth";
+import { getUserRole } from "../../../helpers/auth";
 
 const { Header, Content } = Layout;
 
@@ -51,7 +52,7 @@ export default function EventsList({
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  const isVendor = !!get(user, "type");
+  const isVendor = getUserRole(user) === USER_ROLES.vendor.key;
 
   return (
     <Layout prefixCls="events-list-layout">

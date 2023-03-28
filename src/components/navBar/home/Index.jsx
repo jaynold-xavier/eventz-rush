@@ -28,6 +28,7 @@ import { signOutOfApp } from "../../../services/auth";
 import IconFont from "../../icons/Index";
 import { getDisplayName } from "../../../helpers/auth";
 import { UserAvatar } from "../../avatar";
+import { USER_ROLES } from "../../../constants/app";
 
 export default function Navbar({ user }) {
   const location = useLocation();
@@ -57,7 +58,7 @@ export default function Navbar({ user }) {
                 onClick: (e) =>
                   goToPage({
                     pathname: appRoutes.register,
-                    search: "?type=host",
+                    search: `?type=${USER_ROLES.host.key}`,
                   }),
               },
               {
@@ -65,7 +66,7 @@ export default function Navbar({ user }) {
                 onClick: (e) =>
                   goToPage({
                     pathname: appRoutes.register,
-                    search: "?type=vendor",
+                    search: `?type=${USER_ROLES.vendor.key}`,
                   }),
               },
             ],

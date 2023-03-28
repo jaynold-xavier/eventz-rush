@@ -40,6 +40,7 @@ import {
   FULL_DATETIME_DISPLAY_FORMAT,
   INVITE_STATUSES,
   PAYMENT_CATEGORIES,
+  USER_ROLES,
 } from "../../../constants/app";
 import { appRoutes } from "../../../constants/routes";
 import VendorItem from "../../vendors/list/item/Index";
@@ -49,6 +50,7 @@ import { CreateReviewLayout } from "../../review";
 import { FilteredTabs } from "../../../components/tabs";
 import { formatAsCurrency } from "../../../helpers/number";
 import { downloadInvoice } from "../../../assets/js/stripe";
+import { getUserRole } from "../../../helpers/auth";
 
 const { Header, Content } = Layout;
 
@@ -218,7 +220,7 @@ export default function EventDetails() {
 
   const statusObj = find(EVENT_STATUSES, (e) => e.text === status);
 
-  const isVendor = !!get(user, "type");
+  const isVendor = getUserRole(user) === USER_ROLES.vendor.key;
 
   return (
     <Layout prefixCls="event-details-layout">

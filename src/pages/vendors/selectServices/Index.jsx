@@ -15,7 +15,7 @@ import {
 import { get, isEmpty, map } from "lodash";
 
 import { USER_ROLES, VENDOR_TYPES } from "../../../constants/app";
-import { getDisplayName } from "../../../helpers/auth";
+import { getDisplayName, getUserRole } from "../../../helpers/auth";
 import { formatAsCurrency } from "../../../helpers/number";
 import useAuth from "../../../hooks/useAuth";
 
@@ -36,7 +36,7 @@ export default function SelectServicesDrawer({
   const [selectedServices, setSelectedServices] = useState([]);
 
   const { type, photoURL } = vendorInfo || {};
-  const isVendor = !!get(user, "type");
+  const role = getUserRole(user);
 
   const services = isEmpty(get(vendorInfo, "services"))
     ? requestedServices
@@ -69,8 +69,7 @@ export default function SelectServicesDrawer({
       }}
       footer={
         <Button type="primary" onClick={save} hidden={!selectable} block>
-          Save and Notify{" "}
-          {isVendor ? USER_ROLES.host.text : USER_ROLES.vendor.text}
+          Save and Notify {USER_ROLES[role].text}
         </Button>
       }
       {...rest}

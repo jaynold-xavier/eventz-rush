@@ -37,7 +37,7 @@ import {
 } from "../../services/auth";
 import useAuth from "../../hooks/useAuth";
 import { addUser } from "../../services/database";
-import { VENDOR_TYPES } from "../../constants/app";
+import { USER_ROLES, VENDOR_TYPES } from "../../constants/app";
 import { stripeInstance } from "../../assets/js/stripe";
 import { getDisplayName } from "../../helpers/auth";
 
@@ -94,7 +94,9 @@ export default function Register() {
           <br />
 
           <h5>Register</h5>
-          <p>Create your own account either as a vendor or a host</p>
+          <p className="mt-3">
+            Create your own account either as a vendor or a host
+          </p>
 
           <br />
 
@@ -277,7 +279,7 @@ export default function Register() {
       userName,
     };
 
-    if (type !== "host") {
+    if (type !== USER_ROLES.host.key) {
       data.title = user.displayName || userName || "";
       data.type = VENDOR_TYPES[type].text;
       data.configurations = {
@@ -290,6 +292,8 @@ export default function Register() {
         phone: data.phoneNumber,
         name: getDisplayName(data),
       });
+
+      data.type = USER_ROLES.host.text;
       data.stripeId = stripeInfo.id;
     }
 

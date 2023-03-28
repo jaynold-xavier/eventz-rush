@@ -40,6 +40,8 @@ import { getInBetweenCharsRegex } from "./helpers/regex";
 import { UserContext } from "./contexts";
 import { getCurrentUser } from "./services/auth";
 import useBackground from "./hooks/useBackground";
+import { getUserRole } from "./helpers/auth";
+import { USER_ROLES } from "./constants/app";
 
 const { Header, Sider } = Layout;
 
@@ -54,7 +56,7 @@ export default function App() {
   }, []);
 
   const isAuthenticated = !isEmpty(user);
-  const isVendor = get(user, "type");
+  const isVendor = getUserRole(user) === USER_ROLES.vendor.key;
 
   if (user === undefined) return null;
 
@@ -230,9 +232,8 @@ function AccountLayout({ isAuthenticated, user, isVendor }) {
         width={250}
         collapsed={collapsed}
         collapsedWidth="0"
-        onCollapse={(collapsed, type) => {
+        onCollapse={(collapsed) => {
           setCollapsed(collapsed);
-          console.log({ collapsed, type });
         }}
         collapsible
       >
