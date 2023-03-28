@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { Col, DatePicker, Row, Select, Input, Form, Card } from "antd";
 import { get } from "lodash";
 
-import { DATETIME_DISPLAY_FORMAT } from "../../../../constants/app";
+import { DATE_DISPLAY_FORMAT } from "../../../../constants/app";
 import useVoice from "../../../../hooks/useVoice";
 import { appTheme } from "../../../../assets/js/theme";
 import { vendorTypesOptions } from "../../../../constants/dropdown";
@@ -47,7 +47,8 @@ export default function Filters({ filters, setFilters }) {
             <DatePicker.RangePicker
               className="w-100"
               placeholder={["Available From", "Available Till"]}
-              format={DATETIME_DISPLAY_FORMAT}
+              separator="➔"
+              format={DATE_DISPLAY_FORMAT}
               value={get(filters, "date")}
               onChange={(value) => setFilters((s) => ({ ...s, date: value }))}
             />
