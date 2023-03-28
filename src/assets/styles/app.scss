@@ -630,6 +630,10 @@ $navbar-height: 100px;
       .ant-upload-list-item-container {
         flex: 25%;
 
+        @media #{$small-screen}, #{$mobile-screen} {
+          flex: 100%;
+        }
+
         .ant-upload-list-item {
           padding: 0 !important;
 

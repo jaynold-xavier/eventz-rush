@@ -5,8 +5,8 @@ import {
   ArrowRightOutlined,
   LockTwoTone,
 } from "@ant-design/icons";
-import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import React, { useState } from "react";
 import {
   Button,
   Checkbox,
@@ -18,6 +18,7 @@ import {
   message,
   Space,
 } from "antd";
+import { get } from "lodash";
 
 import AppLogo from "../../assets/images/logos/app.svg";
 import LoginImg from "../../assets/images/form/login.svg";
@@ -32,8 +33,15 @@ import useAuth from "../../hooks/useAuth";
 import { getUser } from "../../services/database";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../assets/js/firebase";
+import {
+  getLocalStorageItem,
+  removeLocalStorageItem,
+  setLocalStorageItem,
+} from "../../helpers/localStorage";
 
 const { Content } = Layout;
+
+const cachedCredentialsKey = "login-credentials";
 
 export default function Login() {
   const [form] = Form.useForm();
@@ -69,6 +77,19 @@ export default function Login() {
     }
   };
 
+  const cachedCredentials = getLocalStorageItem(cachedCredentialsKey);
+
+  const onValuesChange = (value, values) => {
+    if (values.rememberMe) {
+      setLocalStorageItem(cachedCredentialsKey, {
+        email: values.email,
+        password: values.password,
+      });
+    } else {
+      removeLocalStorageItem(cachedCredentialsKey);
+    }
+  };
+
   return (
     <Layout className="auth-layout">
       <Content className="auth-content center">
@@ -97,9 +118,15 @@ export default function Login() {
             className="auth-form"
             layout="vertical"
             validateMessages={{ required: "${label} is required" }}
+            onValuesChange={onValuesChange}
             onFinish={login}
           >
-            <Form.Item name="email" label="Email" rules={[{ required: true }]}>
+            <Form.Item
+              name="email"
+              label="Email"
+              rules={[{ required: true }]}
+              initialValue={get(cachedCredentials, "email")}
+            >
               <Input
                 placeholder="Email"
                 size="large"
@@ -113,6 +140,7 @@ export default function Login() {
               name="password"
               label="Password"
               rules={[{ required: true }]}
+              initialValue={get(cachedCredentials, "password")}
             >
               <Input.Password
                 placeholder="Password"
@@ -123,14 +151,15 @@ export default function Login() {
 
             <Space className="w-100 justify-content-between mb-3" wrap>
               <Form.Item
-                className="mb-0"
+                className="mr-auto mb-0"
                 name="rememberMe"
                 valuePropName="checked"
+                initialValue={!!cachedCredentials}
               >
                 <Checkbox>Remember Me</Checkbox>
               </Form.Item>
 
-              <Link to="/">Forgot Password ?</Link>
+              {/* <Link to="/">Forgot Password ?</Link> */}
             </Space>
 
             <Form.Item className="center mb-0">
