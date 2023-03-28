@@ -46,6 +46,22 @@ export function ImageUploader({
     }
   };
 
+  const onFileChange = (args) => {
+    args.fileList = args.fileList.filter((f) => {
+      if (f.status === "done") {
+        return f.thumbUrl && f.thumbUrl.includes("http");
+      }
+
+      if (f.status === "uploading") {
+        return true;
+      }
+
+      return false;
+    });
+
+    onChange(args);
+  };
+
   let uploadButton = (
     <div>
       {loading ? <LoadingOutlined /> : <PlusOutlined />}
@@ -67,7 +83,7 @@ export function ImageUploader({
       listType="picture-card"
       accept="image/*"
       fileList={value}
-      onChange={onChange}
+      onChange={onFileChange}
       customRequest={uploadImage}
       maxCount={maxCount}
       beforeUpload={beforeUpload}

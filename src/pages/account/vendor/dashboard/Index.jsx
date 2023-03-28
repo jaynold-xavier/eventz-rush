@@ -250,6 +250,7 @@ export default function Dashboard({ user }) {
           open={selectServicesVisible}
           onClose={(e) => setSelectServicesVisible((s) => !s)}
           onSave={selectServices}
+          selectable={!!selectedEventIdRef.current}
         />
       </Content>
     </Layout>
@@ -380,6 +381,27 @@ function CardEventItem({
               Decline
             </Button>
           </Popconfirm>
+        </ConfigProvider>
+      );
+
+      actions.push(
+        <ConfigProvider
+          theme={{
+            token: {
+              colorPrimary: "gold",
+              colorBorder: "gold",
+              colorLink: "gold",
+            },
+          }}
+        >
+          <Button
+            type="link"
+            onClick={(e) => onSelectServicesClick(null)}
+            ghost
+            block
+          >
+            View Services
+          </Button>
         </ConfigProvider>
       );
     } else if (status === EVENT_STATUSES.booked.text) {

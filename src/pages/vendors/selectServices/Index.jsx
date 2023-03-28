@@ -14,9 +14,10 @@ import {
 } from "antd";
 import { get, isEmpty, map } from "lodash";
 
-import { VENDOR_TYPES } from "../../../constants/app";
+import { USER_ROLES, VENDOR_TYPES } from "../../../constants/app";
 import { getDisplayName } from "../../../helpers/auth";
 import { formatAsCurrency } from "../../../helpers/number";
+import useAuth from "../../../hooks/useAuth";
 
 const avatarProps = {
   shape: "circle",
@@ -27,11 +28,15 @@ export default function SelectServicesDrawer({
   vendorInfo,
   requestedServices = [],
   onSave,
+  selectable = true,
   ...rest
 }) {
+  const { user } = useAuth();
+
   const [selectedServices, setSelectedServices] = useState([]);
 
   const { type, photoURL } = vendorInfo || {};
+  const isVendor = !!get(user, "type");
 
   const services = isEmpty(get(vendorInfo, "services"))
     ? requestedServices
@@ -56,15 +61,16 @@ export default function SelectServicesDrawer({
   return (
     <Drawer
       className="select-services-layout"
-      title={"Select Services"}
+      title={selectable ? "Select Services" : "View Services"}
       afterOpenChange={(open) => {
         if (open) {
           setSelectedServices(get(vendorInfo, "selectedServices"));
         }
       }}
       footer={
-        <Button type="primary" onClick={save} block>
-          Save and Notify Vendor
+        <Button type="primary" onClick={save} hidden={!selectable} block>
+          Save and Notify{" "}
+          {isVendor ? USER_ROLES.host.text : USER_ROLES.vendor.text}
         </Button>
       }
       {...rest}
@@ -101,6 +107,7 @@ export default function SelectServicesDrawer({
           className="services-selection-list w-100"
           value={selectedServices}
           onChange={setSelectedServices}
+          disabled={!selectable}
         >
           {map(services, (s) => {
             return (

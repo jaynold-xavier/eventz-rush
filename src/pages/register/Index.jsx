@@ -7,7 +7,7 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import React, { useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import {
   Button,
   Divider,
@@ -46,6 +46,7 @@ const { Content } = Layout;
 export default function Register() {
   const [form] = Form.useForm();
 
+  const navigate = useNavigate();
   const { setUser } = useAuth();
 
   const [loading, setLoading] = useState(false);
@@ -63,6 +64,8 @@ export default function Register() {
       );
 
       await postRegister(response._tokenResponse.refreshToken, response.user);
+
+      navigate(appRoutes.login);
     } catch (error) {
       if (error.code === "auth/email-already-in-use") {
         message.error("Email already registered");

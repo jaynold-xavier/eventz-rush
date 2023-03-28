@@ -29,6 +29,7 @@ export default function VendorPhotos({ user }) {
             uid: index.toString(),
             name: "image-" + index,
             thumbUrl: url,
+            status: "done",
           };
         });
         setData(vendorData);
@@ -63,20 +64,23 @@ export default function VendorPhotos({ user }) {
   );
 
   return (
-    <Layout prefixCls="vendor-dashboard-layout">
-      <Header prefixCls="account-header" className="dashboard-header">
+    <Layout prefixCls="vendor-photos-layout">
+      <Header prefixCls="account-header" className="photos-header">
         <h5>My Photos</h5>
       </Header>
 
-      <Content>
+      <Content prefixCls="photos-content">
         <Spin spinning={loading}>
           <ImageUploader
-            className="image-uploader"
+            className="photos-uploader"
             listType="picture-card"
             accept="image/*"
             maxCount={50}
             value={get(data, "photos")}
-            onChange={({ fileList }) => onSave(fileList)}
+            onChange={({ fileList, file, event }) => {              
+              onSave(fileList);
+            }}
+            multiple
           >
             {uploadButton}
           </ImageUploader>

@@ -12,7 +12,10 @@ import Footer from "./footer/Index";
 
 import useEventWizard from "./useEventWizard";
 import useSupportingData from "./useSupportingData";
-import { EVENT_WIZARD_STEPS } from "../../../../../constants/app";
+import {
+  EVENT_STATUSES,
+  EVENT_WIZARD_STEPS,
+} from "../../../../../constants/app";
 
 const { Header, Content } = Layout;
 
@@ -119,6 +122,7 @@ export default function EventCreateUpdateWizard({ user }) {
   };
 
   const isLastStep = currentStep === EVENT_WIZARD_STEPS.length - 1;
+  const isBooked = form.getFieldValue("status") === EVENT_STATUSES.booked.text;
 
   return (
     <Layout prefixCls="event-create-layout">
@@ -126,7 +130,11 @@ export default function EventCreateUpdateWizard({ user }) {
         <Header prefixCls="event-create-header p-3">
           <div className="text-center mb-3">{title}</div>
 
-          <Steps items={steps} onChange={onStepChange} current={currentStep} />
+          <Steps
+            items={steps}
+            current={currentStep}
+            onChange={isBooked ? undefined : setCurrentStep}
+          />
         </Header>
       </Affix>
 
@@ -153,7 +161,7 @@ export default function EventCreateUpdateWizard({ user }) {
         invitees={form.getFieldValue("vendors")}
         netAmount={netAmount}
         vendors={vendors}
-        disablePrev={currentStep === 0}
+        disablePrev={currentStep === 0 || isBooked}
         loading={isSaving}
         onSave={onSave}
         onCancel={onCancel}

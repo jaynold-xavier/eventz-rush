@@ -180,7 +180,7 @@ function PaymentContent({ userStripeId, category, payNow, paymentInfo }) {
 
       // Create a PaymentIntent with the order amount and currency
       const paymentIntent = await stripeInstance.paymentIntents.create({
-        customer: userStripeId,
+        // customer: userStripeId,
         amount: Math.round(amount),
         currency: "inr",
         payment_method_types: ["card"],

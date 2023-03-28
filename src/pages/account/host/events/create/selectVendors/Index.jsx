@@ -208,6 +208,7 @@ function VendorsList({
       <SelectServicesDrawer
         {...selectServicesLayoutProps}
         onSave={saveSelectedServices}
+        selectable
       />
     </>
   );
