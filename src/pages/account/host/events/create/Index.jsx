@@ -133,7 +133,7 @@ export default function EventCreateUpdateWizard({ user }) {
           <Steps
             items={steps}
             current={currentStep}
-            onChange={isBooked ? undefined : setCurrentStep}
+            onChange={isBooked ? undefined : onStepChange}
           />
         </Header>
       </Affix>

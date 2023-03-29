@@ -9,12 +9,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import { FloatButton, Layout } from "antd";
-import { get, isEmpty } from "lodash";
-
-import { appRoutes } from "./constants/routes";
-
-import { HomeNavBar, HostNavbar, VendorNavbar } from "./components/navBar";
-import { HomeFooter } from "./components/page";
+import { isEmpty } from "lodash";
 
 import {
   FAQ,
@@ -36,6 +31,9 @@ import {
   PageNotAuthorized,
   PageNotFound,
 } from "./pages";
+import { appRoutes } from "./constants/routes";
+import { HomeNavBar, HostNavbar, VendorNavbar } from "./components/navBar";
+import { HomeFooter } from "./components/page";
 import { getInBetweenCharsRegex } from "./helpers/regex";
 import { UserContext } from "./contexts";
 import { getCurrentUser } from "./services/auth";
@@ -218,8 +216,6 @@ function AccountLayout({ isAuthenticated, user, isVendor }) {
   const Navbar = isVendor ? VendorNavbar : HostNavbar;
 
   useBackground("#f5f6fa");
-  // useBackground("linear-gradient(313deg, #eeecff, #f7f6ff, #fff)");
-
   if (isAuthenticated === undefined) return null;
 
   if (!isAuthenticated) {
@@ -246,7 +242,9 @@ function AccountLayout({ isAuthenticated, user, isVendor }) {
 }
 //#region
 
+//#region helpers
 const findParamPlaceholderRegex = getInBetweenCharsRegex("{", "}");
+
 function processRouteUrl(url) {
   return url.replace(findParamPlaceholderRegex, (char) => {
     const getParamRegex = getInBetweenCharsRegex("{", "}");
@@ -254,6 +252,7 @@ function processRouteUrl(url) {
     return id ? ":" + id[1] : char;
   });
 }
+//#region
 
 const ScrollToTop = ({ children }) => {
   const location = useLocation();

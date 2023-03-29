@@ -2,25 +2,12 @@ import {
   ArrowRightOutlined,
   FacebookOutlined,
   GoogleOutlined,
-  LockTwoTone,
   MailTwoTone,
   UserOutlined,
 } from "@ant-design/icons";
 import React, { useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import {
-  Button,
-  Divider,
-  Dropdown,
-  Form,
-  Image,
-  Input,
-  Layout,
-  message,
-  Progress,
-  Radio,
-} from "antd";
-import { find, get, map } from "lodash";
+import { Button, Divider, Form, Image, Input, Layout, message } from "antd";
 
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
@@ -30,7 +17,7 @@ import RegisterImg from "../../assets/images/form/register.svg";
 import { appRoutes } from "../../constants/routes";
 import { appTheme } from "../../assets/js/theme";
 import { auth } from "../../assets/js/firebase";
-import { userRolesOptions, vendorTypesOptions } from "../../constants/dropdown";
+import { userRolesOptions } from "../../constants/dropdown";
 import {
   authenticateWithFacebook,
   authenticateWithGoogle,
@@ -40,6 +27,7 @@ import { addUser } from "../../services/database";
 import { USER_ROLES, VENDOR_TYPES } from "../../constants/app";
 import { stripeInstance } from "../../assets/js/stripe";
 import { getDisplayName } from "../../helpers/auth";
+import { PasswordField, UserRoleSelect } from "../../components/fields";
 
 const { Content } = Layout;
 
@@ -134,7 +122,7 @@ export default function Register() {
               initialValue={searchParams.get("type")}
               required={false}
             >
-              <UserTypeSelector />
+              <UserRoleSelect />
             </Form.Item>
 
             <Form.Item
@@ -166,24 +154,16 @@ export default function Register() {
             <Form.Item
               name="password"
               label="Password"
-              rules={[{ required: true }, { min: 8 }]}
+              rules={[
+                { required: true },
+                {
+                  min: 8,
+                  message: "Your password must be at least 8 characters long",
+                },
+              ]}
             >
               <PasswordField />
             </Form.Item>
-
-            {/* <Form.Item
-              name="confirmPassword"
-              label="Confirm Password"
-              rules={[
-                { required: true, message: "Please confirm your password" },
-              ]}
-            >
-              <Input.Password
-                placeholder="Confirm Password"
-                size="large"
-                prefix={<LockTwoTone twoToneColor={appTheme.colorPrimary} />}
-              />
-            </Form.Item> */}
 
             <br />
 
@@ -275,7 +255,6 @@ export default function Register() {
       email: user.email,
       photoURL: user.photoURL || "",
       phoneNumber: user.phoneNumber || "",
-      title: user.displayName || userName || "",
       userName,
     };
 
@@ -300,120 +279,4 @@ export default function Register() {
     await addUser(data, type);
     setUser(data);
   }
-}
-
-function UserTypeSelector({ value, onChange, ...rest }) {
-  const setVendorType = ({ key }) => {
-    const vendorType = find(vendorTypesOptions, (opt) => opt.key === key);
-    if (vendorType) {
-      onChange(vendorType.value);
-    }
-  };
-
-  const isHostSelected = !value || value === userRolesOptions[0].value;
-  let vendorSelectText;
-  if (!isHostSelected) {
-    vendorSelectText =
-      value === userRolesOptions[1].value
-        ? "Select Vendor"
-        : get(VENDOR_TYPES[value], "text");
-  }
-
-  return (
-    <Radio.Group
-      className="type-field w-100"
-      buttonStyle="solid"
-      value={transformValue(value)}
-      onChange={onChange}
-      {...rest}
-    >
-      {map(userRolesOptions, (option) => {
-        return (
-          <Radio.Button
-            key={option.value}
-            className="text-center"
-            value={option.value}
-            style={{ width: "50%" }}
-          >
-            {option.value === userRolesOptions[0].value ? (
-              option.label
-            ) : (
-              <Dropdown
-                menu={{
-                  items: vendorTypesOptions,
-                  selectable: true,
-                  selectedKeys: [value],
-                  onClick: setVendorType,
-                }}
-                open={isHostSelected ? false : undefined}
-              >
-                {isHostSelected ? (
-                  <span>{option.label}</span>
-                ) : (
-                  <div>{`${vendorSelectText} ▼`}</div>
-                )}
-              </Dropdown>
-            )}
-          </Radio.Button>
-        );
-      })}
-    </Radio.Group>
-  );
-
-  function transformValue(value) {
-    if (!value) return;
-
-    return value === userRolesOptions[0].value
-      ? userRolesOptions[0].value
-      : userRolesOptions[1].value;
-  }
-}
-
-const okRegex = new RegExp("(?=.{8,})", "g");
-const weakRegex = new RegExp("(?=.*[A-Z])", "g");
-const goodRegex = new RegExp("(?=.*[0-9])", "g");
-const strongRegex = new RegExp("(?=.*[^A-Za-z0-9])", "g");
-
-const colors = ["#ff4500", "#fade14", "#87d068", "#008000"];
-
-function PasswordField({ value, ...rest }) {
-  const percent = [okRegex, weakRegex, goodRegex, strongRegex]
-    .map((regex) => {
-      return !!value && regex.test(value);
-    })
-    .reduce((prev = 0, curr) => prev + curr);
-
-  const strokeColor = { 0: colors[0] };
-  for (let i = 0; i < percent; i++) {
-    const key = Math.round(((i + 1) / percent) * 100);
-    strokeColor[key] = colors[i];
-  }
-
-  return (
-    <>
-      <Input.Password
-        placeholder="Password"
-        size="large"
-        prefix={<LockTwoTone twoToneColor={appTheme.colorPrimary} />}
-        value={value}
-        {...rest}
-      />
-
-      {/* <Progress
-        className="w-100"
-        percent={25 * percent}
-        steps={4}
-        strokeColor={colors}
-        showInfo={false}
-      /> */}
-
-      <Progress
-        className="mb-0"
-        status="active"
-        percent={25 * percent}
-        strokeColor={strokeColor}
-        showInfo={false}
-      />
-    </>
-  );
 }

@@ -69,7 +69,8 @@ export default function SelectServicesDrawer({
       }}
       footer={
         <Button type="primary" onClick={save} hidden={!selectable} block>
-          Save and Notify {USER_ROLES[role].text}
+          Save and Notify{" "}
+          {role === "host" ? USER_ROLES.vendor.text : USER_ROLES.host.text}
         </Button>
       }
       {...rest}

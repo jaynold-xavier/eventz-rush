@@ -70,6 +70,8 @@ export default function Dashboard({ user }) {
         inviteeId: vendorEmail,
       });
 
+      console.log({invitees})
+
       const eventIds = [];
       const bookedEventIds = [];
       const pendingEventIds = [];
@@ -276,6 +278,7 @@ function EventCalendar({ eventIds, params = {} }) {
         setLoading(true);
         if (!isEmpty(eventIds)) {
           const data = await getEventsByMonth(selectedDate, { eventIds });
+          console.log({ eventIds, data });
           setDataSource(data);
         }
       } finally {

@@ -130,9 +130,6 @@ export async function getEventsByMonth(selectedDate, filters = {}) {
   if (hostEmail) {
     constraints.push(where("hostEmail", "==", hostEmail));
   }
-  if (eventIds) {
-    constraints.push(where(documentId(), "in", eventIds));
-  }
 
   const events = await getRecords("events", [
     ...constraints,
@@ -140,7 +137,17 @@ export async function getEventsByMonth(selectedDate, filters = {}) {
     where("fromDate", "<=", range[1]),
   ]);
   if (events) {
-    return map(events, (e) => e.record);
+    return events
+      .filter((e) => {
+        if (eventIds) {
+          return eventIds.includes(e.id);
+        }
+
+        return true;
+      })
+      .map((e) => {
+        return e.record;
+      });
   } else {
     return [];
   }

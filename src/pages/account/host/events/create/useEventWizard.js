@@ -69,7 +69,8 @@ const useEventWizard = ({ id, user, setLoading, setIsSaving }) => {
 
         form.setFieldsValue({ ...event, vendors: invitees, payments });
       } catch (error) {
-        console.log("event wizard", { error });
+        console.log("event wizard error");
+        console.error({ eventWizardError: error });
 
         const errorMessage = get(error, "message");
         if (errorMessage === "Cannot update event!") {
@@ -183,7 +184,7 @@ const useEventWizard = ({ id, user, setLoading, setIsSaving }) => {
   };
 
   const cancelChanges = async () => {
-      await confirmChanges(form.isFieldsTouched());
+    await confirmChanges(form.isFieldsTouched());
 
     // update step progress
     // if (eventIdRef.current) {

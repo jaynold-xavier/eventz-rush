@@ -24,7 +24,11 @@ import {
 import { filter, find, get } from "lodash";
 import dayjs from "dayjs";
 
-import { EVENT_STATUSES, INVITE_STATUSES, USER_ROLES } from "../../../constants/app";
+import {
+  EVENT_STATUSES,
+  INVITE_STATUSES,
+  USER_ROLES,
+} from "../../../constants/app";
 import { appRoutes } from "../../../constants/routes";
 import { appTheme } from "../../../assets/js/theme";
 import { timeRangeString } from "../../../helpers/timestamp";
@@ -64,16 +68,14 @@ export default function EventsList({
           <h5>My Events</h5>
 
           {!isVendor && (
-            <Space size={15} wrap>
-              <Button
-                type="primary"
-                size="large"
-                icon={<PlusOutlined />}
-                onClick={(e) => navigate(appRoutes.account.events.create)}
-              >
-                New Event
-              </Button>
-            </Space>
+            <Button
+              type="primary"
+              size="large"
+              icon={<PlusOutlined />}
+              onClick={(e) => navigate(appRoutes.account.events.create)}
+            >
+              New Event
+            </Button>
           )}
         </Header>
       </Affix>
@@ -109,6 +111,7 @@ export default function EventsList({
               >
                 Upcoming
               </Radio.Button>
+
               <Radio.Button
                 className="rounded-input text-center"
                 value="past"

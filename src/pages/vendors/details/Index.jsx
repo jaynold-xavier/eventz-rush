@@ -19,6 +19,7 @@ import { ReviewsViewer } from "../../review";
 import { FilteredTabs } from "../../../components/tabs";
 import Services from "./services/Index";
 import Photos from "./photos/Index";
+import { getDisplayName } from "../../../helpers/auth";
 
 const { Header, Content } = Layout;
 
@@ -121,10 +122,10 @@ export default function VendorDetails() {
                   <Typography.Title
                     className="user-name mb-0"
                     level={2}
-                    ellipsis={{ tooltip: data.title }}
+                    ellipsis={{ tooltip: getDisplayName(data) }}
                     style={{ maxWidth: 300 }}
                   >
-                    {data.title}
+                    {getDisplayName(data)}
                   </Typography.Title>
 
                   <Tag

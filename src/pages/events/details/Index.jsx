@@ -192,11 +192,12 @@ export default function EventDetails() {
 
   const rateVendorAsync = async (data) => {
     data.eventId = id;
+    
     await rateVendor(data);
 
-    const rData = reviews || [];
-    rData.push(data);
-    setReviews(rData);
+    const reviewsList = reviews || [];
+    reviewsList.push(data);
+    setReviews(reviewsList);
 
     message.success("Vendor reviewed!");
   };
