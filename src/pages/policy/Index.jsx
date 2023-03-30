@@ -1,5 +1,5 @@
 import React from "react";
-import { Collapse, Layout } from "antd";
+import { Layout } from "antd";
 
 import { HomePageHeader } from "../../components/page/index";
 

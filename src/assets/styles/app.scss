@@ -1,5 +1,23 @@
 $navbar-height: 100px;
 
+.app-loader {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  img {
+    margin-top: auto;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .ant-spin-text {
+    margin-bottom: auto;
+    color: white;
+  }
+}
+
 //#region home screens
 .main-nav-bar-affix-container {
   .ant-affix {

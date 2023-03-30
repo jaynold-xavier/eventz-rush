@@ -8,7 +8,7 @@ import {
   useLocation,
   Navigate,
 } from "react-router-dom";
-import { FloatButton, Layout } from "antd";
+import { FloatButton, Layout, Spin } from "antd";
 import { isEmpty } from "lodash";
 
 import {
@@ -51,12 +51,16 @@ export default function App() {
       console.log("init", { user });
       setUser(user);
     });
-  }, []);
+  });
 
   const isAuthenticated = !isEmpty(user);
   const isVendor = getUserRole(user) === USER_ROLES.vendor.key;
 
-  if (user === undefined) return null;
+  if (user === undefined) {
+    return (
+      <Spin className="app-loader" size="large" tip="LOADING..." spinning />
+    );
+  }
 
   return (
     <BrowserRouter>
