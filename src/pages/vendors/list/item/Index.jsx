@@ -152,7 +152,7 @@ export default function ListItem({
             <Typography.Text
               className="d-block font-14"
               ellipsis={{ tooltip: email }}
-              style={{ maxWidth: 250 }}
+              // style={{ maxWidth: 250 }}
             >
               <a className="font-16" href={`mailto:${email}`}>
                 {email}

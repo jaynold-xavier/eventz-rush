@@ -34,18 +34,18 @@ export default function usePaginatedData({
         return;
       }
 
+      if (!transformData) {
+        constraints?.push(limit(pageSize));
+      }
+
       // Query the first page of docs
-      const first = query(
-        collection(db, table),
-        ...constraints,
-        limit(pageSize)
-      );
+      const first = query(collection(db, table), ...constraints);
 
       let initData = await getData(first);
       if (transformData) {
         initData = transformData(initData);
       }
-      console.log("initData", initData);
+      console.log("initData", initData, table, constraints);
 
       hasMoreRef.current = !isEmpty(initData);
       setPage(1);

@@ -46,7 +46,7 @@ export default function PaymentField({
           message.warning("Your payment was not successful, please try again.");
           break;
         default:
-          message.error("Something went wrong.");
+          message.error("Something went wrong." + " " + `(status code: ${paymentIntent.status})`);
           break;
       }
     });
@@ -66,6 +66,7 @@ export default function PaymentField({
         elements,
         redirect: "if_required",
       });
+      console.log({ error, paymentIntent });
 
       if (!error) {
         const invoice = await stripeInstance.invoices.create({

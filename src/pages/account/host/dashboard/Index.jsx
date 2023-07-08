@@ -125,6 +125,7 @@ export default function Dashboard({ user }) {
               constraints={[
                 where("hostEmail", "==", get(user, "email")),
                 where("status", "==", EVENT_STATUSES.ongoing.text),
+                where("fromDate", ">=", Timestamp.fromDate(new Date())),
                 orderBy("fromDate", "asc"),
               ]}
               blobImg={BlobImg2}

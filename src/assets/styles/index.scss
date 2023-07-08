@@ -117,16 +117,16 @@ p {
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #1bb6dd;
+  background: rgba(0, 0, 0, 0.4);
 }
 
 /* Selection */
 ::-moz-selection {
-  background: #1bb6dd;
+  background: rgba(0, 0, 0, 0.4);
 }
 
 ::selection {
-  background: #1bb6dd;
+  background: rgba(0, 0, 0, 0.4);
 }
 
 @import "./common.scss";

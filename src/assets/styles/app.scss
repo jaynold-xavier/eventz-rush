@@ -376,10 +376,11 @@ $navbar-height: 100px;
 
   .vendors-list-item {
     .ant-card {
+      min-height: 32rem;
       background-color: lighten(#6252f1, 33%);
 
       .ant-card-body {
-        min-height: 28rem;
+        // min-height: 28rem;
         padding: 0;
 
         .ant-avatar {

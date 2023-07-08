@@ -17,7 +17,12 @@ export function formatAsCurrency(number) {
   return currString.substring(0, 1) + " " + currString.substring(1);
 }
 
-export function getRatingOccurrences(ratings) {
+/**
+ * Gets number of occurrences for each rate value that appears in list of reviews belonging to vendor
+ * @param {object} ratings
+ * @returns list of occurrences of each rate value as a dictionary
+ */
+function getRatingOccurrences(ratings) {
   if (isEmpty(ratings)) return [];
 
   const occurrences = countBy(ratings, (r) => r);

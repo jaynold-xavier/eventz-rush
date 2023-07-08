@@ -158,7 +158,6 @@ export default function EventsList({
               <Select
                 className="w-100"
                 size="large"
-                mode="tags"
                 options={eventStatusesOptions}
                 placeholder="Select Status"
                 onChange={(value) =>

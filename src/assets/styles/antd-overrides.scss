@@ -6,6 +6,12 @@
 //   height: 3rem;
 // }
 
+// tooltip
+.ant-tooltip-content {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
 // sider
 .ant-layout-sider {
   .ant-layout-sider-zero-width-trigger {

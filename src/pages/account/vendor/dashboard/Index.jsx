@@ -70,7 +70,7 @@ export default function Dashboard({ user }) {
         inviteeId: vendorEmail,
       });
 
-      console.log({invitees})
+      console.log({ invitees });
 
       const eventIds = [];
       const bookedEventIds = [];
@@ -333,6 +333,7 @@ function CardEventItem({
   if (hasRequest) {
     actions.push(
       <ConfigProvider
+        key={0}
         theme={{
           token: {
             colorPrimary: "gold",
@@ -354,6 +355,7 @@ function CardEventItem({
     if (status === EVENT_STATUSES.ongoing.text) {
       actions.push(
         <ConfigProvider
+          key={1}
           theme={{
             token: {
               ...appTheme,
@@ -374,7 +376,7 @@ function CardEventItem({
       );
 
       actions.push(
-        <ConfigProvider theme={{ token: appTheme }}>
+        <ConfigProvider key={2} theme={{ token: appTheme }}>
           <Popconfirm
             title="Are you sure you want to cancel this event?"
             onConfirm={onDeclineInvite}
@@ -389,6 +391,7 @@ function CardEventItem({
 
       actions.push(
         <ConfigProvider
+          key={3}
           theme={{
             token: {
               colorPrimary: "gold",
@@ -408,7 +411,7 @@ function CardEventItem({
         </ConfigProvider>
       );
     } else if (status === EVENT_STATUSES.booked.text) {
-      actions.push(<Countdown value={fromDateJs} />);
+      actions.push(<Countdown key={4} value={fromDateJs} />);
     }
   }
 

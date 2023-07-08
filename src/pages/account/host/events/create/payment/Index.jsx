@@ -180,10 +180,10 @@ function PaymentContent({ userStripeId, category, payNow, paymentInfo }) {
 
       // Create a PaymentIntent with the order amount and currency
       const paymentIntent = await stripeInstance.paymentIntents.create({
-        // customer: userStripeId,
+        customer: userStripeId,
         amount: Math.round(amount),
         currency: "inr",
-        payment_method_types: ["card"],
+        automatic_payment_methods: { enabled: true },
       });
 
       setClientSecret(paymentIntent.client_secret);
@@ -196,15 +196,16 @@ function PaymentContent({ userStripeId, category, payNow, paymentInfo }) {
     };
   }, [userStripeId, amount]);
 
-  const options = {
-    clientSecret,
-    appearance,
-  };
-
-  if (!clientSecret) return <Spin spinning={true} />;
+  if (!clientSecret) return <Spin spinning />;
 
   return (
-    <Elements stripe={stripePromise} options={options}>
+    <Elements
+      stripe={stripePromise}
+      options={{
+        clientSecret,
+        appearance,
+      }}
+    >
       <PaymentField
         userStripeId={userStripeId}
         paymentInfo={paymentInfo}

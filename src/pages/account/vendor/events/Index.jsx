@@ -9,7 +9,7 @@ import { EVENT_STATUSES } from "../../../../constants/app";
 const initFilters = {
   period: "upcoming",
   q: "",
-  status: [],
+  status: "",
   type: "",
 };
 
@@ -43,14 +43,8 @@ const constructConstraints = (filters = initFilters) => {
     constraints.push(where("type", "==", type));
   }
 
-  if (!isEmpty(status)) {
-    constraints.push(
-      where(
-        "status",
-        "array-contains-any",
-        map(status, (s) => get(EVENT_STATUSES[status], "text") || s)
-      )
-    );
+  if (status) {
+    constraints.push(where("status", "==", get(EVENT_STATUSES[status], "text", status)));
   }
 
   return constraints;

@@ -51,7 +51,7 @@ export default function App() {
       console.log("init", { user });
       setUser(user);
     });
-  });
+  }, []);
 
   const isAuthenticated = !isEmpty(user);
   const isVendor = getUserRole(user) === USER_ROLES.vendor.key;

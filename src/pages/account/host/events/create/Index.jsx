@@ -106,6 +106,8 @@ export default function EventCreateUpdateWizard({ user }) {
         );
       case 2:
         const { bookingPaymentInfo, finalPaymentInfo } = generatePaymentInfo();
+        console.log({ bookingPaymentInfo, finalPaymentInfo });
+
         return (
           <PaymentStep
             user={user}

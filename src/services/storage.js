@@ -18,14 +18,6 @@ export async function downloadResource(fileName) {
   const storageRef = ref(storage, fileName);
 
   return getDownloadURL(storageRef).then((url) => {
-    // const xhr = new XMLHttpRequest();
-    // xhr.responseType = "blob";
-    // xhr.onload = (event) => {
-    //   const blob = xhr.response;
-    // };
-    // xhr.open("GET", url);
-    // xhr.send();
-
     const a = document.createElement("a");
     a.href = url;
     a.download = fileName;
