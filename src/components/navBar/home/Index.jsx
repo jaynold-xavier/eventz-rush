@@ -193,6 +193,7 @@ export default function Navbar({ user }) {
               <UserAvatar
                 className="user-avatar justify-content-center"
                 src={get(user, "photoURL")}
+                style={{ backgroundColor: "darkgrey" }}
                 size={38}
                 hideUpload
               />

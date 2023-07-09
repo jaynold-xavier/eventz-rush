@@ -20,6 +20,7 @@ import { FilteredTabs } from "../../../components/tabs";
 import Services from "./services/Index";
 import Photos from "./photos/Index";
 import { getDisplayName } from "../../../helpers/auth";
+import { UserAvatar } from "../../../components/avatar";
 
 const { Header, Content } = Layout;
 
@@ -112,10 +113,11 @@ export default function VendorDetails() {
           <Row align="middle" gutter={[24, 24]}>
             <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12}>
               <Space>
-                <Avatar
+                <UserAvatar
                   className="user-avatar"
                   src={get(data, "photoURL") || undefined}
                   {...avatarProps}
+                  hideUpload
                 />
 
                 <div>
@@ -148,7 +150,7 @@ export default function VendorDetails() {
 
                     {data.experience && <strong>Years of Experience</strong>}
 
-                    {data.website && <strong>Website</strong>}
+                    {data.websiteURL && <strong>Website</strong>}
                   </Space>
                 </Col>
 
@@ -162,7 +164,7 @@ export default function VendorDetails() {
 
                     {data.experience && <div>{data.experience}</div>}
 
-                    {data.website && <div>{data.website}</div>}
+                    {data.websiteURL && <div>{data.websiteURL}</div>}
                   </Space>
                 </Col>
               </Row>
